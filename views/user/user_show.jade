@@ -1,0 +1,21 @@
+-if(user!=null)
+h1= user.username
+div
+	h1 #{user.email}
+	span create new game
+	form(method="post", action="/game/new")
+		div	
+			span game_name:
+			select(name="gameName")
+				option black Jack
+				option Poker
+		div 
+			span type:
+			select(name="gameType")
+				option single player
+				option multi-playes
+		div 
+			input(type="submit", value="create")
+	- each game in games
+		div.game_link
+			a(href="/game/"+game._id) game.status

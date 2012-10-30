@@ -1,0 +1,30 @@
+extends ../layout
+block scripts
+	script(src='../../javascripts/blackJack.js')
+block content
+	h1= data.game.name
+	div.blackJackContainer
+		div.blackJackDealer
+			table.bjScorerTable
+				tr
+					td.bjPlayerMoney #{data.players[1].money}
+				tr
+					td.bjPlayerBid 0
+			div.blackJackHand.dealer
+		div.blackJackPlayer
+			div.blackPlayerHands
+				div.blackJackHand.current
+			div.blackJackMenu
+				div.mainMenu.blackJackMenuElement
+					input(type= "button",value="$1", id="$1",class='blackJackChip blackJackButton')
+					input(type= "button",value="$5", id="$5",class='blackJackChip blackJackButton')
+				div.optionMenu.blackJackMenuElement
+					input(type= "button",value="split", id="blackJackSplit",class='blackJackButton', disabled='disabled')
+					input(type= "button",value="double", id="blackJackDouble",class='blackJackButton',disabled='disabled')
+					input(type= "button",value="stand", id="blackJackStand",class='blackJackButton',disabled='disabled')
+					input(type= "button",value="hit", id="blackJackHit",class='blackJackButton',disabled='disabled')
+					input(type= "button",value="deal", id="blackJackDeal",class='blackJackButton',disabled='disabled')
+					input(type= "button",value="start", id="blackJackStart",class='blackJackButton')
+				div.blackJackChip.blackJackMenuElement
+					input(type= "button",value="Exit", id="Exit", class='blackJackButton')
+					input(type= "button",value="Info", id="Info", class='blackJackButton')

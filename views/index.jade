@@ -1,0 +1,28 @@
+h1= title
+p Welcome to #{title}
+div 
+	span Log In
+	form(method="post", action="/")
+		div	
+			span Email:
+			input(type="text", name="email")
+		div 
+			span Password:
+			input(type="text", name="password")
+		div 
+			input(type="submit", value="login")
+
+div 
+	span Sign Up
+	form(method="post", action="/user/new")
+		div
+			span Name:
+			input( type="text", name="userName")
+		div	
+			span Email:
+			input( type="text", name="email")
+		div 
+			span Password:
+			input(type="text", name="password")
+		div 
+			input(type="submit", value="sign up")
