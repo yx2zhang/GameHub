@@ -1,0 +1,74 @@
+.navItem {
+  float: left;
+  position: relative;
+  margin: 12px;
+  color: #e55d4d;
+  font-size: 17px;
+}
+.bodyContainer {
+  overflow: auto;
+}
+.bodyContainer .dashBoard {
+  float: left;
+  width: 25%;
+  height: 100%;
+  background-color: #808080;
+  min-width: 259px;
+}
+.bodyContainer .dashBoard .profileMini {
+  height: 130px;
+}
+.bodyContainer .dashBoard .profileMini .userInfo {
+  overflow: auto;
+  width: 100%;
+}
+.bodyContainer .dashBoard .profileMini .userInfo .profilePic {
+  background-image: url("/images/profile.png");
+  float: left;
+  margin: 5px;
+  height: 60px;
+  width: 60px;
+}
+.bodyContainer .dashBoard .profileMini .userInfo .userName {
+  float: left;
+  padding: 24px 5px 0px 5px;
+  color: #fff;
+  font-size: 18;
+}
+.bodyContainer .dashBoard .profileMini .userStat {
+  overflow: auto;
+  width: 100%;
+  font-size: 14px;
+}
+.bodyContainer .dashBoard .profileMini .userStat .statElement {
+  margin: 5px;
+}
+.bodyContainer .dashBoard .profileMini .userStat .friendsInfo {
+  float: left;
+}
+.bodyContainer .dashBoard .friendsContainer #frinedSearchBar {
+  float: left;
+  margin: 5px;
+}
+.bodyContainer .dashBoard .friendsContainer #friendSearchButton {
+  float: left;
+  margin: 5px;
+}
+.bodyContainer .dashBoard .friendsContainer .friendsItem {
+  overflow: hidden;
+  width: 100%;
+}
+.bodyContainer .gameContent {
+  float: left;
+  overflow: auto;
+  width: 50%;
+}
+.bodyContainer .gameContent .gameLinkElement a {
+  color: #fff;
+}
+.bodyContainer .gameTypeList {
+  float: right;
+  width: 25%;
+  height: 100%;
+  background-color: #789;
+}

@@ -1,16 +1,28 @@
-
 /**
  * Module dependencies.
  */
-
 var express = require('express')
-  , user = require('./routes/user')
-  , game = require('./routes/game');
 
-var app = module.exports = express.createServer();
-var db = require('./db'); 
+var app = express()
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server)
+  , user = require('./routes/user')
+  , game = require('./routes/game')
+  , db = require('./db')
+  , realtime = require('./realtime');
 
 var MemStore =  express.session.MemoryStore;
+
+io.sockets.on('connection',function(socket){
+  socket.on('init',function(data){
+    realtime.clients[data.user_id] = socket;
+  });
+
+  socket.on('invite',function(data){
+    var m_socket = realtime.clients[data.receiver];
+    m_socket.emit('invite',{sender: data.sender});
+  });
+});
 
 // Configuration
 app.configure(function(){
@@ -52,6 +64,13 @@ app.get('/',user.index);
 app.post('/',user.login);
 app.post('/user/new',user.createNewUser);
 app.get('/user/:id',user.showUser);
+app.post('/user/show_games',user.showGames);
+app.post('/user/invite',user.invite);
+app.post('/user/search_friend',user.searchFriend);
+app.post('/user/show_friends',user.showFriends);
+app.post('/user/friend_request',user.friendRequest);
+app.post('/user/show_messages',user.showMessages);
+app.post('/user/accept_friend',user.acceptFriend);
 
 //games
 app.post('/game/new',requiresLogin, game.newGame);
@@ -61,6 +80,6 @@ app.post('/game/deal',game.dealGame);
 app.post('/game/hit',game.hitGame);
 app.post('/game/stand',game.standGame);
 
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+server.listen(3000, function(){
+  console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
 });

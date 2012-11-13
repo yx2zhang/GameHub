@@ -1,0 +1,37 @@
+script
+	$(document).ready(function(){
+		$('#frinedSearchBar').click(function(){
+			this.value ='';
+		});
+
+		$('#friendSearchButton').click(function(){
+			var search_str = $('#frinedSearchBar').attr('value');
+			$.ajax({
+				url: '/user/search_friend',
+				data:{search_str: search_str},
+				type: 'POST',
+				success: function(htmlResult){
+					$('.friendsList').html(htmlResult);
+				},
+				error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+			});
+		});
+	});
+
+	$(document).ready(function(){
+		$('.friendInvite').click(function(){
+			var id = $(this).attr('id');
+			socket.emit('invite', {sender:data.user.username,receiver:id});
+		});
+	});
+
+div.friendsContainer
+	div.searchFriends
+		input(type='text', value='search for friend', class='searchBar',id='frinedSearchBar')
+		input(type='button',class='menuButton',value='search',id='friendSearchButton')
+	div.friendsList
+		span Friends:
+		-each friend in data.friends
+			div.friendsItem
+				span.friendName.left #{friend.username}
+				a(class='friendInvite right',id='#{friend.id}',href='#') Invite

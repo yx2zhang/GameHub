@@ -1,0 +1,24 @@
+script
+	$(document).ready(function(){
+		$('.acceptFriend').click(function(){
+			var id = $(this).parent().attr('id');
+			$.ajax({
+				url: '/user/accept_friend',
+				data:{message_index:id},
+				type: 'POST',
+				success: function(data){
+					$('#'+id).find('.acceptFriend').text('accepted');
+				},
+				error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+			});
+		});
+	});
+
+div.messagesContainer
+	div.messagesList
+		span Messages:
+		script 
+		-each message in data.messager.messages
+			div(class='messageItem', id='#{message.index}')
+				span.messageContent.left #{message.content}
+				a(class='acceptFriend right',href='#') accept

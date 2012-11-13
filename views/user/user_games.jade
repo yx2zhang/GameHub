@@ -1,0 +1,6 @@
+script(src='../../javascripts/userFront.js')
+div.gamesList
+	a(href='#',class='newGame') new_game
+	-each game in data.games
+		div.gameLinkElement
+			a(href='#',id=game._id,class='gameLink') #{game.status}

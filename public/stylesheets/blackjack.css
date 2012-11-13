@@ -1,0 +1,116 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+}
+.blackJackContainer {
+  width: 680px;
+  margin: 25px auto 10px auto;
+  border-width: 10px;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #cc6;
+}
+.blackJackContainer .dealer {
+  margin: auto;
+  top: 60px;
+  left: 80px;
+}
+.blackJackContainer .gameTopBar {
+  color: #fff;
+  background-color: #657d98;
+  height: 50px;
+}
+.blackJackContainer .gameTopBar .gameTitle {
+  left: 55px;
+  top: 10px;
+  position: relative;
+  font-size: 25px;
+}
+.blackJackContainer .gameTopBar .moneyItem {
+  margin: 0px 5px 0px 5px;
+}
+.blackJackContainer .gameTopBar .playerMoney {
+  float: right;
+  margin: 13px;
+}
+.blackJackContainer .gameTopBar .playerBid {
+  float: right;
+  margin: 13px;
+}
+.blackJackContainer .blackJackTable {
+  background-image: url("/images/onlineblackjack.png");
+  background-repeat: no-repeat;
+  width: 680px;
+  height: 450px;
+}
+.blackJackContainer .blackJackTable .blackJackCard {
+  background-image: url("/images/cards/b1fv.png");
+  height: 96px;
+  width: 71px;
+  margin: auto;
+  float: left;
+  position: relative;
+}
+.blackJackContainer .blackJackTable .blackJackHand {
+  height: 96px;
+  width: 350px;
+  position: relative;
+}
+.blackJackContainer .blackJackTable .blackJackDealer {
+  height: 40%;
+  text-align: center;
+}
+.blackJackContainer .blackJackTable .blackJackPlayer {
+  height: 60%;
+}
+.blackJackContainer .blackJackTable .blackJackPlayer .blackPlayerHands {
+  height: 75%;
+}
+.blackJackContainer .blackJackTable .blackJackPlayer .blackPlayerHands .current {
+  margin: auto;
+  top: 70%;
+  left: 80px;
+}
+.blackJackMenu {
+  overflow: auto;
+  width: 100%;
+  height: 120px;
+  background-color: #657d98;
+}
+.blackJackMenu .bidMenu {
+  float: right;
+  margin: 10px 5px 10px 5px;
+  width: 180px;
+}
+.blackJackMenu .bidMenu .blackJackBidButton {
+  background-color: #a9bf2c;
+  border-top-color: #566633;
+  border-bottom-color: #536300;
+  border-left-color: #798729;
+  border-right-color: #798729;
+  float: left;
+  margin: 5px;
+}
+.blackJackMenu .bidMenu .blackJackBidButton:hover:enabled {
+  background-color: #9c3;
+}
+.blackJackMenu .optionMenu {
+  float: left;
+  margin: 10px 5px 10px 5px;
+  width: 300px;
+}
+.blackJackMenu .optionMenu .blackJackOptionButton {
+  background-color: #3288c2;
+  border-top-color: #2e9ce6;
+  border-bottom-color: #0c5078;
+  border-left-color: #2e6682;
+  border-right-color: #2e6682;
+  float: left;
+  margin: 5px;
+}
+.blackJackMenu .optionMenu .blackJackOptionButton:hover:enabled {
+  background-color: #039;
+}

@@ -6,6 +6,7 @@ $(document).ready(function(){
 			success: function(data){
 				$('#blackJackStart').attr('disabled','disabled');
 				$('#blackJackDeal').removeAttr('disabled');
+				$('.blackJackBidButton').removeAttr('disabled');
 				$('.blackJackHand.dealer').html("");
 				$('.blackJackHand.current').html("");
 			},
@@ -19,6 +20,7 @@ $(document).ready(function(){
 		var bid= parseInt(this.value.replace("$",""),10);
 		var money = parseInt($('.bjPlayerMoney').text(),10) - bid;
 		var new_bid = parseInt($('.bjPlayerBid').text(),10) + bid;
+		console.log($('.bjPlayerMoney').text());
 		$('.bjPlayerBid').text(new_bid);
 		$('.bjPlayerMoney').text(money);
 	});
@@ -98,30 +100,32 @@ function gameEnd(data){
 
 function dealCard(data){
 	$('#blackJackDeal').attr('disabled','disabled');
+	$('.blackJackBidButton').attr('disabled','disabled');
 	$('#blackJackHit').removeAttr('disabled');
 	$('#blackJackStand').removeAttr('disabled');
 	$('#blackJackDouble').removeAttr('disabled');
 	$('#blackJackSplit').removeAttr('disabled');
-
-	addCards('dealer',data.players[0].hand);
-	addCards('current',data.players[1].hand);
+	addCards('dealer',data.players[0].hand,0);
+	addCards('current',data.players[1].hand,0);
 }
 
 function hitCard(data){
 	var cur_player = data.players[1];
 	var last = cur_player.hand.length;
-	addCards('current',[cur_player.hand[last-1]]);
+	addCards('current',data.players[1].hand,last-1);
 	if(cur_player.status=='lost'){
 		gameEnd(data);
 	}
 }
 
-function addCards(role,cards){
-	for(var i=0;i<cards.length;i++){
+function addCards(role,cards,start){
+	var i = start;
+	for(i;i<cards.length;i++){
 		var card_str = cards[i].suit+cards[i].face;
 		var class_str =  '<div class="blackJackCard" id="card'+card_str+'"></div>';
 		var css_str = 'url("/images/cards/'+card_str+'.png")';
 		$('.blackJackHand.'+role).append(class_str);
 		$('#card'+card_str).css('background-image','url("/images/cards/'+card_str+'.png")');
+		$('#card'+card_str).css('left', i*(-30)+'px');
 	}
 }

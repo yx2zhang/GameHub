@@ -1,28 +1,30 @@
-h1= title
-p Welcome to #{title}
-div 
-	span Log In
-	form(method="post", action="/")
-		div	
-			span Email:
-			input(type="text", name="email")
-		div 
-			span Password:
-			input(type="text", name="password")
-		div 
-			input(type="submit", value="login")
-
-div 
-	span Sign Up
-	form(method="post", action="/user/new")
-		div
-			span Name:
-			input( type="text", name="userName")
-		div	
-			span Email:
-			input( type="text", name="email")
-		div 
-			span Password:
-			input(type="text", name="password")
-		div 
-			input(type="submit", value="sign up")
+extends layout
+block css
+	link(rel='stylesheet', href='/stylesheets/index.css')
+block content
+	div.topContainer
+		form(method='post',action='/',id='logInForm')
+			span Email
+			input(type='text',class='submitTextId logInTextField',name='email')
+			span Password
+			input(type='password',class='submitTextPass logInTextField',name='password')
+			input(type='submit',class='submitButton',value='Login')
+	div.bodyContainer
+		div.siteTitle Welcome to GameHub
+		div.signFormContainer
+			form(method='post',action='/user/new',id='signForm')
+				table.signTable
+					span#signSpan Sing up is quick and easy
+					tr
+						td User name
+						td
+							input(class='signText',type='text',name='userName')
+					tr
+						td Email Address
+						td 
+							input(class='signText',type='text',name='email')
+					tr
+						td Password
+						td
+							input(class='signText',type='text',name='password')
+				input(type="submit", value="Sign up",class='signUpButton')

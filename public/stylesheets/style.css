@@ -1,77 +1,57 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 0px;
+  margin: 0px;
 }
 a {
   color: #00b7ff;
 }
-.blackJackContainer {
-  background-image: url("/images/onlineblackjack.gif");
-  height: 707px;
-  width: 1023px;
-  position: absolute;
+.topContainer {
+  background-color: #50545c;
+  height: 45px;
+  min-width: 1177px;
 }
-.blackJackContainer margin: 10px10px10px10px .disabled {
-  disabled: disabled;
+.bodyContainer {
+  background-color: #25b494;
+  min-width: 1177px;
+  height: 100%;
 }
-.blackJackContainer .blackJackCard {
-  background-image: url("/images/cards/b1fv.png");
-  height: 96px;
-  width: 71px;
-  margin: auto;
+.right {
+  float: right;
+}
+.left {
   float: left;
 }
-.blackJackContainer .blackJackHand {
-  height: 96px;
-  width: 350px;
-  position: relative;
+input:disabled {
+  opacity: 0.5;
 }
-.blackJackContainer .dealer {
-  top: 60px;
-  margin: auto;
-}
-.blackJackContainer .blackJackDealer {
-  height: 40%;
+.gameButton {
+  color: #fff;
   text-align: center;
+  border-radius: 3px;
+  border-style: solid;
+  width: 75px;
+  height: 35px;
+  border-width: 2px 1px 2px 1px;
+  font-size: 13px;
 }
-.blackJackContainer .blackJackDealer .bjScorerTable {
-  border: 1px solid #000;
-  position: relative;
-  left: 45px;
-  top: 54px;
-  height: 150px;
-  width: 100px;
+.menuButton {
+  color: #444;
+  text-align: center;
+  width: 75px;
+  height: 23px;
+  border: 1px solid #dcdcdc;
+  background-color: whiteSmoke;
+  border-radius: 2px;
+  font-size: 12px;
 }
-.blackJackContainer .blackJackDealer .bjScorerTable td {
-  border: 1px solid #000;
+.menuButton:hover {
+  border: 1px solid #c6c6c6;
+  color: #000;
 }
-.blackJackContainer .blackJackPlayer {
-  height: 60%;
-}
-.blackJackContainer .blackJackPlayer .blackPlayerHands {
-  height: 65%;
-}
-.blackJackContainer .blackJackPlayer .blackPlayerHands .current {
-  left: 35%;
-  top: 180px;
-}
-.blackJackContainer .blackJackPlayer .blackJackMenu {
-  height: 35%;
-}
-.blackJackContainer .blackJackPlayer .blackJackMenu .blackJackMenuElement {
-  float: left;
-  position: relative;
-  top: 70px;
-  margin: 0px 55px 0px 55px;
-}
-.blackJackContainer .blackJackPlayer .blackJackMenu .blackJackButton {
-  width: 50px;
-}
-.blackJackContainer .blackJackPlayer .blackJackMenu .mainMenu {
-  width: 150px;
-  height: 75px;
-}
-.blackJackContainer .blackJackPlayer .blackJackMenu .optionMenu {
-  width: 40%;
-  height: 50%;
+.searchBar {
+  width: 160px;
+  height: 23px;
+  border-radius: 2px;
+  border: 1px solid #dcdcdc;
 }
