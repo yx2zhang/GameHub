@@ -6,14 +6,19 @@
 	font-size: 17px
 .bodyContainer
 	overflow:auto
+	.listItem
+		border-bottom: 1px solid #CCCACA
 	.dashBoard
-		float:left
-		width: 25%
+		width: 26%
 		height:100%
 		background-color:gray
-		min-width: 259px
+		min-width: 326px
+		padding: 0px 10px 0px 10px
+		position: absolute;
+		right: 0px;
+		z-index: 100;
 		.profileMini
-			height: 130px
+			height: 105px
 			.userInfo
 				overflow: auto
 				width: 100%
@@ -31,30 +36,147 @@
 			.userStat
 				overflow: auto
 				width: 100%
-				font-size:14px
+				font-size:15px
 				.statElement
+					text-decoration: none
 					margin: 5px
+				.statElement:hover
+					text-decoration: underline
 				.friendsInfo
 					float: left
-		.friendsContainer
-			#frinedSearchBar
-				float:left
+		.dashBoardList
+			overflow:auto
+			.titleTag
 				margin: 5px
-			#friendSearchButton
-				float:left
+				font-size: 28px
+				color:#accf8f
+			.friendsContainer
+				overflow:auto
+				.searchFriends
+					float: left
+					width:100%
+					#frinedSearchBar
+						margin: 5px
+						width: 210px
+					#friendSearchButton
+						margin: 5px
+				.friendsList
+					overflow:auto
+					width:100%
+					.friendsItem
+						overflow: hidden
+						width: 98%
+						.friendName
+							margin: 5px
+							font-size: 17px;
+							color:#deae7e
+						.friendAction
+							font-size: 17px;
+							margin: 5px
+			.messagesContainer
+				overflow: auto
+				.messagesList
+					overflow: auto
+					.messageItem
+						overflow: auto
+						width: 98%
+						.messageContent
+							color:#FFFAC4
+							margin: 5px
+							width: 95%
+						.messageAction
+							margin: 5px
+						.messageResult
+							color: #B9F0DA
+			.gamesContainer
+				overflow: auto
+				.titleTag
+					text-decoration: none
+				.titleTag:hover
+					text-decoration: underline
+				.gameTypesList
+					overflow: auto
+					.myGamesList
+						margin: 5px
+						.myGameItem
+							margin-bottom: 10px;
+							.myGameItemName
+								color:#DEAE7E
+								font-size: 20px
+							.backToGame
+								padding-top: 2px
+								font-size: 15px
+								text-decoration: none
+							.backToGame:hover
+								text-decoration: underline
+					.gameItem
+						overflow: auto
+						margin: 15px 5px 0px 5px
+						background: #bbc7c3
+						height: 120px
+						.tagImage
+							float:left
+							width: 100px
+							height: 100px
+							border-radius: 20px
+							margin: 10px
+						.blackJackImage
+							background-image:url('/images/blackjacktag.png')
+						.renjuImage
+							background-image:url('/images/renjutag.png')
+						.gameName
+							float:left
+							color: #E55D4D
+							margin: 10px 0px 0px 15px
+							font-size: 22px
+					.gameItem:hover
+						background: rgba(198, 211, 205, 0.5)
+	.roomsBoard
+		position: absolute;
+		float: right;
+		right: 10px;
+		// right: 383px;
+		z-index: 99;
+		width: 300px;
+		margin-top: 150px;
+		.gamesList
+			background-color: ebebeb
+			border-radius: 8px
+			.bjListButton
+				position: relative
 				margin: 5px
-			.friendsItem
-				overflow: hidden
-				width: 100%
+				border-top-color:#97dbfc
+				border-bottom-color: #0794db
+				background-color:#00A6FC
+				width: 70px
+			.bjListButton:hover
+				background-color:#4c9ee0
+			#roomsListHide
+				float:right
+				text-decoration: none
+				margin: 10px
+			#roomsListHide:hover
+				text-decoration: underline;
+			.quickStartBlackjack
+			.newBlackjack
+			.gameRoomItem
+				padding: 10px
+				.gameRoomName
+					color:#E55D4D
+					font-size: 15px
+				.gameJoint
+					text-decoration: none;
+					font-size: 15px
+				.gameJoint:hover
+					text-decoration: underline;
+			.gameRoomItem:hover
+				background: rgba(198, 211, 205, 0.5);
+	.curGame
+
 	.gameContent
-		float: left
 		overflow:auto
-		width: 50%
-		.gameLinkElement
-			a 
-				color: white
-	.gameTypeList
-		float:right
-		width: 25%
-		height:100%
-		background-color:#778899
+		margin: 15px 5px 5px 0px
+		width: 55%
+		position: absolute;
+		left: 150px
+		z-index: 98

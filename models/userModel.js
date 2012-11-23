@@ -14,11 +14,11 @@ var messageSchema = new mongoose.Schema({
 var userSchema = new mongoose.Schema({
 	email: String,
 	password: String,
-	username: String,
+	user_name: String,
 	money: Number,
 	level: Number,
 	exp: Number,
-  friends: [],
+  friends: [String],
   games:[],
   messager:{
     messages: [messageSchema],
@@ -44,7 +44,7 @@ userSchema.statics.new = function(){
 }
 
 userSchema.methods.initialize = function(req){
-  this.username = req.param('userName');
+  this.user_name = req.param('userName');
   this.email = req.param('email');
   this.password = req.param('password');
   this.money = 150;
@@ -101,17 +101,45 @@ userSchema.methods.addFriend = function(new_friend){
   this.friends.push(new_friend);
   this.save(function(error){
     if(error){
-      console.log('can not add firend');
+      console.log('can not add firend '+error);
       return false;
     }
   });
+
+  console.log(this.user_name+' added '+new_friend);
   return true;
 }
 
+userSchema.methods.addGame = function(game){
+  this.games.push(game.id);
+  this.save(function(error){
+    if(error){
+      console.log('can not add game to user');
+    }
+  });
+}
+
 userSchema.methods.findMessage = function(message_index){
-  console.log(message_index);
-  console.log(this.messager.messages[message_index]);
   return this.messager.messages[message_index];
+}
+
+userSchema.methods.friendsCount = function(){
+  return this.friends.length;
+}
+
+userSchema.methods.acceptMessage = function(message_index){
+  var message = this.findMessage(message_index);
+  if(message){
+    message.status = 'accepted';
+    this.save(function(error){
+      if(error){
+        console.log('can not accept message');
+      }
+    });
+    return true;
+  }else{
+    return false;
+  }
 }
 
 userSchema.methods.newMessageIndex = function(){

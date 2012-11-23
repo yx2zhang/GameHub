@@ -1,37 +1,57 @@
-script(src='../../javascripts/blackJack.js')
-script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js')
-
-link(rel='stylesheet', href='/stylesheets/blackjack.css')
-link(rel='stylesheet', href='/stylesheets/style.css')
-
-div.blackJackContainer
-	div.gameTopBar 
-		span.gameTitle Black Jack
-		div.playerBid
-			span.bidText.moneyItem Bid
-			span.bjPlayerBid.moneyItem 0
-		div.playerMoney
-			span.moneyText.moneyItem Money
-			span.bjPlayerMoney.moneyItem #{data.players[1].money}
-	div.blackJackTable
-		div.blackJackDealer
-			div.blackJackHand.dealer
-		div.blackJackPlayer
-			div.blackPlayerHands
-				div.blackJackHand.current
-	div.blackJackMenu
-		div.bidMenu
-			input(type= "button",value="$1", id="$1",class='blackJackChip blackJackBidButton gameButton',disabled='disabled')
-			input(type= "button",value="$5", id="$5",class='blackJackChip blackJackBidButton gameButton',disabled='disabled')
-			input(type= "button",value="$10", id="$10",class='blackJackChip blackJackBidButton gameButton',disabled='disabled')
-			input(type= "button",value="$20", id="$20",class='blackJackChip blackJackBidButton gameButton',disabled='disabled')
-		div.optionMenu
-			input(type= "button",value="split", id="blackJackSplit",class='blackJackOptionButton gameButton', disabled='disabled')
-			input(type= "button",value="double", id="blackJackDouble",class='blackJackOptionButton gameButton',disabled='disabled')
-			input(type= "button",value="stand", id="blackJackStand",class='blackJackOptionButton gameButton',disabled='disabled')
-			input(type= "button",value="hit", id="blackJackHit",class='blackJackOptionButton gameButton',disabled='disabled')
-			input(type= "button",value="deal", id="blackJackDeal",class='blackJackOptionButton gameButton',disabled='disabled')
-			input(type= "button",value="start", id="blackJackStart",class='blackJackOptionButton gameButton')
-	//- 	div.blackJackChip.blackJackMenuElement
-	//- 		input(type= "button",value="Exit", id="Exit", class='blackJackButton')
-	//- 		input(type= "button",value="Info", id="Info", class='blackJackButton')
+extends ../layout
+block scripts
+block css
+	link(rel='stylesheet', href='/stylesheets/blackjack.css')
+block content
+	script
+		var game_data = !{JSON.stringify(data)};
+		console.log(game_data);
+	div.blackJackContainer
+		div.gameTopBar 
+			span.gameTitle Black Jack
+			div.playerBid
+				span.bidText.moneyItem Bid
+				span.bjPlayerBid.moneyItem 0
+			div.playerMoney
+				span.moneyText.moneyItem Money
+				span.bjPlayerMoney.moneyItem #{data.cur_player.money}
+		div.blackJackTable
+			div.blackJackDealerContainer
+				div.blackJackPlayer.dealer
+					span.blackJackNameTag Dealer
+					div.blackJackHand
+			div.blackJackPlayerContainer
+				div.blackJackPlayer.leftPlayer
+					if data.left_player
+						span.blackJackNameTag #{data.left_player.user_name}
+					else
+						span.blackJackNameTag
+					div.blackJackHand
+					span.blackJackGameResult
+				div.blackJackPlayer.currentPlayer
+					span.blackJackNameTag #{data.cur_player.user_name}
+					div.blackJackHand
+					span.blackJackGameResult
+				div.blackJackPlayer.rightPlayer
+					if data.right_player
+						sapn.blackJackNameTag #{data.right_player.user_name}
+					else
+						span.blackJackNameTag
+					div.blackJackHand
+					span.blackJackGameResult	
+		div.blackJackMenu
+			div.bidMenu
+				input(type= "button",value="$1", id="$1",class='blackJackChip blackJackBidButton gameButton')
+				input(type= "button",value="$5", id="$5",class='blackJackChip blackJackBidButton gameButton')
+				input(type= "button",value="$10", id="$10",class='blackJackChip blackJackBidButton gameButton')
+				input(type= "button",value="$20", id="$20",class='blackJackChip blackJackBidButton gameButton')
+			div.optionMenu
+				input(type= "button",value="split", id="blackJackSplit",class='blackJackOptionButton gameButton')
+				input(type= "button",value="double", id="blackJackDouble",class='blackJackOptionButton gameButton')
+				input(type= "button",value="stand", id="blackJackStand",class='blackJackOptionButton gameButton')
+				input(type= "button",value="hit", id="blackJackHit",class='blackJackOptionButton gameButton')
+				input(type= "button",value="deal", id="blackJackDeal",class='blackJackOptionButton gameButton')
+				//- input(type= "button",value="start", id="blackJackStart",class='blackJackOptionButton gameButton')
+		//- 	div.blackJackChip.blackJackMenuElement
+		//- 		input(type= "button",value="Exit", id="Exit", class='blackJackButton')
+		//- 		input(type= "button",value="Info", id="Info", class='blackJackButton')

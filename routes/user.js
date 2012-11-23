@@ -43,7 +43,13 @@ exports.showFriends= function(req,res){
 
 exports.showGames = function(req,res){
   var resultJson = new Object;
-  resultJson.action = 'show_all_games';
+  resultJson.action = 'show_games';
+  loadUserAndRun(req,res,resultJson);
+}
+
+exports.showMyGames = function(req,res){
+  var resultJson = new Object;
+  resultJson.action = 'show_my_games';
   loadUserAndRun(req,res,resultJson);
 }
 
@@ -58,13 +64,22 @@ exports.showMessages = function(req,res){
 }
 
 exports.searchFriend = function(req,res){
-  User.find({'username' : new RegExp(req.body.search_str, 'i')}, function(err, users){
+  User.find({'user_name' : new RegExp(req.body.search_str, 'i')}, function(err, users){
     var resultJson = new Object;
     resultJson.users = users;
+    console.log(req.body.search_str);
+    console.log(users);
+
     res.render('./user/user_search_result.jade',{
       data:resultJson,
     });
   });
+}
+
+exports.gamesList = function(req,res){
+  var resultJson = new Object;
+  resultJson.action = 'games_list';
+  loadUserAndRun(req,res,resultJson);
 }
 
 exports.friendRequest = function(req,res){
@@ -96,9 +111,11 @@ function addFriends(req,res,receiver,sender){
   User.findById(receiver,function(error,receiver){
     User.findById(sender,function(error,sender){
       if(receiver&&sender){
+        receiver.acceptMessage(req.body.message_index);
         receiver.addFriend(sender.id);
         sender.addFriend(receiver.id);
-        res.send(true);
+        var num = receiver.friendsCount().toString();
+        res.send(num);
       }else{
         res.send(false);
       }
@@ -130,8 +147,19 @@ function loadUser(req,res,resultJson){
   User.findById(req.session.user._id,function(error,user){
     if(user==null||user==undefined) res.redirect('/');
     else{
+      req.session.user = user;
       resultJson.user = user;
-      loadFriends(req,res,resultJson);
+      if(resultJson.action=='show_user'){
+        loadFriends(req,res,resultJson);
+      }else if(resultJson.action=='games_list'){
+        loadGames(req,res,resultJson);
+      }else if(resultJson.action=='show_my_games'){
+        loadPlayerGames(req,res,resultJson);
+      }else if(resultJson.action=='show_friends'){
+        loadFriends(req,res,resultJson);
+      }else{
+        runPlayer(req,res,resultJson);
+      }
     }
   });
 }
@@ -139,31 +167,35 @@ function loadUser(req,res,resultJson){
 function loadFriends(req,res,resultJson){
   User.find({'_id':{ $in:resultJson.user.friends}},function(error,friends){
     resultJson.friends = friends;
-    loadGames(req,res,resultJson);
+    runPlayer(req,res,resultJson);
   });
 }
 
 function loadGames(req,res,resultJson){
   bjGame.find({},function(error,games){
     resultJson.games = games;
-    loadPlayerGames(req,res,resultJson);
+    runPlayer(req,res,resultJson);
   });
 }
 
 function loadPlayerGames(req,res,resultJson){
   bjGame.find({'_id':{ $in:resultJson.user.games}},function(error,player_games){
-    resultJson.player_games = player_games;
+    resultJson.my_games = player_games;
     runPlayer(req,res,resultJson);
   });
 }
 
 function runPlayer(req,res,resultJson){
-  if(resultJson.action=='show_all_games'){
-    showAllgames(req,res,resultJson);
+  if(resultJson.action=='show_games'){
+    showGames(req,res,resultJson);
   }else if(resultJson.action=='show_user'){
     showUser(req,res,resultJson);
   }else if(resultJson.action=='show_friends'){
     showFriends(req,res,resultJson);
+  }else if(resultJson.action=='games_list'){
+    gamesList(req,res,resultJson);
+  }else if(resultJson.action=='show_my_games'){
+    showMyGames(req,res,resultJson);
   }
 }
 
@@ -179,8 +211,20 @@ function showFriends(req,res,resultJson){
   });
 }
 
-function showAllgames(req,res,resultJson){
+function showGames(req,res,resultJson){
   res.render('./user/user_games.jade',{
       data:resultJson,
+  });
+}
+
+function gamesList(req,res,resultJson){
+  res.render('./user/games_show.jade',{
+      data:resultJson,
+  });
+}
+
+function showMyGames(req,res,resultJson){
+  res.render('./user/user_my_games.jade',{
+    data: resultJson,
   });
 }

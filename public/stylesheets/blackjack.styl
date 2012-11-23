@@ -1,6 +1,3 @@
-body
-  padding: 50px
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
 a
   color: #00B7FF
 .blackJackContainer
@@ -10,11 +7,6 @@ a
 	border-style: solid;
 	border-radius: 10px;
 	border-color: #CCCC66;
-	.dealer
-		margin: auto
-		top: 60px
-		left: 80px
-
 	.gameTopBar
  		color: white
  		background-color:#657D98
@@ -24,14 +16,15 @@ a
  			top: 10px
  			position: relative
  			font-size: 25px
+ 			float: left
  		.moneyItem
  			margin: 0px 5px 0px 5px
  		.playerMoney
  			float: right
- 			margin: 13px
+ 			margin: 13px 10px 0px 10px
  		.playerBid
  			float: right
- 			margin: 13px
+ 			margin: 13px 10px 0px 10px
 	.blackJackTable
 		background-image:url('/images/onlineblackjack.png')
 		background-repeat:no-repeat;
@@ -43,22 +36,31 @@ a
 			width: 71px
 			margin: auto
 			float: left
-			position: relative
+			position: absolute
 		.blackJackHand
 			height: 96px
-			width: 350px
 			position: relative;
-		.blackJackDealer
-			height: 40%
-			text-align: center
 		.blackJackPlayer
-			height: 60%
+			width: 225px
+			height: 160px
+			float: left
+			position:relative
+			.blackJackNameTag
+				margin: 0px 50px 0px 75px
 			.blackPlayerHands
 				height: 75%;
-				.current
-					margin: auto
-					top: 70%
-					left: 80px
+		.blackJackDealerContainer
+			height: 40%
+			text-align: center
+			.dealer
+				left: 210px
+				top: 50px
+		.blackJackPlayerContainer
+			height: 60%
+			.currentPlayer
+				top: 105px
+				position: relative
+
 .blackJackMenu
 	overflow: auto;
 	width: 100%

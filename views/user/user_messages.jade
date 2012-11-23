@@ -1,24 +1,14 @@
-script
-	$(document).ready(function(){
-		$('.acceptFriend').click(function(){
-			var id = $(this).parent().attr('id');
-			$.ajax({
-				url: '/user/accept_friend',
-				data:{message_index:id},
-				type: 'POST',
-				success: function(data){
-					$('#'+id).find('.acceptFriend').text('accepted');
-				},
-				error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-			});
-		});
-	});
-
 div.messagesContainer
 	div.messagesList
-		span Messages:
+		span.titleTag Messages:
 		script 
+			var new_data = !{JSON.stringify(data)};
+			console.log(new_data);
 		-each message in data.messager.messages
-			div(class='messageItem', id='#{message.index}')
+			div(class='messageItem listItem', id='#{message.index}')
 				span.messageContent.left #{message.content}
-				a(class='acceptFriend right',href='#') accept
+				if message.status != 'accepted'
+					a(class='acceptFriend left messageAction',href='#') accept
+					a(class='ignoreFriend left messageAction',href='#') ignore
+				else
+					span(class='right messageResult') accepted

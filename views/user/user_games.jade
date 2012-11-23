@@ -1,6 +1,12 @@
-script(src='../../javascripts/userFront.js')
-div.gamesList
-	a(href='#',class='newGame') new_game
-	-each game in data.games
-		div.gameLinkElement
-			a(href='#',id=game._id,class='gameLink') #{game.status}
+div.gamesContainer
+	nav
+		a(class='titleTag',href='#', id='showAllGames') All Games
+		span.titleTag |
+		a(class='titleTag',href='#', id='showMyGames') My Games
+	div.gameTypesList
+		div(class='gameItem',id='blackJackGames')
+			div(class='blackJackImage tagImage')
+			span(class='gameName') Black Jack
+		div(class='gameItem')
+			div(class='renjuImage tagImage')
+			span(class='gameName') Renju

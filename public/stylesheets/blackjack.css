@@ -1,7 +1,3 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
 a {
   color: #00b7ff;
 }
@@ -13,11 +9,6 @@ a {
   border-radius: 10px;
   border-color: #cc6;
 }
-.blackJackContainer .dealer {
-  margin: auto;
-  top: 60px;
-  left: 80px;
-}
 .blackJackContainer .gameTopBar {
   color: #fff;
   background-color: #657d98;
@@ -28,17 +19,18 @@ a {
   top: 10px;
   position: relative;
   font-size: 25px;
+  float: left;
 }
 .blackJackContainer .gameTopBar .moneyItem {
   margin: 0px 5px 0px 5px;
 }
 .blackJackContainer .gameTopBar .playerMoney {
   float: right;
-  margin: 13px;
+  margin: 13px 10px 0px 10px;
 }
 .blackJackContainer .gameTopBar .playerBid {
   float: right;
-  margin: 13px;
+  margin: 13px 10px 0px 10px;
 }
 .blackJackContainer .blackJackTable {
   background-image: url("/images/onlineblackjack.png");
@@ -52,27 +44,38 @@ a {
   width: 71px;
   margin: auto;
   float: left;
-  position: relative;
+  position: absolute;
 }
 .blackJackContainer .blackJackTable .blackJackHand {
   height: 96px;
-  width: 350px;
   position: relative;
 }
-.blackJackContainer .blackJackTable .blackJackDealer {
-  height: 40%;
-  text-align: center;
-}
 .blackJackContainer .blackJackTable .blackJackPlayer {
-  height: 60%;
+  width: 225px;
+  height: 160px;
+  float: left;
+  position: relative;
+}
+.blackJackContainer .blackJackTable .blackJackPlayer .blackJackNameTag {
+  margin: 0px 50px 0px 75px;
 }
 .blackJackContainer .blackJackTable .blackJackPlayer .blackPlayerHands {
   height: 75%;
 }
-.blackJackContainer .blackJackTable .blackJackPlayer .blackPlayerHands .current {
-  margin: auto;
-  top: 70%;
-  left: 80px;
+.blackJackContainer .blackJackTable .blackJackDealerContainer {
+  height: 40%;
+  text-align: center;
+}
+.blackJackContainer .blackJackTable .blackJackDealerContainer .dealer {
+  left: 210px;
+  top: 50px;
+}
+.blackJackContainer .blackJackTable .blackJackPlayerContainer {
+  height: 60%;
+}
+.blackJackContainer .blackJackTable .blackJackPlayerContainer .currentPlayer {
+  top: 105px;
+  position: relative;
 }
 .blackJackMenu {
   overflow: auto;

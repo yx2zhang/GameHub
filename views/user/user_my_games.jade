@@ -1,0 +1,8 @@
+script
+	var t = data;
+	console.log(t);
+div.myGamesList
+	-each game in data.my_games
+		div(class='myGameItem listItem',id='#{game._id}')
+			span.myGameItemName #{game.master_name}' Black Jack(#{game.users.length})
+			a(href='#',class='right backToGame') back to game

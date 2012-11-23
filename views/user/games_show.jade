@@ -1,0 +1,11 @@
+script
+	var room_list_data = !{JSON.stringify(data)};
+div.gamesList
+	input(type='button',class='newBlackjack gameButton bjListButton', value='new_game')
+	input(type='button',class='quickStartBlackjack gameButton bjListButton', value='quick_start')
+	a(type='button',id='roomsListHide') >>hide 
+	div.gamesListContent
+		//- -each game in data.games
+		//- 		div(class='gameRoomItem listItem',id='#{game._id}')
+		//- 			span.gameRoomName #{game.master_name}' Black Jack(#{game.users.length}/3)
+		//- 			a(href='#',class='gameJoint right') joint
