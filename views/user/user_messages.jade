@@ -1,0 +1,14 @@
+div.messagesContainer
+	div.messagesList
+		span.titleTag Messages:
+		script 
+			var new_data = !{JSON.stringify(data)};
+			console.log(new_data);
+		-each message in data.messager.messages
+			div(class='messageItem listItem', id='#{message.index}')
+				span.messageContent.left #{message.content}
+				if message.status != 'accepted'
+					a(class='acceptFriend left messageAction',href='#') accept
+					a(class='ignoreFriend left messageAction',href='#') ignore
+				else
+					span(class='right messageResult') accepted

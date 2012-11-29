@@ -1,0 +1,8 @@
+script
+	var room_list_data = !{JSON.stringify(data)};
+div.gamesList
+	input(type='button',class='newBlackjack gameButton bjListButton', value='new_game')
+	input(type='button',class='quickStartBlackjack gameButton bjListButton', value='quick_start')
+	a(type='button',id='roomsListHide', href='#') >>hide 
+	div.gamesListContent
+	a(type='button',id='roomsListNext',href='#') >>next

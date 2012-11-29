@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var realtime = require('../realtime');
 
 var bjPlayerSchema = new mongoose.Schema({
 	gold: Number,
@@ -23,6 +24,9 @@ bjPlayerSchema.statics.new = function(attr){
 bjPlayerSchema.methods.initialize = function(attr){
   this.user_id = attr.user_id;
   this.money = parseInt(attr.money,10);
+  this.user_name = attr.user_name;
+  this.status = 'dealing'
+
   this.save(function(error){
   	if(error){ 
   		console.log('can not init player');
@@ -33,10 +37,8 @@ bjPlayerSchema.methods.initialize = function(attr){
 }
 
 bjPlayerSchema.methods.start = function(bid){
-
-  this.status = 'bid';
+  this.status = 'playing';
   this.hand = [];
-
   this.markModified('hand');
   this.save(function(error){
     if(error){ 
@@ -48,7 +50,7 @@ bjPlayerSchema.methods.start = function(bid){
 }
 
 bjPlayerSchema.methods.bidMoney = function(bid){
-  this.status = 'playing'
+  this.status = 'ready';
   this.bid = bid;
   this.money = this.money - bid;
   this.save(function(error){
@@ -65,6 +67,17 @@ bjPlayerSchema.methods.addCard = function(card){
   this.save(function(error){
     if(error){ 
       console.log('can not add card to player');
+      return false;
+    }
+  });
+  return true;
+}
+
+bjPlayerSchema.methods.stand = function(){
+  this.status = 'stand';
+  this.save(function(error){
+    if(error){ 
+      console.log('player cannot stand');
       return false;
     }
   });
@@ -157,6 +170,135 @@ bjPlayerSchema.methods.draw = function(){
   });
 
   return true;
+}
+
+bjPlayerSchema.methods.checkForDeal = function(){
+  if(this.status =='ready'){
+    return true;
+  }
+  return false;
+}
+
+bjPlayerSchema.methods.checkForEnd = function(){
+  if(this.status =='stand'||this.status=='lost'||this.status=='win'||this.status=='draw'){
+    return true;
+  }
+  return false;
+}
+
+bjPlayerSchema.methods.checkResult = function(resultJson){
+  if(this.status!='lost'||this.status!='win'||this.status!='draw'){
+    var dealer_point = resultJson.dealer.count();
+    var my_point = this.count();
+    if(dealer_point>21){
+      this.win()
+    }
+
+    if(my_point==dealer_point){
+      this.draw();
+    }else if(dealer_point<my_point){
+      this.win(); 
+    }else{
+      this.lost();
+    }
+    resultJson.user.upDate('money',this.money);
+  }
+}
+
+bjPlayerSchema.methods.updateGamesList = function(resultJson){
+  var m_socket = realtime.clients[this.user_id];
+  console.log(realtime.clients.length);
+  if(m_socket){
+    m_socket.broadcast.emit('gameUpdate',{game:resultJson.game});
+  }
+}
+
+bjPlayerSchema.methods.quit = function(){
+  this.remove();
+}
+
+bjPlayerSchema.methods.update = function(resultJson,action){
+  var f_action = action;
+  var data;
+  switch(action){
+    case 'joint_left':
+      data = new Object({
+        left_player: resultJson.cur_player,
+        user: resultJson.user
+      });
+
+      f_action = 'bj_joint_left';
+      break;
+    case 'joint_right':
+      data = new Object({
+        right_player: resultJson.cur_player,
+        user: resultJson.user
+      });
+      f_action = 'bj_joint_right';
+      break;
+    case 'deal_left':
+      data = new Object({
+        cur_player: resultJson.right_player,
+        left_player: resultJson.cur_player,
+        right_player: resultJson.left_player,
+        dealer: resultJson.dealer
+      });
+      f_action = 'bj_deal';
+      break;
+    case 'deal_right':
+      data = new Object({
+        cur_player: resultJson.left_player,
+        left_player: resultJson.right_player,
+        right_player: resultJson.cur_player,
+        dealer: resultJson.dealer
+      });
+      f_action = 'bj_deal';
+      break;
+    case 'hit_left':
+      data = new Object({
+        left_player: resultJson.cur_player
+      });
+      f_action = 'bj_hit_left';
+      break;
+    case 'hit_right':
+      data = new Object({
+        right_player: resultJson.cur_player
+      });
+      f_action = 'bj_hit_right';
+      break;
+    case 'hit_left':
+      data = new Object({
+        left_player: resultJson.cur_player
+      });
+      f_action = 'bj_hit_left';
+      break;
+    case 'stand_right':
+      data = new Object({
+        cur_player: resultJson.left_player,
+        left_player: resultJson.right_player,
+        right_player: resultJson.cur_player,
+        dealer: resultJson.dealer
+      })
+      f_action = 'bj_stand';
+      break;
+    case 'stand_left':
+      data = new Object({
+        cur_player: resultJson.right_player,
+        left_player: resultJson.cur_player,
+        right_player: resultJson.left_player,
+        dealer: resultJson.dealer
+      })
+      f_action = 'bj_stand';
+      break;
+    case 'update_Games_List':
+    default:
+      console.log('can not update');
+  }
+
+  var m_socket = realtime.clients[this.user_id];
+  if(m_socket){
+    m_socket.emit(f_action,{data:data});
+  }
 }
 
 function cardValue(card){

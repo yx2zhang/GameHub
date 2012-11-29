@@ -1,0 +1,5 @@
+span.titleTag Search Result:
+-each user in data.users
+	div.friendsItem.listItem
+		span.friendName.left #{user.user_name}
+		a(type='button',class='friendAction friendAdd right',id='#{user.id}',href='#') Add Friend

@@ -1,0 +1,280 @@
+.navItem {
+  float: left;
+  position: relative;
+  margin: 12px;
+  color: #e55d4d;
+  font-size: 17px;
+}
+.bodyContainer {
+  overflow: auto;
+}
+.bodyContainer .listItem {
+  border-bottom: 1px solid #cccaca;
+}
+.bodyContainer .dashBoard {
+  width: 26%;
+  height: 100%;
+  background-color: #808080;
+  min-width: 326px;
+  padding: 0px 10px 0px 10px;
+  position: absolute;
+  right: 0px;
+  z-index: 100;
+}
+.bodyContainer .dashBoard .profileMini {
+  height: 105px;
+}
+.bodyContainer .dashBoard .profileMini .userInfo {
+  overflow: auto;
+  width: 100%;
+}
+.bodyContainer .dashBoard .profileMini .userInfo .profilePic {
+  background-image: url("/images/profile.png");
+  float: left;
+  margin: 5px;
+  height: 60px;
+  width: 60px;
+}
+.bodyContainer .dashBoard .profileMini .userInfo .userName {
+  float: left;
+  padding: 24px 5px 0px 5px;
+  color: #fff;
+  font-size: 18;
+}
+.bodyContainer .dashBoard .profileMini .userStat {
+  overflow: auto;
+  width: 100%;
+  font-size: 15px;
+}
+.bodyContainer .dashBoard .profileMini .userStat .statElement {
+  text-decoration: none;
+  margin: 5px;
+}
+.bodyContainer .dashBoard .profileMini .userStat .statElement:hover {
+  text-decoration: underline;
+}
+.bodyContainer .dashBoard .profileMini .userStat .friendsInfo {
+  float: left;
+}
+.bodyContainer .dashBoard .dashBoardList {
+  overflow: auto;
+}
+.bodyContainer .dashBoard .dashBoardList .titleTag {
+  margin: 5px;
+  font-size: 28px;
+  color: #accf8f;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer {
+  overflow: auto;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer .searchFriends {
+  float: left;
+  width: 100%;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer .searchFriends #frinedSearchBar {
+  margin: 5px;
+  width: 210px;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer .searchFriends #friendSearchButton {
+  margin: 5px;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer .friendsList {
+  overflow: auto;
+  width: 100%;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer .friendsList .friendsItem {
+  overflow: hidden;
+  width: 98%;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer .friendsList .friendsItem .friendName {
+  margin: 5px;
+  font-size: 17px;
+  color: #deae7e;
+}
+.bodyContainer .dashBoard .dashBoardList .friendsContainer .friendsList .friendsItem .friendAction {
+  font-size: 17px;
+  margin: 5px;
+}
+.bodyContainer .dashBoard .dashBoardList .messagesContainer {
+  overflow: auto;
+}
+.bodyContainer .dashBoard .dashBoardList .messagesContainer .messagesList {
+  overflow: auto;
+}
+.bodyContainer .dashBoard .dashBoardList .messagesContainer .messagesList .messageItem {
+  overflow: auto;
+  width: 98%;
+}
+.bodyContainer .dashBoard .dashBoardList .messagesContainer .messagesList .messageItem .messageContent {
+  color: #fffac4;
+  margin: 5px;
+  width: 95%;
+}
+.bodyContainer .dashBoard .dashBoardList .messagesContainer .messagesList .messageItem .messageAction {
+  margin: 5px;
+}
+.bodyContainer .dashBoard .dashBoardList .messagesContainer .messagesList .messageItem .messageResult {
+  color: #b9f0da;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer {
+  overflow: auto;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .titleTag {
+  text-decoration: none;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .titleTag:hover {
+  text-decoration: underline;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList {
+  overflow: auto;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .myGamesList {
+  margin: 5px;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .myGamesList .myGameItem {
+  margin-bottom: 10px;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .myGamesList .myGameItem .myGameItemName {
+  color: #deae7e;
+  font-size: 20px;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .myGamesList .myGameItem .backToGame {
+  padding-top: 2px;
+  font-size: 15px;
+  text-decoration: none;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .myGamesList .myGameItem .backToGame:hover {
+  text-decoration: underline;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem {
+  overflow: auto;
+  margin: 15px 5px 0px 5px;
+  background: #bbc7c3;
+  height: 120px;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem .tagImage {
+  float: left;
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  margin: 10px;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem .blackJackImage {
+  background-image: url("/images/blackjacktag.png");
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem .renjuImage {
+  background-image: url("/images/renjutag.png");
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem .gameName {
+  float: left;
+  color: #e55d4d;
+  margin: 10px 0px 0px 15px;
+  font-size: 22px;
+}
+.bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem:hover {
+  background: rgba(198,211,205,0.5);
+}
+.bodyContainer .roomsBoard {
+  position: absolute;
+  float: right;
+  right: 10px;
+  z-index: 99;
+  width: 300px;
+  margin-top: 150px;
+}
+.bodyContainer .roomsBoard .gamesList {
+  background-color: ebebeb;
+  border-radius: 8px;
+  overflow: auto;
+}
+.bodyContainer .roomsBoard .gamesList .bjListButton {
+  position: relative;
+  margin: 5px;
+  border-top-color: #97dbfc;
+  border-bottom-color: #0794db;
+  background-color: #00a6fc;
+  width: 70px;
+}
+.bodyContainer .roomsBoard .gamesList .bjListButton:hover {
+  background-color: #4c9ee0;
+}
+.bodyContainer .roomsBoard .gamesList #roomsListHide {
+  float: right;
+  text-decoration: none;
+  margin: 10px;
+}
+.bodyContainer .roomsBoard .gamesList #roomsListHide:hover {
+  text-decoration: underline;
+}
+.bodyContainer .roomsBoard .gamesList .quickStartBlackjack,
+.bodyContainer .roomsBoard .gamesList .newBlackjack,
+.bodyContainer .roomsBoard .gamesList .gameRoomItem {
+  padding: 10px;
+}
+.bodyContainer .roomsBoard .gamesList .quickStartBlackjack .gameRoomName,
+.bodyContainer .roomsBoard .gamesList .newBlackjack .gameRoomName,
+.bodyContainer .roomsBoard .gamesList .gameRoomItem .gameRoomName {
+  color: #e55d4d;
+  font-size: 15px;
+}
+.bodyContainer .roomsBoard .gamesList .quickStartBlackjack .gameJoint,
+.bodyContainer .roomsBoard .gamesList .newBlackjack .gameJoint,
+.bodyContainer .roomsBoard .gamesList .gameRoomItem .gameJoint {
+  text-decoration: none;
+  font-size: 15px;
+}
+.bodyContainer .roomsBoard .gamesList .quickStartBlackjack .gameJoint:hover,
+.bodyContainer .roomsBoard .gamesList .newBlackjack .gameJoint:hover,
+.bodyContainer .roomsBoard .gamesList .gameRoomItem .gameJoint:hover {
+  text-decoration: underline;
+}
+.bodyContainer .roomsBoard .gamesList .gameRoomItem:hover {
+  background: rgba(198,211,205,0.5);
+}
+.bodyContainer .roomsBoard .gamesList #roomsListNext {
+  margin: 10px;
+  float: right;
+}
+.bodyContainer .curGame,
+.bodyContainer .gameContent {
+  overflow: auto;
+  margin: 15px 5px 5px 0px;
+  width: 55%;
+  position: absolute;
+  left: 250px;
+  z-index: 98;
+}
+.bodyContainer .playingGameList {
+  position: absolute;
+  width: 240px;
+  height: 600px;
+  top: 80px;
+}
+.bodyContainer .playingGameList .playingGamesTag {
+  font-size: 20px;
+  margin: 10px;
+  color: #373a40;
+}
+.bodyContainer .playingGameList .playingGameItem:hover {
+  background-color: #c0ddff;
+}
+.bodyContainer .playingGameList .playingGameItem {
+  margin: 15px 0px 10px 10px;
+  background-color: #c0ddeb;
+  height: 70px;
+  padding: 5px;
+}
+.bodyContainer .playingGameList .playingGameItem .blackJackImage {
+  float: left;
+  height: 70px;
+  width: 70px;
+  background-image: url("/images/blackjacktagsm.png");
+}
+.bodyContainer .playingGameList .playingGameItem .renjuImage {
+  background-image: url("/images/renjutag.png");
+}
+.bodyContainer .playingGameList .playingGameItem .blackJackText {
+  margin: 10px;
+  float: left;
+  color: #f7404d;
+}

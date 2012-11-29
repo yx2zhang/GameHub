@@ -1,14 +1,15 @@
 require('../models/blackJackGameModel');
 require('../models/blackJackPlayerModel');
 require('../models/blackJackDeckModel');
+require('../models/userModel');
 
 var db = require('../db');
 var Game = db.model('blackJackGame');
 var Player = db.model('blackJackPlayer');
 var Deck = db.model('blackJackDeck');
+var User = db.model('User');
 
 exports.newGame = function(req, res){  	
-    var current_user = req.session.user;
     var new_game = Game.new();
     new_game.initilize(req);
   	res.redirect('/game/' + new_game.id);
@@ -80,6 +81,7 @@ function deal(req,res,resultJson){
     player.addCard(deck.getCard());
     if(player.user_id==cur_user._id){
       player.bidMoney(bid);
+      cur_user.upDate('money',player.money);
     }
   }
   shipIt(req,res,resultJson);
@@ -92,6 +94,8 @@ function hit(req,res,resultJson){
   var point = cur_player.count();
   if(point>21){
     cur_player.lost();
+    resultJson.user.upDate('money',cur_player.money);
+    req.session.user = resultJson.user;
   }
   shipIt(req,res,resultJson);
 }
@@ -112,11 +116,13 @@ function stand(req,res,resultJson){
   }else{
     cur_player.lost();
   }
+  resultJson.user.upDate('money',cur_player.money);
+  req.session.user = resultJson.user;
+  // console.log(resultJson.user);
   shipIt(req,res,resultJson);
 }
 
 function loadGameAndRun(req,res,resultJson){
-  resultJson.user = req.session.user;
   if(resultJson.game==null){
     LoadGame(req,res,resultJson);
   }else if(resultJson.players==null){
@@ -129,10 +135,21 @@ function loadGameAndRun(req,res,resultJson){
 function LoadGame(req,res,resultJson){
   var cur_game = req.session.game;
   Game.findById(cur_game._id,function(error,game){
-      if(game==null||game==undefined){
-        console.log('cant find game and ship failed');
+    if(game==null||game==undefined){
+      console.log('cant find game and ship failed');
+    }else{
+      resultJson.game = game;
+      LoadUser(req,res,resultJson);
+    }
+  });
+}
+
+function LoadUser(req,res,resultJson){
+  User.findById(req.session.user._id,function(error,user){
+    if(user==null||user==undefined){
+        console.log('cant find user and ship failed');
       }else{
-        resultJson.game = game;
+        resultJson.user = user;
         LoadDeck(req,res,resultJson);
       }
   });
@@ -157,12 +174,12 @@ function LoadPlayers(req,res,resultJson){
     }else{
       resultJson.players = players;
       resultJson.cur_playerIndex = findCurPlayer(players,resultJson.user);
-      RunGame(req,res,resultJson);
+      runGame(req,res,resultJson);
     }
   });
 }
 
-function RunGame(req,res,resultJson){
+function runGame(req,res,resultJson){
   if(resultJson.action=='show'){
     shipIt(req,res,resultJson);
   }else if(resultJson.action=='deal'){
@@ -181,9 +198,7 @@ function shipIt(req,res,resultJson){
     res.send(resultJson);
   }else if(resultJson.type=='load'){
     res.render(resultJson.page,{
-      locals:{
         data: resultJson
-      }
     });
   }else{
     console.log('dont know how to ship');
@@ -191,10 +206,10 @@ function shipIt(req,res,resultJson){
   }
 }
 
-function findCurPlayer(players,cur_user){
+function findCurPlayer(players,user){
   for(var i =0;i<players.length;i++){
     var player = players[i];
-    if(player.user_id==cur_user._id){
+    if(player.user_id==user._id){
       return i;
     }
   }

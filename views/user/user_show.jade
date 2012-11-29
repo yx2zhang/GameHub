@@ -1,21 +1,32 @@
--if(user!=null)
-h1= user.username
-div
-	h1 #{user.email}
-	span create new game
-	form(method="post", action="/game/new")
-		div	
-			span game_name:
-			select(name="gameName")
-				option black Jack
-				option Poker
-		div 
-			span type:
-			select(name="gameType")
-				option single player
-				option multi-playes
-		div 
-			input(type="submit", value="create")
-	- each game in games
-		div.game_link
-			a(href="/game/"+game._id) game.status
+extends ../layout
+block scripts
+	script
+		var data = !{JSON.stringify(data)};
+		//- console.log(data);
+	script(src='../../javascripts/realtime.js')
+	script(src='../../javascripts/userFront.js')
+	script(src='../../javascripts/gamesShow.js')
+block css
+	link(rel='stylesheet', href='/stylesheets/user.css')
+block content
+	div.topContainer
+		nav
+			a(href='/user/', class='navHome navItem') Home
+			a(href='/user/', class='navFriends navItem') Friends
+			a(href='/user/', class='navUser navItem') #{data.user.user_name}
+	div.bodyContainer
+		div.dashBoard
+			div.profileMini
+				div.userInfo 
+					div.profilePic.left
+					div.userName.left #{data.user.user_name}
+				div.userStat
+					a(class='friendsInfo left statElement',href='#') Friends #{data.friends.length} 
+					a(class='gamesInfo left statElement',href='#')	games 0
+					a(class='messagesInfo left statElement',href='#') Messages #{data.user.unread}
+					a(class='moneyInfo left statElement',href='#') Money 100
+			div.dashBoardList
+				include user_friends
+		div.roomsBoard
+		div.playingGameList 
+			div.playingGamesTag Playing Games

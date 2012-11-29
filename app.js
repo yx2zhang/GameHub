@@ -1,16 +1,29 @@
-
 /**
  * Module dependencies.
  */
-
+ 
 var express = require('express')
-  , user = require('./routes/user')
-  , game = require('./routes/game');
 
-var app = module.exports = express.createServer();
-var db = require('./db'); 
+var app = express()
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server)
+  , user = require('./routes/user')
+  , blackjack = require('./routes/games/blackjack')
+  , db = require('./db')
+  , realtime = require('./realtime');
 
 var MemStore =  express.session.MemoryStore;
+
+io.sockets.on('connection',function(socket){
+  socket.on('init',function(data){
+      realtime.clients[data.user_id] = socket;
+  });
+
+  socket.on('invite',function(data){
+    var m_socket = realtime.clients[data.receiver];
+    m_socket.emit('invite',{sender: data.sender});
+  });
+});
 
 // Configuration
 app.configure(function(){
@@ -53,14 +66,31 @@ app.post('/',user.login);
 app.post('/user/new',user.createNewUser);
 app.get('/user/:id',user.showUser);
 
-//games
-app.post('/game/new',requiresLogin, game.newGame);
-app.get('/game/:id', requiresLogin, game.showGame);
-app.post('/game/start', game.startGame);
-app.post('/game/deal',game.dealGame);
-app.post('/game/hit',game.hitGame);
-app.post('/game/stand',game.standGame);
+app.post('/user/invite',user.invite);
+app.post('/user/search_friend',user.searchFriend);
+app.post('/user/friend_request',user.friendRequest);
+app.post('/user/accept_friend',user.acceptFriend);
 
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.post('/user/show_friends',user.showFriends);
+app.post('/user/show_messages',user.showMessages);
+app.post('/user/games_list',user.gamesList);
+app.post('/user/show_games',user.showGames);
+app.post('/user/show_my_games',user.showMyGames);
+
+app.post('/user/back_game',user.backGame);
+
+//games
+app.post('/game/blackjack/new',requiresLogin, blackjack.newGame);
+app.get('/game/blackjack/:id', requiresLogin, blackjack.showGame);
+
+// app.post('/game/blackjack/start', blackjack.startGame);
+app.post('/game/blackjack/deal',blackjack.dealGame);
+app.post('/game/blackjack/hit',blackjack.hitGame);
+app.post('/game/blackjack/stand',blackjack.standGame);
+app.post('/game/blackjack/joint',blackjack.jointGame);
+app.post('/game/blackjack/back_game',blackjack.backGame);
+app.post('/game/blackjack/quit',blackjack.quit);
+
+server.listen(3000, function(){
+  console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
 });
