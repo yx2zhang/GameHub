@@ -26,6 +26,7 @@ $(document).ready(function(){
   });
 
   socket.on('bj_deal',function (data){
+    alert('deal');
   	dealCard(data);
   });
 

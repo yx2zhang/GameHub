@@ -26,7 +26,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-	$('#blackJackDeal').click(function(){
+	$('.optionMenu').on('click','#blackJackDeal',function(){
 		var bid= parseInt($('.bjPlayerBid').text(),10);
 		if(bid==0){
 			alert('please bid some money');
@@ -63,30 +63,46 @@ $(document).ready(function(){
 			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
 		});
 	});
+
+	$('#blackJackQuit').click(function(){
+		$.ajax({
+			url: '/game/blackjack/quit',
+			type: 'POST',
+			success: quitGame,
+			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+		});
+	});
 });
 
 function gameEnd(res){
 	var data = res.data;
+	console.log(data);
 	var cur_player = data.cur_player;
 	var dealer = data.dealer;
 	if(data.cur_player.status=='stand'){
 		alert('wait for other players');
+		freezePlayer();
 		return;
 	}
-	
+
 	addCards('dealer',dealer.hand,2);
 
-	if(cur_player.status=='lost'){
-		alert('lost');
-	}else if(cur_player.status=='win'){
-		alert('win');
-		var money = cur_player.money;
-		$('.bjPlayerMoney').text(money);
-	}else if(cur_player.status=='draw'){
-		alert('draw');
+	if(!checkEnd('currentPlayer')){
+		curPlayerEnd(data.cur_player);
 	}
+	
 
-	$('.currentPlayer').find('.blackJackGameResult').text(data.cur_player.status);
+	// if(cur_player.status=='lost'){
+	// 	alert('lost');
+	// }else if(cur_player.status=='win'){
+	// 	alert('win');
+	// 	var money = cur_player.money;
+	// 	$('.bjPlayerMoney').text(money);
+	// }else if(cur_player.status=='draw'){
+	// 	alert('draw');
+	// }
+
+	// $('.currentPlayer').find('.blackJackGameResult').text(data.cur_player.status);
 
 	if(data.left_player){
 		$('.leftPlayer').find('.blackJackGameResult').text(data.left_player.status);
@@ -96,13 +112,44 @@ function gameEnd(res){
 		$('.rightPlayer').find('.blackJackGameResult').text(data.right_player.status);
 	}
 
+	// $('.bjPlayerBid').text(0);
+	// $('#blackJackHit').attr('disabled','disabled');
+	// $('#blackJackStand').attr('disabled','disabled');
+	// $('#blackJackDouble').attr('disabled','disabled');
+	// $('#blackJackSplit').attr('disabled','disabled');
+
+	$('.currentPlayer').addClass('livePlayer');
+	$('#blackJackDeal').removeAttr('disabled');
+	$('.blackJackBidButton').removeAttr('disabled');
+}
+
+function checkEnd(role){
+	return $('.'+role).hasClass('livePlayer');
+}
+
+function curPlayerEnd(cur_player){
+	if(cur_player.status=='lost'){
+		alert('lost');
+	}else if(cur_player.status=='win'){
+		alert('win');
+		var money = cur_player.money;
+		$('.bjPlayerMoney').text(money);
+	}else if(cur_player.status=='draw'){
+		alert('draw');
+	}
+	$('.currentPlayer').find('.blackJackGameResult').text(cur_player.status);
 	$('.bjPlayerBid').text(0);
+	$('.currentPlayer').removeClass('livePlayer');
+	freezePlayer();
+}
+
+function freezePlayer(){
 	$('#blackJackHit').attr('disabled','disabled');
 	$('#blackJackStand').attr('disabled','disabled');
 	$('#blackJackDouble').attr('disabled','disabled');
 	$('#blackJackSplit').attr('disabled','disabled');
-	$('#blackJackDeal').removeAttr('disabled');
-	$('.blackJackBidButton').removeAttr('disabled');
+	$('#blackJackDeal').attr('disabled','disabled');
+	$('.blackJackBidButton').attr('disabled','disabled');
 }
 
 function dealCard(res){
@@ -155,7 +202,10 @@ function hitCard(role,res){
 	addCards(role,player.hand,last-1);
 
 	if(player.status=='lost'){
-		gameEnd(res);
+		// endPlayer(role);
+		if(role=='currentPlayer'){
+			curPlayerEnd(player);
+		}
 	}
 }
 
@@ -177,12 +227,19 @@ function addPlayer(role,res){
 	$('.'+role).find('.blackJackNameTag').text(data.user.user_name);
 }
 
-function setTable(){
+function initialize(){
+	$('.curGame').attr('id', 'game_content_'+game_data.game_id);
 	addCards('dealer',game_data.dealer.hand,0);
 	addCards('currentPlayer',game_data.cur_player.hand,0);
 	if(game_data.left_player) {addCards('leftPlayer',game_data.left_player.hand,0);}
 	if(game_data.right_player){addCards('rightPlayer',game_data.right_player.hand,0);}
 	setStage(game_data.game_status);
+
+	var status = game_data.cur_player.status;
+
+	if(status=='lost'||status=='win'||status=='draw'){
+		curPlayerEnd(game_data.cur_player);
+	}
 }
 
 function setStage(stage){

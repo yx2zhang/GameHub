@@ -2,8 +2,10 @@ extends ../layout
 block scripts
 	script
 		var data = !{JSON.stringify(data)};
+		//- console.log(data);
 	script(src='../../javascripts/realtime.js')
 	script(src='../../javascripts/userFront.js')
+	script(src='../../javascripts/gamesShow.js')
 block css
 	link(rel='stylesheet', href='/stylesheets/user.css')
 block content
@@ -26,7 +28,5 @@ block content
 			div.dashBoardList
 				include user_friends
 		div.roomsBoard
-		//- div.gameTypeList
-		//- 	ul
-		//- 		li 
-		//- 			a(class='gameElment',href='#',id='blackJackGames') Black Jack
+		div.playingGameList 
+			div.playingGamesTag Playing Games

@@ -20,6 +20,7 @@ var userSchema = new mongoose.Schema({
 	exp: Number,
   friends: [String],
   games:[],
+  active_games: Number,
   messager:{
     messages: [messageSchema],
     total: Number,
@@ -48,7 +49,7 @@ userSchema.methods.initialize = function(req){
   this.email = req.param('email');
   this.password = req.param('password');
   this.money = 150;
-
+  this.active_games = 0;
   this.messager.total = 0;
   this.messager.unread = 0;
   this.messager.box_size = 100;
@@ -71,6 +72,7 @@ userSchema.methods.upDate = function(field,value){
   	});
   	return true
 }
+
 
 userSchema.methods.receiveMessage = function(message,sender){
   message.content = 'some one sent friend request';
@@ -112,12 +114,30 @@ userSchema.methods.addFriend = function(new_friend){
 
 userSchema.methods.addGame = function(game){
   this.games.push(game.id);
+  this.active_games++;
   this.save(function(error){
     if(error){
       console.log('can not add game to user');
     }
   });
 }
+
+userSchema.methods.quitGame = function(game){
+  
+  for(var i = 0;i< this.games.length;i++){
+    if(this.games[i]==game.id){
+      this.games.splice(i,i+1);
+    }
+  }
+
+  this.save(function(error){
+    if(error){
+      console.log('can not quit game to user');
+    }
+  });
+}
+
+
 
 userSchema.methods.findMessage = function(message_index){
   return this.messager.messages[message_index];

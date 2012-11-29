@@ -185,6 +185,7 @@
 .bodyContainer .roomsBoard .gamesList {
   background-color: ebebeb;
   border-radius: 8px;
+  overflow: auto;
 }
 .bodyContainer .roomsBoard .gamesList .bjListButton {
   position: relative;
@@ -230,12 +231,50 @@
 .bodyContainer .roomsBoard .gamesList .gameRoomItem:hover {
   background: rgba(198,211,205,0.5);
 }
+.bodyContainer .roomsBoard .gamesList #roomsListNext {
+  margin: 10px;
+  float: right;
+}
 .bodyContainer .curGame,
 .bodyContainer .gameContent {
   overflow: auto;
   margin: 15px 5px 5px 0px;
   width: 55%;
   position: absolute;
-  left: 150px;
+  left: 250px;
   z-index: 98;
+}
+.bodyContainer .playingGameList {
+  position: absolute;
+  width: 240px;
+  height: 600px;
+  top: 80px;
+}
+.bodyContainer .playingGameList .playingGamesTag {
+  font-size: 20px;
+  margin: 10px;
+  color: #373a40;
+}
+.bodyContainer .playingGameList .playingGameItem:hover {
+  background-color: #c0ddff;
+}
+.bodyContainer .playingGameList .playingGameItem {
+  margin: 15px 0px 10px 10px;
+  background-color: #c0ddeb;
+  height: 70px;
+  padding: 5px;
+}
+.bodyContainer .playingGameList .playingGameItem .blackJackImage {
+  float: left;
+  height: 70px;
+  width: 70px;
+  background-image: url("/images/blackjacktagsm.png");
+}
+.bodyContainer .playingGameList .playingGameItem .renjuImage {
+  background-image: url("/images/renjutag.png");
+}
+.bodyContainer .playingGameList .playingGameItem .blackJackText {
+  margin: 10px;
+  float: left;
+  color: #f7404d;
 }

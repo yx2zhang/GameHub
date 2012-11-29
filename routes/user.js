@@ -37,7 +37,6 @@ exports.showUser = function(req,res){
 exports.showFriends= function(req,res){
   var resultJson = new Object;
   resultJson.action = 'show_friends';
-  console.log(resultJson);
   loadUserAndRun(req,res,resultJson);
 }
 
@@ -67,9 +66,6 @@ exports.searchFriend = function(req,res){
   User.find({'user_name' : new RegExp(req.body.search_str, 'i')}, function(err, users){
     var resultJson = new Object;
     resultJson.users = users;
-    console.log(req.body.search_str);
-    console.log(users);
-
     res.render('./user/user_search_result.jade',{
       data:resultJson,
     });
@@ -167,7 +163,11 @@ function loadUser(req,res,resultJson){
 function loadFriends(req,res,resultJson){
   User.find({'_id':{ $in:resultJson.user.friends}},function(error,friends){
     resultJson.friends = friends;
-    runPlayer(req,res,resultJson);
+    if(resultJson.action=='show_user'){
+      loadPlayerGames(req,res,resultJson)
+    }else{
+      runPlayer(req,res,resultJson);
+    } 
   });
 }
 
@@ -180,7 +180,17 @@ function loadGames(req,res,resultJson){
 
 function loadPlayerGames(req,res,resultJson){
   bjGame.find({'_id':{ $in:resultJson.user.games}},function(error,player_games){
-    resultJson.my_games = player_games;
+    resultJson.active_games = new Array();
+    resultJson.inactive_games = new Array();
+
+    for(var i=0; i<player_games.length; i++){
+      var game = player_games[i];
+      if(game.status!='pause'){
+        resultJson.active_games.push(game);
+      }else{
+        resultJson.inactive_games.push(game);
+      }
+    }
     runPlayer(req,res,resultJson);
   });
 }

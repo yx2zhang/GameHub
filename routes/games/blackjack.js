@@ -16,6 +16,7 @@ exports.newGame = function(req, res){
       }else{
         var new_game = Game.new();
         new_game.initilize(user,req);
+        user.addGame(new_game);
         res.redirect('/game/blackjack/' + new_game.id);
       }
   });  	
@@ -60,7 +61,6 @@ exports.jointGame = function(req,res){
       var how_to_joint = game.joint(user)
       var resultJson = new Object;
       if(how_to_joint=='joint'){
-        console.log('wrong place');
         req.session.game = game;
         resultJson.page ='./blackjack/game_show.jade';
         resultJson.type = 'load';
@@ -81,6 +81,9 @@ exports.jointGame = function(req,res){
 }
 
 exports.backGame = function(req,res){
+  console.log('get the black jack game');
+  console.log(req.body.game_id);
+
   Game.findById(req.body.game_id,function(error,game){
     req.session.game = game;
     var resultJson = new Object;
@@ -91,8 +94,30 @@ exports.backGame = function(req,res){
   });
 }
 
+exports.quit = function(req,res){
+  Game.findById(req.body.game_id,function(error,game){
+      var resultJson = new Object;
+      resultJson.action = 'quit';
+      resultJson.type = 'send';
+      loadGameAndRun(req,res,resultJson);
+  });
+}
+
+function quit(req,res,resultJson){
+  var cur_player = resultJson.cur_player
+  if(resultJson.game.status=='dealing'){
+    cur_player.quit();
+    resultJson.game.quit(cur_player);
+    resultJson.user.quitGame(resultJson.game);
+    noticeOthers(resultJson,'quit');
+    res.send(resultJson.game.id);
+  }else{
+    res.send(false);
+  }
+}
 
 function noticeOthers(resultJson,action){
+  console.log(action);
   switch(action){
     case 'joint':
       resultJson.cur_player.updateGamesList(resultJson);
@@ -195,8 +220,7 @@ function hit(req,res,resultJson){
   var point = cur_player.count();
 
   if(point>21){
-    cur_player.lost();
-    resultJson.user.upDate('money',cur_player.money);
+    resultJson.cur_player.checkResult(resultJson);
     req.session.user = resultJson.user;
   }
 
@@ -204,27 +228,27 @@ function hit(req,res,resultJson){
   shipIt(req,res,resultJson);
 }
 
-function checkForStand(req,res,resultJson){
+function checkForEnd(req,res,resultJson){
   resultJson.cur_player.stand();
-  if(checkPlayersStand(resultJson)){
+  if(checkPlayersEnd(resultJson)){
     stand(req,res,resultJson);
   }else{
     shipIt(req,res,resultJson);
   }
 }
 
-function checkPlayersStand(resultJson){
+function checkPlayersEnd(resultJson){
   var result = true;
   if(resultJson.cur_player){
-    result = result&&resultJson.cur_player.checkForStand();
+    result = result&&resultJson.cur_player.checkForEnd();
   }
 
   if(resultJson.left_player){
-    result = result&&resultJson.left_player.checkForStand();
+    result = result&&resultJson.left_player.checkForEnd();
   }
 
   if(resultJson.right_player){
-    result = result&&resultJson.right_player.checkForStand();
+    result = result&&resultJson.right_player.checkForEnd();
   }
   return result;
 }
@@ -232,13 +256,14 @@ function checkPlayersStand(resultJson){
 function stand(req,res,resultJson){
   var dealer = resultJson.dealer;
   dealer.dealerAction(resultJson.deck);
+
   resultJson.cur_player.checkResult(resultJson);
   if(resultJson.left_player){resultJson.left_player.checkResult(resultJson);}
   if(resultJson.right_player){resultJson.right_player.checkResult(resultJson);}
-  req.session.user = resultJson.user;
-  noticeOthers(resultJson,'stand');
   resultJson.game.end();
 
+  req.session.user = resultJson.user;
+  noticeOthers(resultJson,'stand');  
   shipIt(req,res,resultJson);
 }
 
@@ -316,7 +341,9 @@ function runGame(req,res,resultJson){
   }else if(resultJson.action=='hit'){
     hit(req,res,resultJson);
   }else if(resultJson.action=='stand'){
-    checkForStand(req,res,resultJson);
+    checkForEnd(req,res,resultJson);
+  }else if(resultJson.action=='quit'){
+    quit(req,res,resultJson);
   }
 }
 
@@ -328,6 +355,7 @@ function shipIt(req,res,resultJson){
   data.right_player = resultJson.right_player;
   data.user = resultJson.user;
   data.game_status = resultJson.game.status;
+  data.game_id = resultJson.game.id;
 
   if(resultJson.type == 'send'){
     res.send({data:data});

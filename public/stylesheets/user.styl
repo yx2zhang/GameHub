@@ -142,6 +142,7 @@
 		.gamesList
 			background-color: ebebeb
 			border-radius: 8px
+			overflow: auto
 			.bjListButton
 				position: relative
 				margin: 5px
@@ -171,12 +172,41 @@
 					text-decoration: underline;
 			.gameRoomItem:hover
 				background: rgba(198, 211, 205, 0.5);
+			#roomsListNext
+				margin: 10px
+				float: right;
 	.curGame
-
 	.gameContent
 		overflow:auto
 		margin: 15px 5px 5px 0px
 		width: 55%
 		position: absolute;
-		left: 150px
+		left: 250px
 		z-index: 98
+	.playingGameList
+		position: absolute
+		width: 240px
+		height: 600px
+		top:80px
+		.playingGamesTag
+			font-size: 20px
+			margin: 10px
+			color:  #373a40
+		.playingGameItem:hover
+			background-color: #C0DDFF
+		.playingGameItem
+			margin: 15px 0px 10px 10px
+			background-color: #C0DDEB
+			height: 70px
+			padding: 5px
+			.blackJackImage
+				float: left
+				height:70px
+				width:70px
+				background-image:url('/images/blackjacktagsm.png')
+			.renjuImage
+				background-image:url('/images/renjutag.png')
+			.blackJackText
+				margin:10px
+				float: left
+				color: #f7404d

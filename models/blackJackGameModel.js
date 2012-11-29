@@ -71,8 +71,6 @@ bjGameSchema.methods.joint = function(user){
     money: user.money,
   });
   
-  user.addGame(this);
-
   this.players.push(new_player.id);
   this.users.push(user.id);
   this.save(function(error){
@@ -97,6 +95,25 @@ bjGameSchema.methods.end = function(attr){
     return false;
   });
   return true;
+}
+
+bjGameSchema.methods.quit = function(player){
+  for(var i = 0;i<this.players.length;i++){
+    if(this.players[i]==player._id){
+      this.players.splice(i,i+1);
+      this.users.splice(i-1,i);
+    }
+  }
+
+  this.save(function(error){
+    if(error) console.log('can not let player quit game');
+    return false;
+  });
+
+
+  if(this.users.length<=0){
+    this.remove();
+  }
 }
 
 

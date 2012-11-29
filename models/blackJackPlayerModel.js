@@ -179,28 +179,30 @@ bjPlayerSchema.methods.checkForDeal = function(){
   return false;
 }
 
-bjPlayerSchema.methods.checkForStand = function(){
-  if(this.status =='stand'){
+bjPlayerSchema.methods.checkForEnd = function(){
+  if(this.status =='stand'||this.status=='lost'||this.status=='win'||this.status=='draw'){
     return true;
   }
   return false;
 }
 
 bjPlayerSchema.methods.checkResult = function(resultJson){
-  var dealer_point = resultJson.dealer.count();
-  var my_point = this.count();
-  if(dealer_point>21){
-    this.win()
-  }
+  if(this.status!='lost'||this.status!='win'||this.status!='draw'){
+    var dealer_point = resultJson.dealer.count();
+    var my_point = this.count();
+    if(dealer_point>21){
+      this.win()
+    }
 
-  if(my_point==dealer_point){
-    this.draw();
-  }else if(dealer_point<my_point){
-    this.win(); 
-  }else{
-    this.lost();
+    if(my_point==dealer_point){
+      this.draw();
+    }else if(dealer_point<my_point){
+      this.win(); 
+    }else{
+      this.lost();
+    }
+    resultJson.user.upDate('money',this.money);
   }
-  resultJson.user.upDate('money',this.money);
 }
 
 bjPlayerSchema.methods.updateGamesList = function(resultJson){
@@ -209,6 +211,10 @@ bjPlayerSchema.methods.updateGamesList = function(resultJson){
   if(m_socket){
     m_socket.broadcast.emit('gameUpdate',{game:resultJson.game});
   }
+}
+
+bjPlayerSchema.methods.quit = function(){
+  this.remove();
 }
 
 bjPlayerSchema.methods.update = function(resultJson,action){

@@ -2,7 +2,11 @@ script
 	var t = data;
 	console.log(t);
 div.myGamesList
-	-each game in data.my_games
+	-each game in data.active_games
+		div(class='myGameItem listItem',id='#{game._id}')
+			span.myGameItemName #{game.master_name}' Black Jack(#{game.users.length})
+			a(href='#',class='right backToGame') back to game
+	-each game in data.inactive_games
 		div(class='myGameItem listItem',id='#{game._id}')
 			span.myGameItemName #{game.master_name}' Black Jack(#{game.users.length})
 			a(href='#',class='right backToGame') back to game

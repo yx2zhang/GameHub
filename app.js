@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+ 
 var express = require('express')
 
 var app = express()
@@ -15,9 +16,7 @@ var MemStore =  express.session.MemoryStore;
 
 io.sockets.on('connection',function(socket){
   socket.on('init',function(data){
-    if(realtime.clients[data.user_id]==null){
       realtime.clients[data.user_id] = socket;
-    }
   });
 
   socket.on('invite',function(data){
@@ -78,6 +77,8 @@ app.post('/user/games_list',user.gamesList);
 app.post('/user/show_games',user.showGames);
 app.post('/user/show_my_games',user.showMyGames);
 
+app.post('/user/back_game',user.backGame);
+
 //games
 app.post('/game/blackjack/new',requiresLogin, blackjack.newGame);
 app.get('/game/blackjack/:id', requiresLogin, blackjack.showGame);
@@ -88,6 +89,7 @@ app.post('/game/blackjack/hit',blackjack.hitGame);
 app.post('/game/blackjack/stand',blackjack.standGame);
 app.post('/game/blackjack/joint',blackjack.jointGame);
 app.post('/game/blackjack/back_game',blackjack.backGame);
+app.post('/game/blackjack/quit',blackjack.quit);
 
 server.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
