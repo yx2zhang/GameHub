@@ -76,7 +76,6 @@ $(document).ready(function(){
 
 function gameEnd(res){
 	var data = res.data;
-	console.log(data);
 	var cur_player = data.cur_player;
 	var dealer = data.dealer;
 	if(data.cur_player.status=='stand'){
@@ -87,21 +86,10 @@ function gameEnd(res){
 
 	addCards('dealer',dealer.hand,2);
 
-	if(!checkEnd('currentPlayer')){
+	if(checkAlive('currentPlayer')){
 		curPlayerEnd(data.cur_player);
 	}
 	
-
-	// if(cur_player.status=='lost'){
-	// 	alert('lost');
-	// }else if(cur_player.status=='win'){
-	// 	alert('win');
-	// 	var money = cur_player.money;
-	// 	$('.bjPlayerMoney').text(money);
-	// }else if(cur_player.status=='draw'){
-	// 	alert('draw');
-	// }
-
 	// $('.currentPlayer').find('.blackJackGameResult').text(data.cur_player.status);
 
 	if(data.left_player){
@@ -112,18 +100,13 @@ function gameEnd(res){
 		$('.rightPlayer').find('.blackJackGameResult').text(data.right_player.status);
 	}
 
-	// $('.bjPlayerBid').text(0);
-	// $('#blackJackHit').attr('disabled','disabled');
-	// $('#blackJackStand').attr('disabled','disabled');
-	// $('#blackJackDouble').attr('disabled','disabled');
-	// $('#blackJackSplit').attr('disabled','disabled');
-
 	$('.currentPlayer').addClass('livePlayer');
 	$('#blackJackDeal').removeAttr('disabled');
 	$('.blackJackBidButton').removeAttr('disabled');
 }
 
-function checkEnd(role){
+//return ture if the player is still alive
+function checkAlive(role){
 	return $('.'+role).hasClass('livePlayer');
 }
 
@@ -182,6 +165,7 @@ function hitMyCard(data){
 }
 
 function hitCard(role,res){
+	if(!res){console.log('error on hit card');}
 	var data = res.data;
 	var player;
 	switch(role){
@@ -202,9 +186,17 @@ function hitCard(role,res){
 	addCards(role,player.hand,last-1);
 
 	if(player.status=='lost'){
-		// endPlayer(role);
 		if(role=='currentPlayer'){
 			curPlayerEnd(player);
+			$.ajax({
+				url: '/game/blackjack/stand',
+				type: 'POST',
+				success: gameEnd,
+				error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+			});
+		}else{
+			$('.'+role).find('.blackJackGameResult').text(player.status);
+			$('.'+role).removeClass('livePlayer');
 		}
 	}
 }
@@ -258,4 +250,18 @@ function setStage(stage){
 		$('#blackJackDouble').removeAttr('disabled');
 		$('#blackJackSplit').removeAttr('disabled');
 	}
+}
+
+function bj_removePlayer(role){
+	var player;
+	console.log('the orle');
+	console.log(role);
+	if(role=='left'){
+		player = $('.leftPlayer');
+	}else if(role=='right'){
+		player = $('.rightPlayer');
+	}
+	player.find('.blackJackNameTag').html('');
+	player.find('.blackJackHand').html('');
+	player.find('.blackJackGameResult').html('');
 }

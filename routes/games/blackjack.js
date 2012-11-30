@@ -62,6 +62,7 @@ exports.jointGame = function(req,res){
       var resultJson = new Object;
       if(how_to_joint=='joint'){
         req.session.game = game;
+        user.addGame(game);
         resultJson.page ='./blackjack/game_show.jade';
         resultJson.type = 'load';
         resultJson.action = 'joint';
@@ -117,7 +118,6 @@ function quit(req,res,resultJson){
 }
 
 function noticeOthers(resultJson,action){
-  console.log(action);
   switch(action){
     case 'joint':
       resultJson.cur_player.updateGamesList(resultJson);
@@ -135,6 +135,10 @@ function noticeOthers(resultJson,action){
     case 'stand':
       if(resultJson.left_player) {resultJson.left_player.update(resultJson,'stand_right');}
       if(resultJson.right_player) {resultJson.right_player.update(resultJson,'stand_left');}
+      break;
+    case 'quit':
+      if(resultJson.left_player) {resultJson.left_player.update(resultJson,'quit_right');}
+      if(resultJson.right_player) {resultJson.right_player.update(resultJson,'quit_left');}
       break;
     default:
       console.log('no action to notice other players');
@@ -186,7 +190,6 @@ function checkPlayers(resultJson){
   if(resultJson.right_player){
     result = result&&resultJson.right_player.checkForDeal();
   }
-  
   return result;
 }
 
@@ -214,6 +217,12 @@ function deal(req,res,resultJson){
 }
 
 function hit(req,res,resultJson){
+  if(!safeCheck('hit',resultJson)){
+    console.log('hit request illegal');
+    res.send();
+    return;
+  }
+
   var cur_player = resultJson.cur_player;
   var deck = resultJson.deck;
   cur_player.addCard(deck.getCard());
@@ -229,6 +238,12 @@ function hit(req,res,resultJson){
 }
 
 function checkForEnd(req,res,resultJson){
+  if(!safeCheck('stand',resultJson)){
+    console.log('stand request illegal');
+    res.send();
+    return;
+  }
+
   resultJson.cur_player.stand();
   if(checkPlayersEnd(resultJson)){
     stand(req,res,resultJson);
@@ -265,6 +280,12 @@ function stand(req,res,resultJson){
   req.session.user = resultJson.user;
   noticeOthers(resultJson,'stand');  
   shipIt(req,res,resultJson);
+}
+
+function safeCheck(action,resultJson){
+  if(action=='hit'||action=='stand'){
+    return (resultJson.game.status == 'playing');
+  }
 }
 
 function loadGameAndRun(req,res,resultJson){
@@ -320,7 +341,6 @@ function LoadPlayers(req,res,resultJson){
       resultJson.cur_player = getItem(players,cur_index);
       resultJson.left_player = getItem(players,left_index);
       resultJson.right_player = getItem(players,right_index);
-      
       runGame(req,res,resultJson);
     }
   });
@@ -359,7 +379,6 @@ function shipIt(req,res,resultJson){
 
   if(resultJson.type == 'send'){
     res.send({data:data});
-
   }else if(resultJson.type=='load'){
     res.render(resultJson.page,{data: data});
   }else{

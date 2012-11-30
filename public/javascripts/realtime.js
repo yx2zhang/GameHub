@@ -41,4 +41,10 @@ $(document).ready(function(){
 	socket.on('bj_stand',function (data){
 		gameEnd(data);
 	});
+
+  socket.on('bj_quit',function (data){
+    alert('remove');
+    bj_removePlayer(data.data);
+  });
+
 });
