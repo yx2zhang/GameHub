@@ -49,12 +49,12 @@ function updateGame(game){
 
 function showRoomsList(){
 	$('.roomsBoard').addClass('showBoard');
-    $(".roomsBoard").animate({right:'383px'});    
+    $(".roomsBoard").animate({right:'346px'});    
 }
 
 function hideRoomsList(){
 	$('.roomsBoard').removeClass('showBoard');
-    $(".roomsBoard").animate({right:'10px'});    
+    $(".roomsBoard").animate({right:'0px'});    
 }
 
 function setList(){
@@ -67,27 +67,4 @@ function setList(){
 		$('.gamesListContent').append(room);
 		if(i>=max) break;
 	}
-}
-
-function newGame(new_game){
-	var cur_game_container = $(".curGame");
-	if(cur_game_container.length!=0){
-		cur_game_container.animate({left:'-750px'},'slow',function(){
-			var id = $(".curGame").attr('id').replace('game_content_','');
-			addPlayingGame(id);
-			cur_game_container.remove();
-			loadGame(new_game);
-		});
-	}else{
-		loadGame(new_game);
-	}
-}
-
-function loadGame(new_game){
-	var game_content = new div('gameContent curGame');
-	$('.bodyContainer').append(game_content.html());
-	$('.gameContent').html(new_game);
-	$.getScript('../javascripts/blackJackFront.js',function(data, textStatus, jqxhr){
-		initialize();
-	});
 }
