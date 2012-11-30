@@ -1,11 +1,13 @@
 extends ../layout
 block scripts
+block css_base
+block scripts_base
 block css
 	link(rel='stylesheet', href='/stylesheets/blackjack.css')
 block content
 	script
 		var game_data = !{JSON.stringify(data)};
-		console.log(game_data);
+		//- console.log(game_data);
 	div.blackJackContainer
 		div.gameTopBar 
 			span.gameTitle Black Jack

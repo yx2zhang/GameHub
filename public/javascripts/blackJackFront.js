@@ -112,7 +112,7 @@ function checkAlive(role){
 
 function curPlayerEnd(cur_player){
 	if(cur_player.status=='lost'){
-		alert('lost');
+		// alert('lost');
 	}else if(cur_player.status=='win'){
 		alert('win');
 		var money = cur_player.money;
@@ -150,12 +150,21 @@ function dealCard(res){
 		$('#blackJackDouble').removeAttr('disabled');
 		$('#blackJackSplit').removeAttr('disabled');
 		addCards('dealer',data.dealer.hand,0);
-		addCards('currentPlayer',data.cur_player.hand,0);
+
+		setTimeout(function(){
+			addCards('currentPlayer',data.cur_player.hand,0);
+		},800);
+		
 		if(data.left_player){
-			addCards('leftPlayer',data.left_player.hand,0);
+			setTimeout(function(){
+				addCards('leftPlayer',data.left_player.hand,0);
+			},800*2);
 		}
+			
 		if(data.right_player){
-			addCards('rightPlayer',data.right_player.hand,0);
+			setTimeout(function(){
+				addCards('rightPlayer',data.right_player.hand,0);
+			},800*3);
 		}
 	}
 }
@@ -201,20 +210,38 @@ function hitCard(role,res){
 	}
 }
 
-function addCards(role,cards,start){
-	var i = start;
-	for(i;i<cards.length;i++){
-		var card_str = cards[i].suit+cards[i].face;
-		var class_str =  '<div class="blackJackCard" id="card'+card_str+'"></div>';
-		var css_str = 'url("/images/cards/'+card_str+'.png")';
-		$('.'+role).find('.blackJackHand').append(class_str);
-		$('#card'+card_str).css('background-image','url("/images/cards/'+card_str+'.png")');
-		$('#card'+card_str).css('left', i*(25)+'px');
+function addCards(role,cards,index){
+	if(index>=cards.length){return}
+	var card_str = cards[index].suit+cards[index].face;
+	var class_str =  '<div class="blackJackCard" id="card'+card_str+'"></div>';
+	var css_str = 'url("/images/cards/'+card_str+'.png")';
+
+	$('.'+role).find('.blackJackHand').append(class_str);
+	$('#card'+card_str).css('background-image','url("/images/cards/'+card_str+'.png")');
+
+	if(role=='dealer'){
+		var left_start = '330px';
+		var top_start = '0px';
+	}else if(role=='currentPlayer'){
+		var left_start = '300px'; 
+		var top_start = '-170px';
+	}else if(role=='rightPlayer'){
+		var left_start = '90px';
+		var top_start = '-115px';
+	}else if(role=='leftPlayer'){
+		var left_start = '530px';
+		var top_start = '-115px';
 	}
+
+	$('#card'+card_str).css('left', left_start);
+	$('#card'+card_str).css('top', top_start);
+	
+	var left_p = index*(25)+'px';
+	var top_p = index*(-5)+'px';
+	$('#card'+card_str).animate({left:left_p,top:top_p},400,function(){addCards(role,cards,index+1);});
 }
 
 function addPlayer(role,res){
-	alert('add new player here');
 	var data = res.data;
 	$('.'+role).find('.blackJackNameTag').text(data.user.user_name);
 }
@@ -222,9 +249,22 @@ function addPlayer(role,res){
 function initialize(){
 	$('.curGame').attr('id', 'game_content_'+game_data.game_id);
 	addCards('dealer',game_data.dealer.hand,0);
-	addCards('currentPlayer',game_data.cur_player.hand,0);
-	if(game_data.left_player) {addCards('leftPlayer',game_data.left_player.hand,0);}
-	if(game_data.right_player){addCards('rightPlayer',game_data.right_player.hand,0);}
+
+	setTimeout(function(){
+		addCards('currentPlayer',game_data.cur_player.hand,0);
+	},400);
+	
+	if(game_data.left_player){
+		setTimeout(function(){
+			addCards('leftPlayer',game_data.left_player.hand,0);
+		},400*2);
+	}
+		
+	if(game_data.right_player){
+		setTimeout(function(){
+			addCards('rightPlayer',game_data.right_player.hand,0);
+		},400*2);
+	}
 	setStage(game_data.game_status);
 
 	var status = game_data.cur_player.status;

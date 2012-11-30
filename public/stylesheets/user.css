@@ -14,6 +14,8 @@
 .bodyContainer .dashBoardContainer {
   position: relative;
   float: right;
+  width: 25%;
+  min-width: 326px;
 }
 .bodyContainer .dashBoard {
   float: right;
@@ -183,6 +185,7 @@
   z-index: 99;
   width: 300px;
   margin-top: 150px;
+  right: 0px;
 }
 .bodyContainer .roomsBoard .gamesList {
   background-color: ebebeb;

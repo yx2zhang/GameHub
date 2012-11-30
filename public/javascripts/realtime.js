@@ -11,22 +11,19 @@ $(document).ready(function(){
 	});
 
   socket.on('gameUpdate', function (data) {
-  	updateGame(data.game);
+  	updateGame(data);
 	});
 
   //black jack functions
 	socket.on('bj_joint_left', function (data) {
-    alert('joint_left');
 		addPlayer('LeftPlayer',data);
   });
 
 	socket.on('bj_joint_right', function (data) {
-    alert('joint_rights');
 		addPlayer('rightPlayer',data);
   });
 
   socket.on('bj_deal',function (data){
-    alert('deal');
   	dealCard(data);
   });
 
@@ -43,7 +40,6 @@ $(document).ready(function(){
 	});
 
   socket.on('bj_quit',function (data){
-    alert('remove');
     bj_removePlayer(data.data);
   });
 

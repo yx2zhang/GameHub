@@ -218,6 +218,7 @@ bjPlayerSchema.methods.updateGamesList = function(resultJson){
   console.log(realtime.clients.length);
   if(m_socket){
     m_socket.broadcast.emit('gameUpdate',{game:resultJson.game});
+    m_socket.emit('gameUpdate',{game:resultJson.game});
   }
 }
 

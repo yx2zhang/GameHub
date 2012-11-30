@@ -13,7 +13,8 @@ $(document).ready(function(){
 
 $(document).ready(function(){
 	$('.gamesList').on('click','.gameJoint',function(){
-		var game_id = $(this).parent().attr('id');
+		var game_id = $(this).parent().attr('id').replace('gameRoom_','');
+
 		$.ajax({
 			url: '/game/blackjack/joint',
 			data:{game_id: game_id},
@@ -34,18 +35,22 @@ $(document).ready(function(){
 	});
 });
 
-function updateGame(game){
-	var gameName = game.master_name+"\' Black Jack("+ game.users.length+")"
-	var t_game = $("#" + game._id);
+//functions for game rooms list
+function updateGame(data){
+	var game = data.game;
+
+	var gameName = game.master_name+"\'Black Jack"+ game.users.length+"/3";
+	var t_game = $("#gameRoom_" + game._id);
 	if(t_game.length==0){
-		var new_item = '<div class="gameRoomItem"><span class="gameRoomName">'+gameName+'</span></div>'
-		+ '<a href="#",class="gameJoint right">joint</a>'
+		addGameRoom(game);
 	}else{
-		alert('change game here');
-		t_game.find('.gameRoomName').text(gameName);
+		if(game.users.length==0){
+			t_game.remove();
+		}else{
+			t_game.find('.gameRoomName').text(gameName);
+		}
 	}
 }
-
 
 function showRoomsList(){
 	$('.roomsBoard').addClass('showBoard');
@@ -60,11 +65,14 @@ function hideRoomsList(){
 function setList(){
 	var max = 10;
 	for(var i =0; i<room_list_data.games.length;i++){
-		var game = room_list_data.games[i];
-		var room = '<div class="gameRoomItem listItem" id='+ game._id+'>'
+		addGameRoom(room_list_data.games[i]);
+		if(i>=max) break;
+	}
+}
+
+function addGameRoom(game){
+		var room = '<div class="gameRoomItem listItem" id=gameRoom_'+ game._id+'>'
 					+'<span class= "gameRoomName">'+game.master_name+'\'Black Jack '+game.users.length+'/3'+'</span>'
 					+'<a href="#" class="gameJoint right">joint</a>'+'</div>'
 		$('.gamesListContent').append(room);
-		if(i>=max) break;
-	}
 }

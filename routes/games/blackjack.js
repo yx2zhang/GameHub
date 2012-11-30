@@ -17,7 +17,12 @@ exports.newGame = function(req, res){
         var new_game = Game.new();
         new_game.initilize(user,req);
         user.addGame(new_game);
-        res.redirect('/game/blackjack/' + new_game.id);
+        req.session.game = new_game;
+        resultJson= new Object;
+        resultJson.page = './blackjack/game_show.jade';
+        resultJson.type = 'load';
+        resultJson.action = 'new_game'
+        loadGameAndRun(req,res,resultJson);
       }
   });  	
 };
@@ -104,6 +109,11 @@ exports.quit = function(req,res){
   });
 }
 
+function newGame(req,res,resultJson){
+  noticeOthers(resultJson,'new_game');
+   shipIt(req,res,resultJson);
+}
+
 function quit(req,res,resultJson){
   var cur_player = resultJson.cur_player
   if(resultJson.game.status=='dealing'){
@@ -137,8 +147,12 @@ function noticeOthers(resultJson,action){
       if(resultJson.right_player) {resultJson.right_player.update(resultJson,'stand_left');}
       break;
     case 'quit':
+      resultJson.cur_player.updateGamesList(resultJson);
       if(resultJson.left_player) {resultJson.left_player.update(resultJson,'quit_right');}
       if(resultJson.right_player) {resultJson.right_player.update(resultJson,'quit_left');}
+      break;
+    case 'new_game':
+      resultJson.cur_player.updateGamesList(resultJson);
       break;
     default:
       console.log('no action to notice other players');
@@ -364,6 +378,8 @@ function runGame(req,res,resultJson){
     checkForEnd(req,res,resultJson);
   }else if(resultJson.action=='quit'){
     quit(req,res,resultJson);
+  }else if(resultJson.action=='new_game'){
+    newGame(req,res,resultJson);
   }
 }
 
