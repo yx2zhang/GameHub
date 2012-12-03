@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost');
+var socket = io.connect('http://198.74.57.21/');
 $(document).ready(function(){
 	socket.emit('init', { user_id: data.user._id});
 
