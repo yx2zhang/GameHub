@@ -282,10 +282,30 @@ function checkPlayersEnd(resultJson){
   return result;
 }
 
+function allLost(resultJson){
+  var result = true;
+  if(resultJson.cur_player){
+    result = result&&!resultJson.cur_player.alive();
+  }
+
+  if(resultJson.left_player){
+    result = result&&!resultJson.left_player.alive();
+  }
+
+  if(resultJson.right_player){
+    result = result&&!resultJson.right_player.alive();
+  }
+  console.log(result);
+  return result;
+}
+
 function stand(req,res,resultJson){
   var dealer = resultJson.dealer;
-  dealer.dealerAction(resultJson.deck);
 
+  if(!allLost(resultJson)){
+    dealer.dealerAction(resultJson.deck);
+  }
+ 
   resultJson.cur_player.checkResult(resultJson);
   if(resultJson.left_player){resultJson.left_player.checkResult(resultJson);}
   if(resultJson.right_player){resultJson.right_player.checkResult(resultJson);}

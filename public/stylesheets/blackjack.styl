@@ -6,10 +6,10 @@ a
 	border-width: 10px;
 	border-style: solid;
 	border-radius: 10px;
-	border-color: #CCCC66;
+	border-color: #0699D4;
 	.gameTopBar
  		color: white
- 		background-color:#657D98
+ 		background-color:#634937
  		height: 50px
  		.gameTitle
  			left: 55px
@@ -30,9 +30,10 @@ a
 		background-repeat:no-repeat;
 		width: 680px
 		height: 450px
+		font-family: fantasy, cursive, Serif
 		.blackJackCard
 			background-image:url('/images/cards/b1fv.png')
-			background-size: 64px 86px;
+			background-size: 64px 86px
 			height: 86px
 			width: 64px
 			margin: auto
@@ -48,8 +49,20 @@ a
 			position:relative
 			.blackJackNameTag
 				margin: 0px 50px 0px 75px
+				top: -15px
+				position: relative
+				font-size: 23px
+				color: white
 			.blackPlayerHands
-				height: 75%;
+				height: 75%
+			.blackJackCardValue
+				width: 30%
+				margin: auto
+				font-size: 20px
+			.blackJackGameResult
+				width: 30%
+				margin: auto
+				font-size: 20px
 		.blackJackDealerContainer
 			height: 40%
 			text-align: center
@@ -61,17 +74,52 @@ a
 			.currentPlayer
 				top: 55px
 				position: relative
-
 .blackJackMenu
 	overflow: auto;
 	width: 100%
 	height: 120px
-	background-color:#657D98
+	background-color:#634937
 	.bidMenu
 		float: right
+		margin: 10px 5px 10px 5px
+		width: 230px
+		.chipValue
+			margin: 10px
+		.blackJackChip
+			background-color: white
+			float: left
+			margin: 5px 3px 5px 3px
+			width: 50px
+			height: 50px
+			border-radius: 25px
+			border-width: 3px
+			border-color: white #5e695a white #0699d4;
+			border-style: solid;
+		.blackJackChip:hover:enabled
+			background-color: #4d9982
+		#bj_d1
+			background-color:#097325
+		#bj_d1:hover:enabled
+			background-color: #4d9982
+		#bj_d5
+			background-color:#0464b3
+			margin-top: 20px
+		#bj_d5:hover:enabled
+			background-color: #4d9982
+		#bj_d10
+			background-color:#fc2b35
+		#bj_d10:hover:enabled
+			background-color: #4d9982
+		#bj_d20
+			background-color:#9c2543
+			margin-top: 20px
+		#bj_d20:hover:enabled
+			background-color: #4d9982
+	.optionMenu
+		float: left
 		margin: 10px 5px 10px 5px;
-		width: 180px
-		.blackJackBidButton
+		width: 300px
+		.blackJackOptionButton
 			background-color: #a9bf2c
 			border-top-color: #566633
 			border-bottom-color: #536300
@@ -79,19 +127,5 @@ a
 			border-right-color: #798729
 			float: left
 			margin: 5px;
-		.blackJackBidButton:hover:enabled
-			background-color: #99CC33
-	.optionMenu
-		float: left
-		margin: 10px 5px 10px 5px;
-		width: 300px
-		.blackJackOptionButton
-			background-color: #3288c2
-			border-top-color: #2e9ce6
-			border-bottom-color: #0c5078
-			border-left-color: #2e6682
-			border-right-color: #2e6682
-			float: left
-			margin: 5px;
 		.blackJackOptionButton:hover:enabled
-			background-color: #003399
+			background-color: #99CC33
