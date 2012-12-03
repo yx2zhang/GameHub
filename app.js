@@ -18,11 +18,6 @@ io.sockets.on('connection',function(socket){
   socket.on('init',function(data){
       realtime.clients[data.user_id] = socket;
   });
-
-  socket.on('invite',function(data){
-    var m_socket = realtime.clients[data.receiver];
-    m_socket.emit('invite',{sender: data.sender});
-  });
 });
 
 // Configuration
@@ -78,6 +73,7 @@ app.post('/user/show_games',user.showGames);
 app.post('/user/show_my_games',user.showMyGames);
 
 app.post('/user/back_game',user.backGame);
+app.post('/user/invite_friend',user.inviteFriend);
 
 //games
 app.post('/game/blackjack/new',requiresLogin, blackjack.newGame);
@@ -91,6 +87,6 @@ app.post('/game/blackjack/joint',blackjack.jointGame);
 app.post('/game/blackjack/back_game',blackjack.backGame);
 app.post('/game/blackjack/quit',blackjack.quit);
 
-server.listen(80, function(){
+server.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
 });

@@ -83,6 +83,8 @@ exports.friendRequest = function(req,res){
   message.type = 'add_friend';
   message.sender = req.body.sender;
   message.receiver = req.body.receiver;
+  message.content = 'someone sent you a firend request';
+
   sendMessage(req,res,message);
 }
 
@@ -119,6 +121,19 @@ function addFriends(req,res,receiver,sender){
   });
 }
 
+exports.inviteFriend = function(req,res){
+  if(!req.session.game){
+    res.send('cant find the game you currently playing')
+  }
+  var message = new Object;
+  message.type = 'invite_friend';
+  message.sender = req.session.user._id;
+  message.receiver = req.body.receiver;
+  message.game = req.session.game._id;
+  message.content = message.sender + ' invite you to game '+ message.game._id;
+  sendMessage(req,res,message);
+}
+
 function confirmMessage(req,message){
   if(message){ 
     return (message.receiver == req.session.user._id);
@@ -127,10 +142,12 @@ function confirmMessage(req,message){
 }
 
 function sendMessage(req,res,message){
+  console.log(message);
+
   User.findById(message.receiver,function(error,receiver){
     if(receiver){
-      receiver.receiveMessage(message,message.sender);
-      res.send('ture')
+      receiver.receiveMessage(message);
+      res.send('message sent');
     }
   });
 }

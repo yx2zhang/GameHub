@@ -1,4 +1,4 @@
-var socket = io.connect('http://198.74.57.21/');
+var socket = io.connect('localhost');
 $(document).ready(function(){
 	socket.emit('init', { user_id: data.user._id});
 
@@ -7,7 +7,7 @@ $(document).ready(function(){
   });
 
 	socket.on('message', function (data) {
-	console.log('get message');
+    addMessage(data.message);
 	});
 
   socket.on('gameUpdate', function (data) {

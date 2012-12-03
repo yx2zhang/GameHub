@@ -56,3 +56,12 @@ span = function(class_name){
 	}
 }
 span.prototype = new element;
+
+a = function(class_name){
+	this.name='a';
+	this.class = new Array;
+	if(class_name){
+		this.class.push(class_name);
+	}
+}
+a.prototype = new element;

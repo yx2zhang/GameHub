@@ -72,11 +72,6 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.friendInvite').live('click',function(){
-		var id = $(this).attr('id');
-		socket.emit('invite', {sender:data.user.user_name,receiver:id});
-	});
-
 	$("#blackJackGames").live('click',function(){
 		$.ajax({
 			url: '/user/games_list',
@@ -151,6 +146,21 @@ $(document).ready(function(){
 			type: 'POST',
 			success: function(new_game){
 				newGame(new_game);
+			},
+			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+		});
+	});
+
+	$('.friendsItem').on('click','.friendInvite',function(){
+		alert('here');
+		var id = $(this).attr('id');
+		console.log(id);
+		$.ajax({
+			url: '/user/invite_friend',
+			data:{receiver:id},
+			type: 'POST',
+			success: function(data){
+				console.log(data);
 			},
 			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
 		});
@@ -232,3 +242,26 @@ function loadGame(new_game){
 	});
 }
 
+function addMessage(message){
+	var new_message = new div('messageItem listItem');
+	new_message.id = message.index;
+	$('.messagesList').append(new_message.html());
+
+	var messgae_content = new span('messageContent left');
+	messgae_content.content = message.content;
+	$('.messageItem#'+new_message.id).append(messgae_content.html());
+
+
+	if (message.status != 'accepted'){
+		var accept = new a('acceptFriend left messageAction');
+		accept.content = 'accept';
+		var ignore = new a('ignoreFriend left messageAction');
+		ignore.content = 'ignore';
+		$('.messageItem#'+new_message.id).append(accept.html());
+		$('.messageItem#'+new_message.id).append(ignore.html());
+	}else{
+		var accepted = new span('right messageResult');
+		accepted.content = 'accepted';
+		$('.messageItem#'+new_message.id).append(accepted.html());
+	}	
+}

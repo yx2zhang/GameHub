@@ -74,16 +74,17 @@ userSchema.methods.upDate = function(field,value){
 }
 
 
-userSchema.methods.receiveMessage = function(message,sender){
-  message.content = 'some one sent friend request';
+userSchema.methods.receiveMessage = function(message){
+  var sender = message.sender;
   message.status = 'reveived';
   message.index = this.newMessageIndex();
   this.messager.total++;
   this.messager.messages.push(message);
 
   var m_socket = realtime.clients[this.id];
+
   if(m_socket){
-    m_socket.emit('message',{sender: sender});
+    m_socket.emit('message',{message:message});
   }
 
   this.save(function(error){
