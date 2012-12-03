@@ -8,14 +8,19 @@
 	overflow:auto
 	.listItem
 		border-bottom: 1px solid #CCCACA
+	.dashBoardContainer
+		position: relative
+		float: right
+		width: 25%;
+		min-width: 326px;
 	.dashBoard
-		width: 26%
-		height:100%
+		float: right
+		width: 25%
 		background-color:gray
 		min-width: 326px
+		min-height: 100%
 		padding: 0px 10px 0px 10px
-		position: absolute;
-		right: 0px;
+		position: relative;
 		z-index: 100;
 		.profileMini
 			height: 105px
@@ -133,12 +138,10 @@
 						background: rgba(198, 211, 205, 0.5)
 	.roomsBoard
 		position: absolute;
-		float: right;
-		right: 10px;
-		// right: 383px;
 		z-index: 99;
 		width: 300px;
 		margin-top: 150px;
+		right: 0px
 		.gamesList
 			background-color: ebebeb
 			border-radius: 8px
@@ -179,15 +182,17 @@
 	.gameContent
 		overflow:auto
 		margin: 15px 5px 5px 0px
-		width: 55%
-		position: absolute;
-		left: 250px
+		width: 45%
+		position: relative
+		float: left
 		z-index: 98
+		min-width: 739px
 	.playingGameList
-		position: absolute
+		position: relative
 		width: 240px
-		height: 600px
-		top:80px
+		min-height: 500px
+		padding-top: 30px
+		float: left
 		.playingGamesTag
 			font-size: 20px
 			margin: 10px

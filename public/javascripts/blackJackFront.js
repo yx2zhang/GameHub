@@ -76,10 +76,10 @@ $(document).ready(function(){
 
 function gameEnd(res){
 	var data = res.data;
-	console.log(data);
 	var cur_player = data.cur_player;
 	var dealer = data.dealer;
-	if(data.cur_player.status=='stand'){
+	console.log(data);
+	if(data.game_status!='dealing'){
 		alert('wait for other players');
 		freezePlayer();
 		return;
@@ -87,23 +87,10 @@ function gameEnd(res){
 
 	addCards('dealer',dealer.hand,2);
 
-	if(!checkEnd('currentPlayer')){
+	if(checkAlive('currentPlayer')){
 		curPlayerEnd(data.cur_player);
 	}
 	
-
-	// if(cur_player.status=='lost'){
-	// 	alert('lost');
-	// }else if(cur_player.status=='win'){
-	// 	alert('win');
-	// 	var money = cur_player.money;
-	// 	$('.bjPlayerMoney').text(money);
-	// }else if(cur_player.status=='draw'){
-	// 	alert('draw');
-	// }
-
-	// $('.currentPlayer').find('.blackJackGameResult').text(data.cur_player.status);
-
 	if(data.left_player){
 		$('.leftPlayer').find('.blackJackGameResult').text(data.left_player.status);
 	}
@@ -112,24 +99,19 @@ function gameEnd(res){
 		$('.rightPlayer').find('.blackJackGameResult').text(data.right_player.status);
 	}
 
-	// $('.bjPlayerBid').text(0);
-	// $('#blackJackHit').attr('disabled','disabled');
-	// $('#blackJackStand').attr('disabled','disabled');
-	// $('#blackJackDouble').attr('disabled','disabled');
-	// $('#blackJackSplit').attr('disabled','disabled');
-
 	$('.currentPlayer').addClass('livePlayer');
 	$('#blackJackDeal').removeAttr('disabled');
 	$('.blackJackBidButton').removeAttr('disabled');
 }
 
-function checkEnd(role){
+//return ture if the player is still alive
+function checkAlive(role){
 	return $('.'+role).hasClass('livePlayer');
 }
 
 function curPlayerEnd(cur_player){
 	if(cur_player.status=='lost'){
-		alert('lost');
+		// alert('lost');
 	}else if(cur_player.status=='win'){
 		alert('win');
 		var money = cur_player.money;
@@ -154,9 +136,13 @@ function freezePlayer(){
 
 function dealCard(res){
 	var data = res.data;
+	console.log(data);
 	$('.dealer').find('.blackJackHand').html("");
 	$('.blackJackHand').html("");
 	$('.blackJackGameResult').html("");
+
+	$('.blackJackCardValue').html('');
+
 	if(data.cur_player.status!='playing'){
 		alert('wait for other players');
 	}else{
@@ -167,14 +153,31 @@ function dealCard(res){
 		$('#blackJackDouble').removeAttr('disabled');
 		$('#blackJackSplit').removeAttr('disabled');
 		addCards('dealer',data.dealer.hand,0);
-		addCards('currentPlayer',data.cur_player.hand,0);
+		updatePoint('dealer',data.dealer.point);
+
+		setTimeout(function(){
+			addCards('currentPlayer',data.cur_player.hand,0);
+			updatePoint('currentPlayer',data.cur_player.point);
+		},800);
+		
 		if(data.left_player){
-			addCards('leftPlayer',data.left_player.hand,0);
+			setTimeout(function(){
+				addCards('leftPlayer',data.left_player.hand,0);
+				updatePoint('leftPlayer',data.left_player.point);
+			},800*2);
 		}
+			
 		if(data.right_player){
-			addCards('rightPlayer',data.right_player.hand,0);
+			setTimeout(function(){
+				addCards('rightPlayer',data.right_player.hand,0);
+				updatePoint('rightPlayer',data.right_player.point);
+			},800*2);
 		}
 	}
+}
+
+function updatePoint(role,point){
+	$('.'+role).find('.blackJackCardValue').text(point);
 }
 
 function hitMyCard(data){
@@ -182,6 +185,7 @@ function hitMyCard(data){
 }
 
 function hitCard(role,res){
+	if(!res){console.log('error on hit card');}
 	var data = res.data;
 	var player;
 	switch(role){
@@ -200,29 +204,59 @@ function hitCard(role,res){
 
 	var last = player.hand.length;
 	addCards(role,player.hand,last-1);
+	updatePoint(role,player.point);
 
 	if(player.status=='lost'){
-		// endPlayer(role);
 		if(role=='currentPlayer'){
 			curPlayerEnd(player);
+			$.ajax({
+				url: '/game/blackjack/stand',
+				type: 'POST',
+				success: gameEnd,
+				error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+			});
+		}else{
+			$('.'+role).find('.blackJackGameResult').text(player.status);
+			$('.'+role).removeClass('livePlayer');
 		}
 	}
 }
 
-function addCards(role,cards,start){
-	var i = start;
-	for(i;i<cards.length;i++){
-		var card_str = cards[i].suit+cards[i].face;
-		var class_str =  '<div class="blackJackCard" id="card'+card_str+'"></div>';
-		var css_str = 'url("/images/cards/'+card_str+'.png")';
-		$('.'+role).find('.blackJackHand').append(class_str);
-		$('#card'+card_str).css('background-image','url("/images/cards/'+card_str+'.png")');
-		$('#card'+card_str).css('left', i*(25)+'px');
+function addCards(role,cards,index){
+	if(index>=cards.length){return}
+	var card_str = cards[index].suit+cards[index].face;
+	var class_str =  '<div class="blackJackCard" id="card'+card_str+'"></div>';
+	var css_str = 'url("/images/cards/'+card_str+'.png")';
+
+	$('.'+role).find('.blackJackHand').append(class_str);
+	$('#card'+card_str).css('background-image','url("/images/cards/'+card_str+'.png")');
+
+	if(role=='dealer'){
+		var left_start = '330px';
+		var top_start = '0px';
+	}else if(role=='currentPlayer'){
+		var left_start = '300px'; 
+		var top_start = '-170px';
+	}else if(role=='rightPlayer'){
+		var left_start = '90px';
+		var top_start = '-115px';
+	}else if(role=='leftPlayer'){
+		var left_start = '530px';
+		var top_start = '-115px';
 	}
+
+	$('#card'+card_str).css('left', left_start);
+	$('#card'+card_str).css('top', top_start);
+	
+	var left_p = index*(25)+'px';
+	var top_p = index*(-5)+'px';
+
+	if(role=='dealer'){top_p = '0px';}
+
+	$('#card'+card_str).animate({left:left_p,top:top_p},400,function(){addCards(role,cards,index+1);});
 }
 
 function addPlayer(role,res){
-	alert('add new player here');
 	var data = res.data;
 	$('.'+role).find('.blackJackNameTag').text(data.user.user_name);
 }
@@ -230,10 +264,23 @@ function addPlayer(role,res){
 function initialize(){
 	$('.curGame').attr('id', 'game_content_'+game_data.game_id);
 	addCards('dealer',game_data.dealer.hand,0);
-	addCards('currentPlayer',game_data.cur_player.hand,0);
-	if(game_data.left_player) {addCards('leftPlayer',game_data.left_player.hand,0);}
-	if(game_data.right_player){addCards('rightPlayer',game_data.right_player.hand,0);}
-	setStage(game_data.game_status);
+
+	setTimeout(function(){
+		addCards('currentPlayer',game_data.cur_player.hand,0);
+	},400);
+	
+	if(game_data.left_player){
+		setTimeout(function(){
+			addCards('leftPlayer',game_data.left_player.hand,0);
+		},400*2);
+	}
+		
+	if(game_data.right_player){
+		setTimeout(function(){
+			addCards('rightPlayer',game_data.right_player.hand,0);
+		},400*2);
+	}
+	setStage(game_data);
 
 	var status = game_data.cur_player.status;
 
@@ -242,7 +289,8 @@ function initialize(){
 	}
 }
 
-function setStage(stage){
+function setStage(game_data){
+	stage = game_data.game_status;
 	if(stage == 'dealing'){
 		$('#blackJackDeal').removeAttr('disabled');
 		$('.blackJackBidButton').removeAttr('disabled');
@@ -257,5 +305,22 @@ function setStage(stage){
 		$('#blackJackStand').removeAttr('disabled');
 		$('#blackJackDouble').removeAttr('disabled');
 		$('#blackJackSplit').removeAttr('disabled');
+		if(game_data.left_player){updatePoint('leftPlayer',game_data.left_player.point);}
+		if(game_data.right_player){updatePoint('rightPlayer',game_data.right_player.point);}
+		updatePoint('currentPlayer',game_data.cur_player.point);
 	}
+}
+
+function bj_removePlayer(role){
+	var player;
+	console.log('the orle');
+	console.log(role);
+	if(role=='left'){
+		player = $('.leftPlayer');
+	}else if(role=='right'){
+		player = $('.rightPlayer');
+	}
+	player.find('.blackJackNameTag').html('');
+	player.find('.blackJackHand').html('');
+	player.find('.blackJackGameResult').html('');
 }

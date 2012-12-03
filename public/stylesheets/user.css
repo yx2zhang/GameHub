@@ -11,14 +11,20 @@
 .bodyContainer .listItem {
   border-bottom: 1px solid #cccaca;
 }
+.bodyContainer .dashBoardContainer {
+  position: relative;
+  float: right;
+  width: 25%;
+  min-width: 326px;
+}
 .bodyContainer .dashBoard {
-  width: 26%;
-  height: 100%;
+  float: right;
+  width: 25%;
   background-color: #808080;
   min-width: 326px;
+  min-height: 100%;
   padding: 0px 10px 0px 10px;
-  position: absolute;
-  right: 0px;
+  position: relative;
   z-index: 100;
 }
 .bodyContainer .dashBoard .profileMini {
@@ -176,11 +182,10 @@
 }
 .bodyContainer .roomsBoard {
   position: absolute;
-  float: right;
-  right: 10px;
   z-index: 99;
   width: 300px;
   margin-top: 150px;
+  right: 0px;
 }
 .bodyContainer .roomsBoard .gamesList {
   background-color: ebebeb;
@@ -239,16 +244,18 @@
 .bodyContainer .gameContent {
   overflow: auto;
   margin: 15px 5px 5px 0px;
-  width: 55%;
-  position: absolute;
-  left: 250px;
+  width: 45%;
+  position: relative;
+  float: left;
   z-index: 98;
+  min-width: 739px;
 }
 .bodyContainer .playingGameList {
-  position: absolute;
+  position: relative;
   width: 240px;
-  height: 600px;
-  top: 80px;
+  min-height: 500px;
+  padding-top: 30px;
+  float: left;
 }
 .bodyContainer .playingGameList .playingGamesTag {
   font-size: 20px;

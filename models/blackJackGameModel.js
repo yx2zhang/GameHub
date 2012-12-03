@@ -76,6 +76,7 @@ bjGameSchema.methods.joint = function(user){
   this.save(function(error){
     if(error) console.log('can not joint game');
   });
+    
   return 'joint';
 }
 
@@ -100,8 +101,9 @@ bjGameSchema.methods.end = function(attr){
 bjGameSchema.methods.quit = function(player){
   for(var i = 0;i<this.players.length;i++){
     if(this.players[i]==player._id){
-      this.players.splice(i,i+1);
-      this.users.splice(i-1,i);
+      this.players.splice(i,1);
+      this.users.splice(i-1,1);
+      break;
     }
   }
 
@@ -115,7 +117,6 @@ bjGameSchema.methods.quit = function(player){
     this.remove();
   }
 }
-
 
 bjGameSchema.methods.dealerIndex = function(){
   return 0;

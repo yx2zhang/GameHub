@@ -15,18 +15,19 @@ block content
 			a(href='/user/', class='navFriends navItem') Friends
 			a(href='/user/', class='navUser navItem') #{data.user.user_name}
 	div.bodyContainer
-		div.dashBoard
-			div.profileMini
-				div.userInfo 
-					div.profilePic.left
-					div.userName.left #{data.user.user_name}
-				div.userStat
-					a(class='friendsInfo left statElement',href='#') Friends #{data.friends.length} 
-					a(class='gamesInfo left statElement',href='#')	games 0
-					a(class='messagesInfo left statElement',href='#') Messages #{data.user.unread}
-					a(class='moneyInfo left statElement',href='#') Money 100
-			div.dashBoardList
-				include user_friends
-		div.roomsBoard
+		div.dashBoardContainer
+			div.dashBoard
+				div.profileMini
+					div.userInfo 
+						div.profilePic.left
+						div.userName.left #{data.user.user_name}
+					div.userStat
+						a(class='friendsInfo left statElement',href='#') Friends #{data.friends.length} 
+						a(class='gamesInfo left statElement',href='#')	games 0
+						a(class='messagesInfo left statElement',href='#') Messages #{data.user.unread}
+						a(class='moneyInfo left statElement',href='#') Money 100
+				div.dashBoardList
+					include user_friends
+			div.roomsBoard
 		div.playingGameList 
 			div.playingGamesTag Playing Games

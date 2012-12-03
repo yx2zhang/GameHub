@@ -1,10 +1,13 @@
 extends ../layout
 block scripts
+block css_base
+block scripts_base
 block css
 	link(rel='stylesheet', href='/stylesheets/blackjack.css')
 block content
 	script
 		var game_data = !{JSON.stringify(data)};
+		//- console.log(game_data);
 	div.blackJackContainer
 		div.gameTopBar 
 			span.gameTitle Black Jack
@@ -19,6 +22,7 @@ block content
 				div.blackJackPlayer.dealer
 					span.blackJackNameTag Dealer
 					div.blackJackHand
+					div(class='blackJackCardValue',disabled='disabled')	
 			div.blackJackPlayerContainer
 				div.blackJackPlayer.leftPlayer.livePlayer
 					if data.left_player
@@ -26,26 +30,28 @@ block content
 					else
 						span.blackJackNameTag
 					div.blackJackHand
-					span.blackJackGameResult
+					div(class='blackJackCardValue',disabled='disabled')
+					div.blackJackGameResult	
 				div.blackJackPlayer.currentPlayer.livePlayer
 					span.blackJackNameTag #{data.cur_player.user_name}
 					div.blackJackHand
-					span.blackJackGameResult
+					div(class='blackJackCardValue')
+					div.blackJackGameResult
 				div.blackJackPlayer.rightPlayer.livePlayer
 					if data.right_player
 						sapn.blackJackNameTag #{data.right_player.user_name}
 					else
 						span.blackJackNameTag
 					div.blackJackHand
-					span.blackJackGameResult	
+					div(class='blackJackCardValue',disabled='disabled')
+					div.blackJackGameResult
 		div.blackJackMenu
 			div.bidMenu
-				input(type= "button",value="$1", id="$1",class='blackJackChip blackJackBidButton gameButton')
-				input(type= "button",value="$5", id="$5",class='blackJackChip blackJackBidButton gameButton')
-				input(type= "button",value="$10", id="$10",class='blackJackChip blackJackBidButton gameButton')
-				input(type= "button",value="$20", id="$20",class='blackJackChip blackJackBidButton gameButton')
+				input(type= "button",value="$1", id="bj_d1",class='blackJackChip blackJackChip')
+				input(type= "button",value="$5", id="bj_d5",class='blackJackChip blackJackChip')
+				input(type= "button",value="$10", id="bj_d10",class='blackJackChip blackJackChip')
+				input(type= "button",value="$20", id="bj_d20",class='blackJackChip blackJackChip')
 			div.optionMenu
-				input(type= "button",value="split", id="blackJackSplit",class='blackJackOptionButton gameButton')
 				input(type= "button",value="double", id="blackJackDouble",class='blackJackOptionButton gameButton')
 				input(type= "button",value="stand", id="blackJackStand",class='blackJackOptionButton gameButton')
 				input(type= "button",value="hit", id="blackJackHit",class='blackJackOptionButton gameButton')

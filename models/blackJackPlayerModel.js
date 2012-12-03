@@ -10,7 +10,8 @@ var bjPlayerSchema = new mongoose.Schema({
 	type: String,
 	money: Number,
   bid: Number,
-  status: String
+  status: String,
+  point: Number,
 });
 
 bjPlayerSchema.statics.new = function(attr){
@@ -25,8 +26,8 @@ bjPlayerSchema.methods.initialize = function(attr){
   this.user_id = attr.user_id;
   this.money = parseInt(attr.money,10);
   this.user_name = attr.user_name;
-  this.status = 'dealing'
-
+  this.status = 'dealing';
+  this.point = 0;
   this.save(function(error){
   	if(error){ 
   		console.log('can not init player');
@@ -39,6 +40,7 @@ bjPlayerSchema.methods.initialize = function(attr){
 bjPlayerSchema.methods.start = function(bid){
   this.status = 'playing';
   this.hand = [];
+  this.point = 0;
   this.markModified('hand');
   this.save(function(error){
     if(error){ 
@@ -64,6 +66,7 @@ bjPlayerSchema.methods.bidMoney = function(bid){
 
 bjPlayerSchema.methods.addCard = function(card){
   this.hand.push(card);
+  this.count();
   this.save(function(error){
     if(error){ 
       console.log('can not add card to player');
@@ -74,7 +77,7 @@ bjPlayerSchema.methods.addCard = function(card){
 }
 
 bjPlayerSchema.methods.stand = function(){
-  this.status = 'stand';
+  if(this.status !='lost'){this.status = 'stand';}
   this.save(function(error){
     if(error){ 
       console.log('player cannot stand');
@@ -105,17 +108,19 @@ bjPlayerSchema.methods.count = function(bid){
       as--;
     }else{break;}
   }
-
+  this.point = point;
   this.save(function(error){
     if(error){ 
       console.log('can not add card to player');
       return false;
     }
   });
+
   return point;
 }
 
 bjPlayerSchema.methods.dealerAction = function(deck){
+  var deck = resultJson.deck;
   var point = this.count();
   while(point<17){
     this.addCard(deck.getCard());
@@ -129,6 +134,10 @@ bjPlayerSchema.methods.dealerAction = function(deck){
     }
   });
   return true;
+}
+
+bjPlayerSchema.methods.alive = function(){
+  return (this.status!='lost');
 }
 
 bjPlayerSchema.methods.lost = function(){
@@ -190,17 +199,25 @@ bjPlayerSchema.methods.checkResult = function(resultJson){
   if(this.status!='lost'||this.status!='win'||this.status!='draw'){
     var dealer_point = resultJson.dealer.count();
     var my_point = this.count();
+
+    if(my_point>21){
+      this.lost();
+      return;
+    }
+
     if(dealer_point>21){
       this.win()
+      return;
     }
 
     if(my_point==dealer_point){
       this.draw();
     }else if(dealer_point<my_point){
-      this.win(); 
+      this.win();
     }else{
       this.lost();
     }
+
     resultJson.user.upDate('money',this.money);
   }
 }
@@ -210,6 +227,7 @@ bjPlayerSchema.methods.updateGamesList = function(resultJson){
   console.log(realtime.clients.length);
   if(m_socket){
     m_socket.broadcast.emit('gameUpdate',{game:resultJson.game});
+    m_socket.emit('gameUpdate',{game:resultJson.game});
   }
 }
 
@@ -256,28 +274,31 @@ bjPlayerSchema.methods.update = function(resultJson,action){
       break;
     case 'hit_left':
       data = new Object({
-        left_player: resultJson.cur_player
+        cur_player: resultJson.right_player,
+        left_player: resultJson.cur_player,
+        right_player: resultJson.left_player,
+        dealer: resultJson.dealer,
+        game_status: resultJson.game.status
       });
       f_action = 'bj_hit_left';
       break;
     case 'hit_right':
       data = new Object({
-        right_player: resultJson.cur_player
+        cur_player: resultJson.left_player,
+        left_player: resultJson.right_player,
+        right_player: resultJson.cur_player,
+        dealer: resultJson.dealer,
+        game_status: resultJson.game.status
       });
       f_action = 'bj_hit_right';
-      break;
-    case 'hit_left':
-      data = new Object({
-        left_player: resultJson.cur_player
-      });
-      f_action = 'bj_hit_left';
       break;
     case 'stand_right':
       data = new Object({
         cur_player: resultJson.left_player,
         left_player: resultJson.right_player,
         right_player: resultJson.cur_player,
-        dealer: resultJson.dealer
+        dealer: resultJson.dealer,
+        game_status: resultJson.game.status
       })
       f_action = 'bj_stand';
       break;
@@ -286,11 +307,20 @@ bjPlayerSchema.methods.update = function(resultJson,action){
         cur_player: resultJson.right_player,
         left_player: resultJson.cur_player,
         right_player: resultJson.left_player,
-        dealer: resultJson.dealer
+        dealer: resultJson.dealer,
+        game_status: resultJson.game.status
       })
       f_action = 'bj_stand';
       break;
+    case 'quit_right':
+      data = 'right';
+      f_action = 'bj_quit';
+      break;
+    case 'quit_left':
+      data = 'left';
+      f_action = 'bj_quit';
     case 'update_Games_List':
+      break;
     default:
       console.log('can not update');
   }
