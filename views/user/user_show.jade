@@ -2,7 +2,7 @@ extends ../layout
 block scripts
 	script
 		var data = !{JSON.stringify(data)};
-		//- console.log(data);
+		console.log(data);
 	script(src='../../javascripts/realtime.js')
 	script(src='../../javascripts/userFront.js')
 	script(src='../../javascripts/gamesShow.js')
@@ -25,7 +25,7 @@ block content
 					div.userStat
 						a(class='friendsInfo left statElement',href='#') Friends #{data.friends.length} 
 						a(class='gamesInfo left statElement',href='#')	games 0
-						a(class='messagesInfo left statElement',href='#') Messages #{data.user.unread}
+						a(class='messagesInfo left statElement',href='#') Messages 
 						a(class='moneyInfo left statElement',href='#') Money 100
 				div.dashBoardList
 					include user_friends

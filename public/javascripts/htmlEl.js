@@ -27,6 +27,10 @@ element = function() {
 			html_str+=(' id="'+this.id+'"');
 		}
 
+		if(this.href){
+			html_str+=(' href="'+this.href+'"');
+		}
+
 		html_str +='>';
 
 		if(this.content){
@@ -58,6 +62,7 @@ span = function(class_name){
 span.prototype = new element;
 
 a = function(class_name){
+	this.href='#';
 	this.name='a';
 	this.class = new Array;
 	if(class_name){

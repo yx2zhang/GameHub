@@ -117,6 +117,8 @@ function newGame(req,res,resultJson){
 function quit(req,res,resultJson){
   var cur_player = resultJson.cur_player
   if(resultJson.game.status=='dealing'||cur_player.status=='lost'){
+    req.session.game = null;
+    
     cur_player.quit();
     resultJson.game.quit(cur_player);
     resultJson.user.quitGame(resultJson.game);

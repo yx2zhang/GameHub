@@ -54,7 +54,8 @@
 }
 .bodyContainer .dashBoard .profileMini .userStat .statElement {
   text-decoration: none;
-  margin: 5px;
+  margin: 3px;
+  font-size: 14px;
 }
 .bodyContainer .dashBoard .profileMini .userStat .statElement:hover {
   text-decoration: underline;

@@ -7,7 +7,7 @@ $(document).ready(function(){
   });
 
 	socket.on('message', function (data) {
-    addMessage(data.message);
+    updateMessages(data.messages);
 	});
 
   socket.on('gameUpdate', function (data) {

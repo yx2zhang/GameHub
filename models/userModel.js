@@ -76,15 +76,16 @@ userSchema.methods.upDate = function(field,value){
 
 userSchema.methods.receiveMessage = function(message){
   var sender = message.sender;
-  message.status = 'reveived';
+  message.status = 'received';
   message.index = this.newMessageIndex();
   this.messager.total++;
   this.messager.messages.push(message);
+  messages =  this.messager.messages
 
   var m_socket = realtime.clients[this.id];
 
   if(m_socket){
-    m_socket.emit('message',{message:message});
+    m_socket.emit('message',{messages:messages});
   }
 
   this.save(function(error){
@@ -138,18 +139,24 @@ userSchema.methods.quitGame = function(game){
   });
 }
 
-
-
-userSchema.methods.findMessage = function(message_index){
-  return this.messager.messages[message_index];
+userSchema.methods.findMessage = function(message_id){
+  var messages = this.messager.messages;
+  for(var i = 0; i<messages.length;i++){
+    if(message_id == messages[i]._id){
+      console.log('found message');
+      return messages[i];
+    }
+  }
+  console.log('here');
+  return null;
 }
 
 userSchema.methods.friendsCount = function(){
   return this.friends.length;
 }
 
-userSchema.methods.acceptMessage = function(message_index){
-  var message = this.findMessage(message_index);
+userSchema.methods.acceptMessage = function(message_id){
+  var message = this.findMessage(message_id);
   if(message){
     message.status = 'accepted';
     this.save(function(error){

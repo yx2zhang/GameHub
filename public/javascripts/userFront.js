@@ -17,6 +17,9 @@ $(document).ready(function(){
 			type: 'POST',
 			success: function(htmlResult){
 				$('.dashBoardList').html(htmlResult);
+				$.getScript('../javascripts/userFriends.js',function(data, textStatus, jqxhr){
+
+				});
 			},
 			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
 		});
@@ -28,6 +31,7 @@ $(document).ready(function(){
 			type: 'POST',
 			success: function(htmlResult){
 				$('.dashBoardList').html(htmlResult);
+				updateMessages();
 			},
 			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
 		});
@@ -107,9 +111,10 @@ $(document).ready(function(){
 
 	$('.acceptFriend').live('click',function(){
 		var id = $(this).parent().attr('id');
+		console.log(id);
 		$.ajax({
 			url: '/user/accept_friend',
-			data:{message_index:id},
+			data:{message_id:id},
 			type: 'POST',
 			success: function(data){
 				var str = '<span class="right messageResult"> accepted <span>'
@@ -151,32 +156,26 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.friendsItem').on('click','.friendInvite',function(){
-		alert('here');
-		var id = $(this).attr('id');
-		console.log(id);
-		$.ajax({
-			url: '/user/invite_friend',
-			data:{receiver:id},
-			type: 'POST',
-			success: function(data){
-				console.log(data);
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-		});
-	});
-
 	initialize();
 });
 
 function initialize(){
 	var games = data.active_games;
+	var messages = data.user.messager.messages;
 	for(var i =0;i<games.length;i++){
 		var game = games[i];
 		addPlayingGame(game._id);
 	}
-	updateView();
 
+	var m_number = 0;
+	for(var i = 0;i<messages.length;i++){
+		if(messages[i].status=='received'){
+			m_number++;
+		}
+	}
+
+	$('.messagesInfo').text('Messages '+m_number);
+	updateView();
 }
 
 function updateView(){
@@ -242,16 +241,37 @@ function loadGame(new_game){
 	});
 }
 
+function updateMessages(messages){
+	if(!messages){
+		var messages = message_data.messager.messages;
+	}
+	
+	$('.messagesList').html('');
+	var m_number = 0;
+	for(var i =messages.length-1;i>=0;i--){
+		var message = messages[i];
+		if(i>=messages.length-6){
+			addMessage(message);
+		}
+
+		if(messages[i].status=='received'){
+			m_number++;
+		}
+	}
+
+	$('.messagesInfo').text('Messages '+m_number);
+}
+
 function addMessage(message){
+	console.log('add message');
+	console.log(message);
 	var new_message = new div('messageItem listItem');
-	new_message.id = message.index;
+	new_message.id = message._id;
 	$('.messagesList').append(new_message.html());
 
 	var messgae_content = new span('messageContent left');
 	messgae_content.content = message.content;
 	$('.messageItem#'+new_message.id).append(messgae_content.html());
-
-
 	if (message.status != 'accepted'){
 		var accept = new a('acceptFriend left messageAction');
 		accept.content = 'accept';
@@ -263,5 +283,5 @@ function addMessage(message){
 		var accepted = new span('right messageResult');
 		accepted.content = 'accepted';
 		$('.messageItem#'+new_message.id).append(accepted.html());
-	}	
+	}
 }
