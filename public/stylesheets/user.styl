@@ -1,38 +1,83 @@
 .navItem
+	text-decoration: none
 	float: left
 	position: relative
-	margin: 12px
+	margin: 10px
 	color: #E55D4D
-	font-size: 17px
+	font-size: 19px
+.navItem:hover
+	text-decoration: underline
 .bodyContainer
 	overflow:auto
+	.userProfileContainer
+		float: left
+		width: 500px
+		min-height: 300px
+		border-style: solid
+		margin: 50px 0px 10px 100px
+		background-color: white;
+		.userProfileTag
+			margin: 10px
+			font-size: 23px
+			color: #ACCF8F
+		.userProfileImage
+			width :300px
+			min-height: 100px
+			margin: 5px auto 5px auto
+			.imageName
+				float: left
+				margin: 5px
+			.imageImage
+				border-radius: 10px;
+				float: left
+				margin: 5px
+				height: 80px
+				width: 70px
+		.ProfileItem
+			width: 300px
+			margin: 10px auto 10px auto
+			overflow: auto
+			.itemName
+				float: left
+				margin: 5px
+			.userProfileInput
+				float: right
+				display: block
+				width: 210px
+				height: 25px
+				border-radius: 3px
+				-webkit-border-radius: 3px
+				box-shadow: inset 0 1px 3px rgba(0, 0, 0, .05),0 1px 0 rgba(255, 255, 255, .075)
+				padding: 4px
+				background-color: white;
+				border: 1px solid #CCC;
 	.listItem
 		border-bottom: 1px solid #CCCACA
 	.dashBoardContainer
 		position: relative
 		float: right
-		width: 25%;
-		min-width: 326px;
+		width: 20%;
+		min-width: 300px;
 	.dashBoard
 		float: right
-		width: 25%
+		width: 20%
 		background-color:gray
-		min-width: 326px
+		min-width: 300px
 		min-height: 100%
-		padding: 0px 10px 0px 10px
+		padding: 0px 5px 0px 5px
 		position: relative;
 		z-index: 100;
 		.profileMini
-			height: 105px
+			height: 120px
 			.userInfo
 				overflow: auto
 				width: 100%
 				.profilePic
-					background-image:url('/images/profile.png')
+					border-radius: 10px;
 					float: left
 					margin: 5px
-					height: 60px
-					width: 60px
+					height: 80px
+					width: 70px
 				.userName
 					float: left
 					padding: 24px 5px 0px 5px
@@ -54,16 +99,16 @@
 			overflow:auto
 			.titleTag
 				margin: 5px
-				font-size: 28px
+				font-size: 24px
 				color:#accf8f
 			.friendsContainer
 				overflow:auto
 				.searchFriends
 					float: left
 					width:100%
-					#frinedSearchBar
+					#friendsSearchBar
 						margin: 5px
-						width: 210px
+						width: 200px
 					#friendSearchButton
 						margin: 5px
 				.friendsList

@@ -1,14 +1,15 @@
 var mongoose = require('mongoose')
     Schema = mongoose.Schema
     ,realtime = require('../realtime');
-
 var messageSchema = new mongoose.Schema({
   content: String, 
   sender: String, 
   receiver: String, 
   block: Number,
   status: String,
-  index: Number
+  index: Number,
+  type: String,
+  game_id: String
 })
 
 var userSchema = new mongoose.Schema({
@@ -21,13 +22,14 @@ var userSchema = new mongoose.Schema({
   friends: [String],
   games:[],
   active_games: Number,
+  user_image: Number,
   messager:{
     messages: [messageSchema],
     total: Number,
     unread: Number,
     box_size: Number,
     store: []
-  },
+  }
 });
 
 userSchema.statics.authenticate = function(email,password,callback){
@@ -53,7 +55,7 @@ userSchema.methods.initialize = function(req){
   this.messager.total = 0;
   this.messager.unread = 0;
   this.messager.box_size = 100;
-
+  this.user_image = 0;
   this.save(function(error){
   	if(error) console.log('meow');
 	});
@@ -64,15 +66,14 @@ userSchema.methods.upDate = function(field,value){
 		this.money = value;
 	}
 
-    this.save(function(error){
-    	if(error){
-    		console.log('can not update player');
-    		return false;
-    	}
-  	});
-  	return true
+  this.save(function(error){
+  	if(error){
+  		console.log('can not update player');
+  		return false;
+  	}
+	});
+	return true;
 }
-
 
 userSchema.methods.receiveMessage = function(message){
   var sender = message.sender;
@@ -102,7 +103,16 @@ userSchema.methods.sendMessage = function(message,receiver){
 }
 
 userSchema.methods.addFriend = function(new_friend){
-  this.friends.push(new_friend);
+  var exist = false;
+  for(var i =0;i<this.friends.length;i++){
+    if(new_friend==this.friends[i]){
+      exist = true;
+    }
+  }
+  if(!exist){
+    this.friends.push(new_friend);
+  }
+  
   this.save(function(error){
     if(error){
       console.log('can not add firend '+error);
@@ -114,9 +124,19 @@ userSchema.methods.addFriend = function(new_friend){
   return true;
 }
 
-userSchema.methods.addGame = function(game){
-  this.games.push(game.id);
-  this.active_games++;
+userSchema.methods.addGame = function(new_game){
+  var exist = false;
+  for(var i =0;i<this.games.length;i++){
+    if(new_game==this.games[i]){
+      exist = true;
+    }
+  }
+  
+  if(!exist){
+    this.games.push(new_game);
+    this.active_games++;
+  }
+
   this.save(function(error){
     if(error){
       console.log('can not add game to user');
@@ -147,7 +167,6 @@ userSchema.methods.findMessage = function(message_id){
       return messages[i];
     }
   }
-  console.log('here');
   return null;
 }
 

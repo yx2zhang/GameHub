@@ -16,7 +16,7 @@ exports.newGame = function(req, res){
       }else{
         var new_game = Game.new();
         new_game.initilize(user,req);
-        user.addGame(new_game);
+        user.addGame(new_game.id);
         req.session.game = new_game;
         resultJson= new Object;
         resultJson.page = './blackjack/game_show.jade';
@@ -67,7 +67,7 @@ exports.jointGame = function(req,res){
       var resultJson = new Object;
       if(how_to_joint=='joint'){
         req.session.game = game;
-        user.addGame(game);
+        user.addGame(game.id);
         resultJson.page ='./blackjack/game_show.jade';
         resultJson.type = 'load';
         resultJson.action = 'joint';
@@ -414,6 +414,7 @@ function shipIt(req,res,resultJson){
   data.user = resultJson.user;
   data.game_status = resultJson.game.status;
   data.game_id = resultJson.game.id;
+  data.game_name = resultJson.game.master_name+"'s "+resultJson.game.name;
 
   if(resultJson.type == 'send'){
     res.send({data:data});

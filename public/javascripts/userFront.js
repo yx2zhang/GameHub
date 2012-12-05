@@ -18,7 +18,19 @@ $(document).ready(function(){
 			success: function(htmlResult){
 				$('.dashBoardList').html(htmlResult);
 				$.getScript('../javascripts/userFriends.js',function(data, textStatus, jqxhr){
+				});
+			},
+			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+		});
+	});
 
+	$('.gamesInfo').click(function(){
+		$.ajax({
+			url: '/user/show_games',
+			type: 'POST',
+			success: function(htmlResult){
+				$('.dashBoardList').html(htmlResult);
+				$.getScript('../javascripts/userGames.js',function(data, textStatus, jqxhr){
 				});
 			},
 			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
@@ -31,115 +43,12 @@ $(document).ready(function(){
 			type: 'POST',
 			success: function(htmlResult){
 				$('.dashBoardList').html(htmlResult);
-				updateMessages();
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-		});
-	});
-
-	$('.gamesInfo,#showAllGames').live('click',function(){
-		$.ajax({
-			url: '/user/show_games',
-			type: 'POST',
-			success: function(htmlResult){
-				$('.dashBoardList').html(htmlResult);
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-		});
-	});
-
-	$('#showMyGames').live('click',function(){
-		$.ajax({
-			url: '/user/show_my_games',
-			type: 'POST',
-			success: function(htmlResult){
-				$('.gameTypesList').html(htmlResult);
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-		});
-	});
-
-	$('#frinedSearchBar').live('click',function(){
-		this.value ='';
-	});
-
-	$('#friendSearchButton').live('click',function(){
-		var search_str = $('#frinedSearchBar').attr('value');
-		$.ajax({
-			url: '/user/search_friend',
-			data:{search_str: search_str},
-			type: 'POST',
-			success: function(htmlResult){
-				$('.friendsList').html(htmlResult);
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-		});
-	});
-
-	$("#blackJackGames").live('click',function(){
-		$.ajax({
-			url: '/user/games_list',
-			type: 'POST',
-			data: {game: 'blackJack'},
-			success: function(htmlResult){
-				var show = $('.roomsBoard').hasClass('showBoard')
-				if(show){
-					hideRoomsList();
-				}else{
-					$('.roomsBoard').html(htmlResult);
-					$.getScript('../javascripts/gamesShow.js',function(data, textStatus, jqxhr){
-						setList();
-						showRoomsList();
-					});
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-		});
-	});
-
-	$('.friendAdd').live('click',function(){
-		var id = $(this).attr('id');
-		$.ajax({
-			url: '/user/friend_request',
-			data:{sender:data.user._id,receiver:id},
-			type: 'POST',
-			success: function(data){
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
-		});
-	});
-
-	$('.acceptFriend').live('click',function(){
-		var id = $(this).parent().attr('id');
-		console.log(id);
-		$.ajax({
-			url: '/user/accept_friend',
-			data:{message_id:id},
-			type: 'POST',
-			success: function(data){
-				var str = '<span class="right messageResult"> accepted <span>'
-				$('#'+id).find('.messageAction').text('');
-				$('#'+id).append(str);
-				$('.friendsInfo').text('Friends '+data);
-			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown);}
-		});
-	});
-
-	$('.backToGame').live('click',function(){
-		var id = $(this).parent().attr('id');
-		$.ajax({
-			url: '/game/blackjack/back_game',
-			data:{game_id:id},
-			type: 'POST',
-			success: function(htmlResult){
-				$('.gameContent').html(htmlResult);
-				$.getScript('../javascripts/blackJackFront.js',function(data, textStatus, jqxhr){
-					setTable();
+				$.getScript('../javascripts/userMessages.js',function(data, textStatus, jqxhr){
+					updateMessages();
 				});
 			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown);}
-		})
+			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+		});
 	});
 
 	$('.playingGameList').on('click','.playingGameItem',function(){
@@ -156,6 +65,27 @@ $(document).ready(function(){
 		});
 	});
 
+	$('.navUser').click(function(){
+		$.ajax({
+			url: '/user/show_profile',
+			type: 'POST',
+			success: function(profileHtml){
+					var profile = new div('userProfileContainer');
+					var cur_profile = $('.bodyContainer').find('.userProfileContainer');
+					if(cur_profile.length!=0){
+						cur_profile.remove();
+					}
+
+					$('.bodyContainer').append(profile.html());
+					$('.userProfileContainer').html(profileHtml);
+					$.getScript('../javascripts/userProfile.js',function(data, textStatus, jqxhr){
+						profileSet();
+					});
+			},
+			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+		});
+	});
+
 	initialize();
 });
 
@@ -164,7 +94,8 @@ function initialize(){
 	var messages = data.user.messager.messages;
 	for(var i =0;i<games.length;i++){
 		var game = games[i];
-		addPlayingGame(game._id);
+		var name = game.master_name + "' " +game.name;
+		addPlayingGame(game._id,name);
 	}
 
 	var m_number = 0;
@@ -172,6 +103,14 @@ function initialize(){
 		if(messages[i].status=='received'){
 			m_number++;
 		}
+	}
+
+	if(data.user.user_image==0)
+	{
+		$('.profilePic').css('background-image','url(/images/profile_pic/default.png)');
+	}else{
+		var url = 'url(/image/profile_pic/'+data.user.id+'.png)';
+		$('.profilePic').css('background-image',url);
 	}
 
 	$('.messagesInfo').text('Messages '+m_number);
@@ -187,14 +126,14 @@ function updateHeight(){
 	$('.dashBoard').css('height', height);
 }
 
-function addPlayingGame(game_id){ 
+function addPlayingGame(game_id,game_name){ 
 	if(checkPlayingGameItem(game_id)){
 		var game_item = new div('playingGameItem');
 		var game_image = new div('blackJackImage');
 		var game_text = new div('blackJackText');
 
 		game_item.id = "playing_"+ game_id;
-		game_text.content = 'black jack(dealing)';
+		game_text.content = game_name;
 
 		$('.playingGameList').append(game_item.html());
 		$('.playingGameItem#'+game_item.id).append(game_image.html());
@@ -222,7 +161,8 @@ function newGame(new_game){
 	if(cur_game_container.length!=0){
 		cur_game_container.animate({left:'-750px'},'slow',function(){
 			var id = $(".curGame").attr('id').replace('game_content_','');
-			addPlayingGame(id);
+			var name = $(".curGame").find('.gameTitle').text();
+			addPlayingGame(id,name);
 			cur_game_container.remove();
 			loadGame(new_game);
 		});
@@ -236,52 +176,7 @@ function loadGame(new_game){
 	$('.bodyContainer').append(game_content.html());
 	$('.gameContent').html(new_game);
 	$.getScript('../javascripts/blackJackFront.js',function(data, textStatus, jqxhr){
-		initialize();
+		bjInitialize();
 		updateView();
 	});
-}
-
-function updateMessages(messages){
-	if(!messages){
-		var messages = message_data.messager.messages;
-	}
-	
-	$('.messagesList').html('');
-	var m_number = 0;
-	for(var i =messages.length-1;i>=0;i--){
-		var message = messages[i];
-		if(i>=messages.length-6){
-			addMessage(message);
-		}
-
-		if(messages[i].status=='received'){
-			m_number++;
-		}
-	}
-
-	$('.messagesInfo').text('Messages '+m_number);
-}
-
-function addMessage(message){
-	console.log('add message');
-	console.log(message);
-	var new_message = new div('messageItem listItem');
-	new_message.id = message._id;
-	$('.messagesList').append(new_message.html());
-
-	var messgae_content = new span('messageContent left');
-	messgae_content.content = message.content;
-	$('.messageItem#'+new_message.id).append(messgae_content.html());
-	if (message.status != 'accepted'){
-		var accept = new a('acceptFriend left messageAction');
-		accept.content = 'accept';
-		var ignore = new a('ignoreFriend left messageAction');
-		ignore.content = 'ignore';
-		$('.messageItem#'+new_message.id).append(accept.html());
-		$('.messageItem#'+new_message.id).append(ignore.html());
-	}else{
-		var accepted = new span('right messageResult');
-		accepted.content = 'accepted';
-		$('.messageItem#'+new_message.id).append(accepted.html());
-	}
 }

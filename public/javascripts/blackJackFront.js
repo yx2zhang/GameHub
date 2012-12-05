@@ -261,7 +261,7 @@ function addPlayer(role,res){
 	$('.'+role).find('.blackJackNameTag').text(data.user.user_name);
 }
 
-function initialize(){
+function bjInitialize(){
 	$('.curGame').attr('id', 'game_content_'+game_data.game_id);
 	addCards('dealer',game_data.dealer.hand,0);
 
@@ -313,8 +313,6 @@ function setStage(game_data){
 
 function bj_removePlayer(role){
 	var player;
-	console.log('the orle');
-	console.log(role);
 	if(role=='left'){
 		player = $('.leftPlayer');
 	}else if(role=='right'){
@@ -323,4 +321,5 @@ function bj_removePlayer(role){
 	player.find('.blackJackNameTag').html('');
 	player.find('.blackJackHand').html('');
 	player.find('.blackJackGameResult').html('');
+	player.find('.blackJackCardValue').html('');
 }

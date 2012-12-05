@@ -5,16 +5,17 @@ block scripts
 		console.log(data);
 	script(src='../../javascripts/realtime.js')
 	script(src='../../javascripts/userFront.js')
-	script(src='../../javascripts/gamesShow.js')
+	script(src='../../javascripts/roomsBoard.js')
 	script(src='../../javascripts/userFriends.js')
+	script(src='../../javascripts/userGames.js')
+	script(src='../../javascripts/userMessages.js')
 block css
 	link(rel='stylesheet', href='/stylesheets/user.css')
 block content
 	div.topContainer
 		nav
-			a(href='/user/', class='navHome navItem') Home
-			a(href='/user/', class='navFriends navItem') Friends
-			a(href='/user/', class='navUser navItem') #{data.user.user_name}
+			a(href='#', class='navHome navItem') Game Hub
+			a(href='#', class='navUser navItem') #{data.user.user_name}
 	div.bodyContainer
 		div.dashBoardContainer
 			div.dashBoard
@@ -31,4 +32,4 @@ block content
 					include user_friends
 			div.roomsBoard
 		div.playingGameList 
-			div.playingGamesTag Playing Games
+			div.playingGamesTag My Games

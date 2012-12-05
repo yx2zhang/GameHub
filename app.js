@@ -74,6 +74,8 @@ app.post('/user/show_my_games',user.showMyGames);
 
 app.post('/user/back_game',user.backGame);
 app.post('/user/invite_friend',user.inviteFriend);
+app.post('/user/accept_invite',user.acceptInvite);
+app.post('/user/show_profile',user.showProfile);
 
 //games
 app.post('/game/blackjack/new',requiresLogin, blackjack.newGame);

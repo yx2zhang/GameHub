@@ -106,6 +106,23 @@ exports.acceptFriend = function(req,res){
   });
 }
 
+exports.acceptInvite = function(req,res){
+    User.findById(req.session.user._id,function(error,receiver){
+      if(!receiver){
+        console.log('can not find reciever of invite message');
+        res.send(false);
+      }else{
+        var message = receiver.findMessage(req.body.message_id);
+        if(confirmMessage(req,message)){
+          res.send(message)
+        }else{
+          console.log('illegal message');
+          res.send(false);
+      }
+    }
+  });
+}
+
 function addFriends(req,res,receiver,sender){
   User.findById(receiver,function(error,receiver){
     User.findById(sender,function(error,sender){
@@ -127,15 +144,24 @@ exports.inviteFriend = function(req,res){
     res.send('cant find the game you currently playing')
     return;
   }
-  console.log('invite game');
-  console.log(req.session.game);
+
   var message = new Object;
   message.type = 'invite_friend';
   message.sender = req.session.user._id;
   message.receiver = req.body.receiver;
-  message.game = req.session.game._id;
-  message.content = message.sender + ' invite you to game '+ message.game._id;
+  message.game_id = req.session.game._id;
+  message.content = message.sender + ' invite you to game '+ message.game_id;
   sendMessage(req,res,message);
+}
+
+exports.showProfile = function(req,res){
+  User.findById(req.session.user._id,function(error,user){
+    if(user){
+      res.render('./user/user_profile.jade',{
+        data:user,
+      });
+    }
+  });
 }
 
 function confirmMessage(req,message){

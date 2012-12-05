@@ -28,7 +28,6 @@ bjGameSchema.statics.new = function(){
 
 bjGameSchema.methods.initilize = function(user,req){
   var new_deck = Deck.new();
-
   var dealer = Player.new({
     role: 'dealer', 
     type: 'AI',
@@ -147,5 +146,6 @@ bjGameSchema.methods.rightPlayerIndex = function(cur_player_index){
   }
   return right;
 }
+
 
 mongoose.model('blackJackGame',bjGameSchema);
