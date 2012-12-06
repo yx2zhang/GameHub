@@ -38,7 +38,7 @@ $(document).ready(function(){
 function updateGame(data){
 	var game = data.game;
 
-	var gameName = game.master_name+"\'Black Jack"+ game.index+'&nbsp &nbsp &nbsp ('+game.users.length+"/3)";
+	var gameName = game.master_name+"\'Black Jack "+ game.index+' ('+game.users.length+"/3)";
 	var t_game = $("#gameRoom_" + game._id);
 	if(t_game.length==0){
 		addGameRoom(game);
@@ -71,7 +71,7 @@ function setList(){
 
 function addGameRoom(game){
 		var room = '<div class="gameRoomItem listItem" id=gameRoom_'+ game._id+'>'
-					+'<span class= "gameRoomName">'+game.master_name+'\'Black Jack '+game.index+'&nbsp &nbsp &nbsp ('+game.users.length+'/3)'+ '</span>'
+					+'<span class= "gameRoomName">'+game.master_name+'\'Black Jack '+game.index+' ('+game.users.length+'/3)'+ '</span>'
 					+'<a href="#" class="gameJoint right">joint</a>'+'</div>'
 		$('.gamesListContent').append(room);
 }
