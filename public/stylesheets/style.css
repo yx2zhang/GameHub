@@ -8,12 +8,12 @@ a {
 }
 .topContainer {
   background-color: #50545c;
-  height: 45px;
-  min-width: 1340px;
+  height: 50px;
+  min-width: 1315px;
 }
 .bodyContainer {
-  background-color: #8fc1d9;
-  min-width: 1340px;
+  background-color: #dfa01b;
+  min-width: 1315px;
   min-height: 100%;
 }
 .right {

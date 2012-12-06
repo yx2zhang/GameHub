@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('.newBlackjack').click(function(){
+	$('#newBlackjack').click(function(){
 		$.ajax({
 			url: '/game/blackjack/new',
 			type: 'POST',
@@ -14,7 +14,6 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('.gamesList').on('click','.gameJoint',function(){
 		var game_id = $(this).parent().attr('id').replace('gameRoom_','');
-
 		$.ajax({
 			url: '/game/blackjack/joint',
 			data:{game_id: game_id},
@@ -39,7 +38,7 @@ $(document).ready(function(){
 function updateGame(data){
 	var game = data.game;
 
-	var gameName = game.master_name+"\'Black Jack"+ game.users.length+"/3";
+	var gameName = game.master_name+"\'Black Jack "+ game.index+' ('+game.users.length+"/3)";
 	var t_game = $("#gameRoom_" + game._id);
 	if(t_game.length==0){
 		addGameRoom(game);
@@ -54,7 +53,7 @@ function updateGame(data){
 
 function showRoomsList(){
 	$('.roomsBoard').addClass('showBoard');
-    $(".roomsBoard").animate({right:'346px'});    
+    $(".roomsBoard").animate({right:'310px'});    
 }
 
 function hideRoomsList(){
@@ -64,15 +63,15 @@ function hideRoomsList(){
 
 function setList(){
 	var max = 10;
-	for(var i =0; i<room_list_data.games.length;i++){
+	for(var i =room_list_data.games.length-1; i>=0;i--){
 		addGameRoom(room_list_data.games[i]);
-		if(i>=max) break;
+		// if(i>=max) break;
 	}
 }
 
 function addGameRoom(game){
 		var room = '<div class="gameRoomItem listItem" id=gameRoom_'+ game._id+'>'
-					+'<span class= "gameRoomName">'+game.master_name+'\'Black Jack '+game.users.length+'/3'+'</span>'
+					+'<span class= "gameRoomName">'+game.master_name+'\'Black Jack '+game.index+' ('+game.users.length+'/3)'+ '</span>'
 					+'<a href="#" class="gameJoint right">joint</a>'+'</div>'
 		$('.gamesListContent').append(room);
 }

@@ -10,7 +10,7 @@ block content
 		//- console.log(game_data);
 	div.blackJackContainer
 		div.gameTopBar 
-			span.gameTitle Black Jack
+			span.gameTitle #{data.game_name}
 			div.playerBid
 				span.bidText.moneyItem Bid
 				span.bjPlayerBid.moneyItem 0
@@ -51,6 +51,8 @@ block content
 				input(type= "button",value="$5", id="bj_d5",class='blackJackChip blackJackChip')
 				input(type= "button",value="$10", id="bj_d10",class='blackJackChip blackJackChip')
 				input(type= "button",value="$20", id="bj_d20",class='blackJackChip blackJackChip')
+			div.messageField
+				div.bjGameMessage
 			div.optionMenu
 				input(type= "button",value="double", id="blackJackDouble",class='blackJackOptionButton gameButton')
 				input(type= "button",value="stand", id="blackJackStand",class='blackJackOptionButton gameButton')

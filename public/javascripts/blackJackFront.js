@@ -29,7 +29,7 @@ $(document).ready(function(){
 	$('.optionMenu').on('click','#blackJackDeal',function(){
 		var bid= parseInt($('.bjPlayerBid').text(),10);
 		if(bid==0){
-			alert('please bid some money');
+			$('.messageField').find('.bjGameMessage').text('Please bid first');
 			return;
 		}
 		$.ajax({
@@ -78,14 +78,19 @@ function gameEnd(res){
 	var data = res.data;
 	var cur_player = data.cur_player;
 	var dealer = data.dealer;
-	console.log(data);
 	if(data.game_status!='dealing'){
-		alert('wait for other players');
+		if(cur_player.status=='lost'){
+			$('.messageField').find('.bjGameMessage').text('you lost, wait for other players')
+		}else{
+			$('.messageField').find('.bjGameMessage').text('stand, wait for other players')
+		}
 		freezePlayer();
 		return;
 	}
-
+	console.log(data);
 	addCards('dealer',dealer.hand,2);
+	// alert(game_data.dealer.point);
+	updatePoint('dealer',dealer.point);
 
 	if(checkAlive('currentPlayer')){
 		curPlayerEnd(data.cur_player);
@@ -99,6 +104,7 @@ function gameEnd(res){
 		$('.rightPlayer').find('.blackJackGameResult').text(data.right_player.status);
 	}
 
+	$('.messageField').find('.bjGameMessage').text('please bid some money');
 	$('.currentPlayer').addClass('livePlayer');
 	$('#blackJackDeal').removeAttr('disabled');
 	$('.blackJackBidButton').removeAttr('disabled');
@@ -111,13 +117,13 @@ function checkAlive(role){
 
 function curPlayerEnd(cur_player){
 	if(cur_player.status=='lost'){
-		// alert('lost');
+		$('.messageField').find('.bjGameMessage').text('you lost, waiting for other players');
 	}else if(cur_player.status=='win'){
-		alert('win');
+		$('.messageField').find('.bjGameMessage').text('Win');
 		var money = cur_player.money;
 		$('.bjPlayerMoney').text(money);
 	}else if(cur_player.status=='draw'){
-		alert('draw');
+		$('.messageField').find('.bjGameMessage').text('Draw');
 	}
 	$('.currentPlayer').find('.blackJackGameResult').text(cur_player.status);
 	$('.bjPlayerBid').text(0);
@@ -136,7 +142,6 @@ function freezePlayer(){
 
 function dealCard(res){
 	var data = res.data;
-	console.log(data);
 	$('.dealer').find('.blackJackHand').html("");
 	$('.blackJackHand').html("");
 	$('.blackJackGameResult').html("");
@@ -144,8 +149,9 @@ function dealCard(res){
 	$('.blackJackCardValue').html('');
 
 	if(data.cur_player.status!='playing'){
-		alert('wait for other players');
+		$('.messageField').find('.bjGameMessage').text('waiting for other players');
 	}else{
+		$('.messageField').find('.bjGameMessage').text('Playing');
 		$('#blackJackDeal').attr('disabled','disabled');
 		$('.blackJackBidButton').attr('disabled','disabled');
 		$('#blackJackHit').removeAttr('disabled');
@@ -261,7 +267,7 @@ function addPlayer(role,res){
 	$('.'+role).find('.blackJackNameTag').text(data.user.user_name);
 }
 
-function initialize(){
+function bjInitialize(){
 	$('.curGame').attr('id', 'game_content_'+game_data.game_id);
 	addCards('dealer',game_data.dealer.hand,0);
 
@@ -284,7 +290,7 @@ function initialize(){
 
 	var status = game_data.cur_player.status;
 
-	if(status=='lost'||status=='win'||status=='draw'){
+	if((status=='lost'||status=='win'||status=='draw')&&game_data.game_status!='dealing'){
 		curPlayerEnd(game_data.cur_player);
 	}
 }
@@ -298,6 +304,7 @@ function setStage(game_data){
 		$('#blackJackStand').attr('disabled','disabled');
 		$('#blackJackDouble').attr('disabled','disabled');
 		$('#blackJackSplit').attr('disabled','disabled');
+		$('.messageField').find('.bjGameMessage').text('please bid some money');
 	}else if(stage=='playing'){
 		$('#blackJackDeal').attr('disabled','disabled');
 		$('.blackJackBidButton').attr('disabled','disabled');
@@ -308,13 +315,12 @@ function setStage(game_data){
 		if(game_data.left_player){updatePoint('leftPlayer',game_data.left_player.point);}
 		if(game_data.right_player){updatePoint('rightPlayer',game_data.right_player.point);}
 		updatePoint('currentPlayer',game_data.cur_player.point);
+		$('.messageField').find('.bjGameMessage').text('playing');
 	}
 }
 
 function bj_removePlayer(role){
 	var player;
-	console.log('the orle');
-	console.log(role);
 	if(role=='left'){
 		player = $('.leftPlayer');
 	}else if(role=='right'){
@@ -323,4 +329,5 @@ function bj_removePlayer(role){
 	player.find('.blackJackNameTag').html('');
 	player.find('.blackJackHand').html('');
 	player.find('.blackJackGameResult').html('');
+	player.find('.blackJackCardValue').html('');
 }

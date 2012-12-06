@@ -1,7 +1,3 @@
-// require('../models/userModel');
-// require('../models/blackJackGameModel');
-// require('../models/messagerModel');
-
 var db = require('../db');
 var User = db.model('User');
 var bjGame = db.model('blackJackGame');
@@ -14,6 +10,7 @@ exports.login = function(req,res){
   User.authenticate(req.param('email'),req.param('password'),function(error,user){
     if(user){
       req.session.user = user;
+      req.session.game = null
       res.redirect('/user/'+ user.id);
     }else{
       res.render('index',{ title: 'GameHub'});
@@ -83,6 +80,8 @@ exports.friendRequest = function(req,res){
   message.type = 'add_friend';
   message.sender = req.body.sender;
   message.receiver = req.body.receiver;
+  message.content = 'someone sent you a firend request';
+
   sendMessage(req,res,message);
 }
 
@@ -92,22 +91,44 @@ exports.acceptFriend = function(req,res){
       console.log('can not find reciever');
       res.send(false);
     }else{
-      var message = receiver.findMessage(req.body.message_index);
+      var message = receiver.findMessage(req.body.message_id);
       if(confirmMessage(req,message)){
         addFriends(req,res,message.receiver,message.sender);
       }else{
-        console.log('illegal');
+        console.log('illegal message');
         res.send(false);
       }
     }
   });
 }
 
+exports.acceptInvite = function(req,res){
+    User.findById(req.session.user._id,function(error,receiver){
+      if(!receiver){
+        console.log('can not find reciever of invite message');
+        res.send(false);
+      }else{
+        var message = receiver.findMessage(req.body.message_id);
+        if(confirmMessage(req,message)){
+          res.send(message)
+        }else{
+          console.log('illegal message');
+          res.send(false);
+      }
+    }
+  });
+}
+
+exports.uploadProfileImage = function(req,res){
+  console.log('here the image');
+  console.log(req);
+}
+
 function addFriends(req,res,receiver,sender){
   User.findById(receiver,function(error,receiver){
     User.findById(sender,function(error,sender){
       if(receiver&&sender){
-        receiver.acceptMessage(req.body.message_index);
+        receiver.acceptMessage(req.body.message_id);
         receiver.addFriend(sender.id);
         sender.addFriend(receiver.id);
         var num = receiver.friendsCount().toString();
@@ -116,6 +137,43 @@ function addFriends(req,res,receiver,sender){
         res.send(false);
       }
     });
+  });
+}
+
+exports.inviteFriend = function(req,res){
+  if(!req.session.game){
+    res.send('cant find the game you currently playing')
+    return;
+  }
+
+  var message = new Object;
+  message.type = 'invite_friend';
+  message.sender = req.session.user._id;
+  message.receiver = req.body.receiver;
+  message.game_id = req.session.game._id;
+  message.content = message.sender + ' invite you to game '+ message.game_id;
+  sendMessage(req,res,message);
+}
+
+exports.showProfile = function(req,res){
+  User.findById(req.session.user._id,function(error,user){
+    if(user){
+      res.render('./user/user_profile.jade',{
+        data:user,
+      });
+    }
+  });
+}
+
+exports.profileChange = function(req,res){
+  User.findById(req.session.user._id,function(error,user){
+    if(user){
+      console.log(req.body);
+      user.upDate('user_name',req.body.user_name);
+      user.upDate('location',req.body.location);
+      user.upDate('email',req.body.email);
+      res.send(user); 
+    }
   });
 }
 
@@ -129,8 +187,8 @@ function confirmMessage(req,message){
 function sendMessage(req,res,message){
   User.findById(message.receiver,function(error,receiver){
     if(receiver){
-      receiver.receiveMessage(message,message.sender);
-      res.send('ture')
+      receiver.receiveMessage(message);
+      res.send('message sent');
     }
   });
 }

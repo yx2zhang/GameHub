@@ -122,7 +122,7 @@ bjPlayerSchema.methods.count = function(bid){
 bjPlayerSchema.methods.dealerAction = function(deck){
   var deck = resultJson.deck;
   var point = this.count();
-  while(point<17){
+  while(point<=17){
     this.addCard(deck.getCard());
     point = this.count();
   }
@@ -199,17 +199,14 @@ bjPlayerSchema.methods.checkResult = function(resultJson){
   if(this.status!='lost'||this.status!='win'||this.status!='draw'){
     var dealer_point = resultJson.dealer.count();
     var my_point = this.count();
-
     if(my_point>21){
       this.lost();
       return;
     }
-
     if(dealer_point>21){
       this.win()
       return;
     }
-
     if(my_point==dealer_point){
       this.draw();
     }else if(dealer_point<my_point){
@@ -217,7 +214,6 @@ bjPlayerSchema.methods.checkResult = function(resultJson){
     }else{
       this.lost();
     }
-
     resultJson.user.upDate('money',this.money);
   }
 }
