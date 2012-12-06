@@ -16,6 +16,7 @@ var bjGameSchema = new mongoose.Schema({
 	deck_id: String,
   turn: Number,
   master_name: String,
+  index: Number
 });
 
 bjGameSchema.statics.new = function(){
@@ -146,6 +147,16 @@ bjGameSchema.methods.rightPlayerIndex = function(cur_player_index){
   }
   return right;
 }
+
+bjGameSchema.methods.signIndex = function(index){
+  this.index = index;
+
+  this.save(function(error){
+    if(error) console.log('can not sign index');
+    return false;
+  });
+}
+
 
 
 mongoose.model('blackJackGame',bjGameSchema);

@@ -1,7 +1,3 @@
-// require('../models/userModel');
-// require('../models/blackJackGameModel');
-// require('../models/messagerModel');
-
 var db = require('../db');
 var User = db.model('User');
 var bjGame = db.model('blackJackGame');
@@ -123,6 +119,11 @@ exports.acceptInvite = function(req,res){
   });
 }
 
+exports.uploadProfileImage = function(req,res){
+  console.log('here the image');
+  console.log(req);
+}
+
 function addFriends(req,res,receiver,sender){
   User.findById(receiver,function(error,receiver){
     User.findById(sender,function(error,sender){
@@ -160,6 +161,18 @@ exports.showProfile = function(req,res){
       res.render('./user/user_profile.jade',{
         data:user,
       });
+    }
+  });
+}
+
+exports.profileChange = function(req,res){
+  User.findById(req.session.user._id,function(error,user){
+    if(user){
+      console.log(req.body);
+      user.upDate('user_name',req.body.user_name);
+      user.upDate('location',req.body.location);
+      user.upDate('email',req.body.email);
+      res.send(user); 
     }
   });
 }

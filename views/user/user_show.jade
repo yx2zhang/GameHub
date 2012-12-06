@@ -13,16 +13,17 @@ block css
 	link(rel='stylesheet', href='/stylesheets/user.css')
 block content
 	div.topContainer
+		image(class='zyxImage',src="../../images/zyx.png")
 		nav
 			a(href='#', class='navHome navItem') Game Hub
-			a(href='#', class='navUser navItem') #{data.user.user_name}
+			a(href='#', class='navUser navItem')
 	div.bodyContainer
 		div.dashBoardContainer
 			div.dashBoard
 				div.profileMini
 					div.userInfo 
 						div.profilePic.left
-						div.userName.left #{data.user.user_name}
+						div.userName.left
 					div.userStat
 						a(class='friendsInfo left statElement',href='#') Friends #{data.friends.length} 
 						a(class='gamesInfo left statElement',href='#')	games 0

@@ -18,11 +18,14 @@ var userSchema = new mongoose.Schema({
 	user_name: String,
 	money: Number,
 	level: Number,
+  location: String,
 	exp: Number,
   friends: [String],
   games:[],
   active_games: Number,
   user_image: Number,
+  game_index_box: [],
+  max_game_index: Number,
   messager:{
     messages: [messageSchema],
     total: Number,
@@ -56,6 +59,8 @@ userSchema.methods.initialize = function(req){
   this.messager.unread = 0;
   this.messager.box_size = 100;
   this.user_image = 0;
+  this.max_game_index = 0;
+
   this.save(function(error){
   	if(error) console.log('meow');
 	});
@@ -64,7 +69,13 @@ userSchema.methods.initialize = function(req){
 userSchema.methods.upDate = function(field,value){
 	if(field=='money'){
 		this.money = value;
-	}
+	}else if(field=='user_name'){
+    this.user_name=value;
+  }else if(field=='location'){
+    this.location =value;
+  }else if(field=='email'){
+    this.email = value;
+  }
 
   this.save(function(error){
   	if(error){
@@ -127,13 +138,13 @@ userSchema.methods.addFriend = function(new_friend){
 userSchema.methods.addGame = function(new_game){
   var exist = false;
   for(var i =0;i<this.games.length;i++){
-    if(new_game==this.games[i]){
+    if(new_game.id==this.games[i]){
       exist = true;
     }
   }
   
   if(!exist){
-    this.games.push(new_game);
+    this.games.push(new_game.id);
     this.active_games++;
   }
 
@@ -144,8 +155,34 @@ userSchema.methods.addGame = function(new_game){
   });
 }
 
+userSchema.methods.generateIndex = function(){
+  var new_index;
+  for(var i = 0;i<this.max_game_index;i++){
+    if(!this.game_index_box[i]){
+      this.game_index_box[i] = true;
+      this.markModified('game_index_box');
+      this.save(function(error){
+        if(error) console.log('can not update index');
+        return false;
+      });
+      return i;
+    }
+  }
+
+  this.game_index_box[this.max_game_index] = true;
+  new_index = this.max_game_index;
+  this.max_game_index++;
+  this.markModified('game_index_box');
+
+  this.save(function(error){
+    if(error) console.log('can not generate index');
+    return false;
+  });
+
+  return new_index;
+}
+
 userSchema.methods.quitGame = function(game){
-  
   for(var i = 0;i< this.games.length;i++){
     if(this.games[i]==game.id){
       this.games.splice(i,i+1);

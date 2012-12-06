@@ -65,22 +65,15 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.navUser').click(function(){
+	$('.navUser,.userName').click(function(){
 		$.ajax({
 			url: '/user/show_profile',
 			type: 'POST',
 			success: function(profileHtml){
-					var profile = new div('userProfileContainer');
-					var cur_profile = $('.bodyContainer').find('.userProfileContainer');
-					if(cur_profile.length!=0){
-						cur_profile.remove();
-					}
-
-					$('.bodyContainer').append(profile.html());
-					$('.userProfileContainer').html(profileHtml);
-					$.getScript('../javascripts/userProfile.js',function(data, textStatus, jqxhr){
-						profileSet();
-					});
+				loadProfile(profileHtml);
+				$.getScript('../javascripts/userProfile.js',function(data, textStatus, jqxhr){
+					profileSet();
+				});
 			},
 			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
 		});
@@ -94,7 +87,7 @@ function initialize(){
 	var messages = data.user.messager.messages;
 	for(var i =0;i<games.length;i++){
 		var game = games[i];
-		var name = game.master_name + "' " +game.name;
+		var name = game.master_name + "' " +game.name + ' ' + game.index;
 		addPlayingGame(game._id,name);
 	}
 
@@ -114,6 +107,8 @@ function initialize(){
 	}
 
 	$('.messagesInfo').text('Messages '+m_number);
+	$('.navUser').text(data.user.user_name);
+	$('.userName').text(data.user.user_name);
 	updateView();
 }
 
@@ -158,6 +153,7 @@ function quitGame(game_id){
 
 function newGame(new_game){
 	var cur_game_container = $(".curGame");
+	$('.userProfileContainer').remove();
 	if(cur_game_container.length!=0){
 		cur_game_container.animate({left:'-750px'},'slow',function(){
 			var id = $(".curGame").attr('id').replace('game_content_','');
@@ -169,6 +165,27 @@ function newGame(new_game){
 	}else{
 		loadGame(new_game);
 	}
+}
+
+function loadProfile(profileHtml){
+	var cur_game_container = $(".curGame");
+	if(cur_game_container.length!=0){
+		cur_game_container.animate({left:'-750px'},'slow',function(){
+			var id = $(".curGame").attr('id').replace('game_content_','');
+			var name = $(".curGame").find('.gameTitle').text();
+			addPlayingGame(id,name);
+			cur_game_container.remove();
+		});
+	}
+
+	var profile = new div('userProfileContainer');
+	var cur_profile = $('.bodyContainer').find('.userProfileContainer');
+	if(cur_profile.length!=0){
+		cur_profile.remove();
+	}
+
+	$('.bodyContainer').append(profile.html());
+	$('.userProfileContainer').html(profileHtml);
 }
 
 function loadGame(new_game){

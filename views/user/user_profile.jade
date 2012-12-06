@@ -1,16 +1,20 @@
 script
 	var profile_data = !{JSON.stringify(data)};
 div.userProfileTag Edit Profile
-div.userProfileImage
-	div.imageName Photo
-	div.imageImage
-	input(class='imageButton',type='button',value='upload image')
-div.profileItem
-	span.itemName User Name
-	input(type='text',class='userProfileName userProfileInput')
-div.ProfileItem
-	span.itemName Email
-	input(type='text',class='userProfileEmail userProfileInput')
-div.ProfileItem
-	span.itemName Location
-	input(type='text',class='userProfileLocation userProfileInput')
+//- div.userProfileImage
+//- 	div.imageName Photo
+//- 	div.imageImage
+//- 	input(class='imageUpload',type='file',value='upload image')
+div.profileForm
+	div.profileItem
+		span.itemName User Name
+		input(type='text',class='userProfileName userProfileInput')
+	div.profileItem
+		span.itemName Email
+		input(type='text',class='userProfileEmail userProfileInput')
+	div.profileItem
+		span.itemName Location
+		input(type='text',class='userProfileLocation userProfileInput')
+	div.profileSave.profileItem
+		input(type='button',value='save changes',class='profileBt',id='profileSaveBt')
+		input(type='button',value='cancel',class='profileBt right',id='profileCancelBt')

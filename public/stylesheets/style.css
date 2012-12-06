@@ -8,11 +8,11 @@ a {
 }
 .topContainer {
   background-color: #50545c;
-  height: 45px;
+  height: 50px;
   min-width: 1315px;
 }
 .bodyContainer {
-  background-color: #8fc1d9;
+  background-color: #dfa01b;
   min-width: 1315px;
   min-height: 100%;
 }

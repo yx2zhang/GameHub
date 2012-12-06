@@ -1,3 +1,15 @@
+.buttonBlue
+	position: relative
+	margin: 5px
+	border-top-color:#97dbfc
+	border-bottom-color: #0794db
+	background-color:#00A6FC
+	width: 70px
+.zyxImage
+	width: 54px;
+	height: 50px;
+	margin: 0px 10px 0px 10px
+	float: left;
 .navItem
 	text-decoration: none
 	float: left
@@ -16,6 +28,9 @@
 		border-style: solid
 		margin: 50px 0px 10px 100px
 		background-color: white;
+		.profileForm
+			overflow:auto
+			padding: 40px 0px 0px 0px
 		.userProfileTag
 			margin: 10px
 			font-size: 23px
@@ -51,6 +66,16 @@
 				padding: 4px
 				background-color: white;
 				border: 1px solid #CCC;
+		.profileBt
+			height: 30px
+			width: 100px
+			border-radius: 3px
+			color: white
+			text-align: center
+			font-size: 14px
+			background-color: #00A6FC
+			border-left: 0px;
+			border-top: 0px;
 	.listItem
 		border-bottom: 1px solid #CCCACA
 	.dashBoardContainer
@@ -83,6 +108,8 @@
 					padding: 24px 5px 0px 5px
 					color: white
 					font-size: 18
+				.userName:hover
+					text-decoration: underline
 			.userStat
 				overflow: auto
 				width: 100%
@@ -192,13 +219,28 @@
 			background-color: ebebeb
 			border-radius: 8px
 			overflow: auto
-			.bjListButton
-				position: relative
+			.gamesListContent
+				float: left
+				width: 100%
+				max-height: 400px
+				overflow: auto
+			.gameListButtons
+				width: 200px
+				float: left
 				margin: 5px
-				border-top-color:#97dbfc
-				border-bottom-color: #0794db
-				background-color:#00A6FC
-				width: 70px
+			.bjListButton
+				height: 30px
+				width: 80px
+				border-radius: 3px
+				color: white
+				text-align: center
+				font-size: 14px
+				background-color: #00A6FC
+				border-left: 0px
+				border-top: 0px
+				margin: 5px
+				padding: 0px
+				text-align: center
 			.bjListButton:hover
 				background-color:#4c9ee0
 			#roomsListHide
@@ -244,10 +286,10 @@
 			margin: 10px
 			color:  #373a40
 		.playingGameItem:hover
-			background-color: #C0DDFF
+			background-color: #fcc244
 		.playingGameItem
 			margin: 15px 0px 10px 10px
-			background-color: #C0DDEB
+			background-color: #ffe375
 			height: 70px
 			padding: 5px
 			.blackJackImage
@@ -258,6 +300,7 @@
 			.renjuImage
 				background-image:url('/images/renjutag.png')
 			.blackJackText
-				margin:10px
+				margin: 10px 5px 5px 10px
 				float: left
-				color: #f7404d
+				color: #F7404D
+				max-width: 135px

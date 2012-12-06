@@ -16,7 +16,8 @@ exports.newGame = function(req, res){
       }else{
         var new_game = Game.new();
         new_game.initilize(user,req);
-        user.addGame(new_game.id);
+        user.addGame(new_game);
+        new_game.signIndex(user.generateIndex());
         req.session.game = new_game;
         resultJson= new Object;
         resultJson.page = './blackjack/game_show.jade';
@@ -67,7 +68,7 @@ exports.jointGame = function(req,res){
       var resultJson = new Object;
       if(how_to_joint=='joint'){
         req.session.game = game;
-        user.addGame(game.id);
+        user.addGame(game);
         resultJson.page ='./blackjack/game_show.jade';
         resultJson.type = 'load';
         resultJson.action = 'joint';
@@ -87,9 +88,6 @@ exports.jointGame = function(req,res){
 }
 
 exports.backGame = function(req,res){
-  console.log('get the black jack game');
-  console.log(req.body.game_id);
-
   Game.findById(req.body.game_id,function(error,game){
     req.session.game = game;
     var resultJson = new Object;
@@ -414,7 +412,7 @@ function shipIt(req,res,resultJson){
   data.user = resultJson.user;
   data.game_status = resultJson.game.status;
   data.game_id = resultJson.game.id;
-  data.game_name = resultJson.game.master_name+"'s "+resultJson.game.name;
+  data.game_name = resultJson.game.master_name+"'s "+resultJson.game.name +' '+resultJson.game.index;
 
   if(resultJson.type == 'send'){
     res.send({data:data});

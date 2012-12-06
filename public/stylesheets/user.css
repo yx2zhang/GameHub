@@ -1,3 +1,17 @@
+.buttonBlue {
+  position: relative;
+  margin: 5px;
+  border-top-color: #97dbfc;
+  border-bottom-color: #0794db;
+  background-color: #00a6fc;
+  width: 70px;
+}
+.zyxImage {
+  width: 54px;
+  height: 50px;
+  margin: 0px 10px 0px 10px;
+  float: left;
+}
 .navItem {
   text-decoration: none;
   float: left;
@@ -19,6 +33,10 @@
   border-style: solid;
   margin: 50px 0px 10px 100px;
   background-color: #fff;
+}
+.bodyContainer .userProfileContainer .profileForm {
+  overflow: auto;
+  padding: 40px 0px 0px 0px;
 }
 .bodyContainer .userProfileContainer .userProfileTag {
   margin: 10px;
@@ -62,6 +80,17 @@
   background-color: #fff;
   border: 1px solid #ccc;
 }
+.bodyContainer .userProfileContainer .profileBt {
+  height: 30px;
+  width: 100px;
+  border-radius: 3px;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  background-color: #00a6fc;
+  border-left: 0px;
+  border-top: 0px;
+}
 .bodyContainer .listItem {
   border-bottom: 1px solid #cccaca;
 }
@@ -100,6 +129,9 @@
   padding: 24px 5px 0px 5px;
   color: #fff;
   font-size: 18;
+}
+.bodyContainer .dashBoard .profileMini .userInfo .userName:hover {
+  text-decoration: underline;
 }
 .bodyContainer .dashBoard .profileMini .userStat {
   overflow: auto;
@@ -247,13 +279,30 @@
   border-radius: 8px;
   overflow: auto;
 }
-.bodyContainer .roomsBoard .gamesList .bjListButton {
-  position: relative;
+.bodyContainer .roomsBoard .gamesList .gamesListContent {
+  float: left;
+  width: 100%;
+  max-height: 400px;
+  overflow: auto;
+}
+.bodyContainer .roomsBoard .gamesList .gameListButtons {
+  width: 200px;
+  float: left;
   margin: 5px;
-  border-top-color: #97dbfc;
-  border-bottom-color: #0794db;
+}
+.bodyContainer .roomsBoard .gamesList .bjListButton {
+  height: 30px;
+  width: 80px;
+  border-radius: 3px;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
   background-color: #00a6fc;
-  width: 70px;
+  border-left: 0px;
+  border-top: 0px;
+  margin: 5px;
+  padding: 0px;
+  text-align: center;
 }
 .bodyContainer .roomsBoard .gamesList .bjListButton:hover {
   background-color: #4c9ee0;
@@ -318,11 +367,11 @@
   color: #373a40;
 }
 .bodyContainer .playingGameList .playingGameItem:hover {
-  background-color: #c0ddff;
+  background-color: #fcc244;
 }
 .bodyContainer .playingGameList .playingGameItem {
   margin: 15px 0px 10px 10px;
-  background-color: #c0ddeb;
+  background-color: #ffe375;
   height: 70px;
   padding: 5px;
 }
@@ -336,7 +385,8 @@
   background-image: url("/images/renjutag.png");
 }
 .bodyContainer .playingGameList .playingGameItem .blackJackText {
-  margin: 10px;
+  margin: 10px 5px 5px 10px;
   float: left;
   color: #f7404d;
+  max-width: 135px;
 }

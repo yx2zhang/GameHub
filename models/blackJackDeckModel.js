@@ -34,6 +34,7 @@ bjDeckSchema.methods.shuffle = function(){
 			this.cards[i] = temp;
 		}
 	}
+	this.top = 0;
 	this.markModified('cards');
 	this.save(function(error){
 		if(error) console.log('can not shuffle cards');
