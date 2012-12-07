@@ -3,12 +3,16 @@ var User = db.model('User');
 var bjGame = db.model('blackJackGame');
 
 exports.index = function(req, res){
-  res.render('index', { title: 'GameHub'});
+  if(req.session.user){
+    res.redirect('/user/'+ req.session.user._id); 
+  }else{
+    res.render('index', { title: 'GameHub'});
+  }
 };
 
 exports.login = function(req,res){
-  User.authenticate(req.param('email'),req.param('password'),function(error,user){
-    if(user){
+  User.authenticate(req.param('email'),req.param('password'),function(valid,user){
+    if(user&&valid){
       req.session.user = user;
       req.session.game = null
       res.redirect('/user/'+ user.id);
@@ -17,6 +21,13 @@ exports.login = function(req,res){
     }
   });
 };
+
+exports.logout = function(req,res){
+    console.log('log out');
+    req.session.user = null;
+    req.session.game = null;
+    res.redirect('/');
+}
 
 exports.createNewUser = function(req,res){
   var new_user = User.new();

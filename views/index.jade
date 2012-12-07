@@ -1,6 +1,8 @@
 extends layout
 block css
 	link(rel='stylesheet', href='/stylesheets/index.css')
+block scripts
+	script(src='../javascripts/index.js')
 block content
 	div.topContainer
 		form(method='post',action='/',id='logInForm')
@@ -10,11 +12,11 @@ block content
 			input(type='password',class='submitTextPass logInTextField',name='password')
 			input(type='submit',class='submitButton',value='Login')
 	div.bodyContainer
-		div.siteTitle Welcome to GameHub
+		div.siteTitle Welcome to GameHub (Alpha)
 		div.signFormContainer
-			form(method='post',action='/user/new',id='signForm')
+			form(method='post',action='/user/new',id='signForm',onsubmit="javascript:return validateEmail();")
 				table.signTable
-					span#signSpan Sing up is quick and easy
+					span#signSpan Sign up is quick and easy
 					tr
 						td User name
 						td
@@ -22,7 +24,7 @@ block content
 					tr
 						td Email Address
 						td 
-							input(class='signText',type='text',name='email')
+							input(class='signText',type='text',name='email',id='signUpEmail')
 					tr
 						td Password
 						td

@@ -87,7 +87,7 @@ function gameEnd(res){
 		freezePlayer();
 		return;
 	}
-	console.log(data);
+	// console.log(data);
 	addCards('dealer',dealer.hand,2);
 	// alert(game_data.dealer.point);
 	updatePoint('dealer',dealer.point);
@@ -105,8 +105,11 @@ function gameEnd(res){
 	}
 
 	$('.messageField').find('.bjGameMessage').text('please bid some money');
+	$('.moneyInfo').text('Money '+data.user.money);
+	$('.bjPlayerMoney').text(data.user.money);
 	$('.currentPlayer').addClass('livePlayer');
 	$('#blackJackDeal').removeAttr('disabled');
+	$('.blackJackChip').removeAttr('disabled');
 	$('.blackJackBidButton').removeAttr('disabled');
 }
 
@@ -143,6 +146,7 @@ function freezePlayer(){
 function dealCard(res){
 	var data = res.data;
 	$('.dealer').find('.blackJackHand').html("");
+	$('.moneyInfo').text('Money '+data.user.money);
 	$('.blackJackHand').html("");
 	$('.blackJackGameResult').html("");
 
@@ -154,6 +158,7 @@ function dealCard(res){
 		$('.messageField').find('.bjGameMessage').text('Playing');
 		$('#blackJackDeal').attr('disabled','disabled');
 		$('.blackJackBidButton').attr('disabled','disabled');
+		$('.blackJackChip').attr('disabled','disabled');
 		$('#blackJackHit').removeAttr('disabled');
 		$('#blackJackStand').removeAttr('disabled');
 		$('#blackJackDouble').removeAttr('disabled');
@@ -300,6 +305,7 @@ function setStage(game_data){
 	if(stage == 'dealing'){
 		$('#blackJackDeal').removeAttr('disabled');
 		$('.blackJackBidButton').removeAttr('disabled');
+		$('.blackJackChip').removeAttr('disabled');
 		$('#blackJackHit').attr('disabled','disabled');
 		$('#blackJackStand').attr('disabled','disabled');
 		$('#blackJackDouble').attr('disabled','disabled');
@@ -312,6 +318,7 @@ function setStage(game_data){
 		$('#blackJackStand').removeAttr('disabled');
 		$('#blackJackDouble').removeAttr('disabled');
 		$('#blackJackSplit').removeAttr('disabled');
+		$('.blackJackChip').attr('disabled','disabled');
 		if(game_data.left_player){updatePoint('leftPlayer',game_data.left_player.point);}
 		if(game_data.right_player){updatePoint('rightPlayer',game_data.right_player.point);}
 		updatePoint('currentPlayer',game_data.cur_player.point);
