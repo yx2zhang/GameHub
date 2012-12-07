@@ -59,40 +59,39 @@ function requiresLogin(req,res,next){
 app.get('/',user.index);
 app.post('/',user.login);
 app.post('/user/new',user.createNewUser);
-app.get('/user/:id',user.showUser);
+app.get('/user/:id',requiresLogin,user.showUser);
 
-app.post('/user/invite',user.invite);
-app.post('/user/search_friend',user.searchFriend);
-app.post('/user/friend_request',user.friendRequest);
-app.post('/user/accept_friend',user.acceptFriend);
+app.post('/user/invite',requiresLogin,user.invite);
+app.post('/user/search_friend',requiresLogin,user.searchFriend);
+app.post('/user/friend_request',requiresLogin,user.friendRequest);
+app.post('/user/accept_friend',requiresLogin,user.acceptFriend);
 
-app.post('/user/show_friends',user.showFriends);
-app.post('/user/show_messages',user.showMessages);
-app.post('/user/games_list',user.gamesList);
-app.post('/user/show_games',user.showGames);
-app.post('/user/show_my_games',user.showMyGames);
+app.post('/user/show_friends',requiresLogin,user.showFriends);
+app.post('/user/show_messages',requiresLogin,user.showMessages);
+app.post('/user/games_list',requiresLogin,user.gamesList);
+app.post('/user/show_games',requiresLogin,user.showGames);
+app.post('/user/show_my_games',requiresLogin,user.showMyGames);
 
-app.post('/user/back_game',user.backGame);
-app.post('/user/invite_friend',user.inviteFriend);
-app.post('/user/accept_invite',user.acceptInvite);
-app.post('/user/show_profile',user.showProfile);
-app.post('/user/upload_profile_image',user.uploadProfileImage);
+app.post('/user/back_game',requiresLogin,user.backGame);
+app.post('/user/invite_friend',requiresLogin,user.inviteFriend);
+app.post('/user/accept_invite',requiresLogin,user.acceptInvite);
+app.post('/user/show_profile',requiresLogin,requiresLogin,user.showProfile);
+app.post('/user/upload_profile_image',requiresLogin,user.uploadProfileImage);
 
-app.post('/user/profile_change',user.profileChange);
-
-
+app.post('/user/profile_change',requiresLogin,user.profileChange);
+app.get('/log_out',requiresLogin,user.logout);
 
 //games
 app.post('/game/blackjack/new',requiresLogin, blackjack.newGame);
 app.get('/game/blackjack/:id', requiresLogin, blackjack.showGame);
 
 // app.post('/game/blackjack/start', blackjack.startGame);
-app.post('/game/blackjack/deal',blackjack.dealGame);
-app.post('/game/blackjack/hit',blackjack.hitGame);
-app.post('/game/blackjack/stand',blackjack.standGame);
-app.post('/game/blackjack/joint',blackjack.jointGame);
-app.post('/game/blackjack/back_game',blackjack.backGame);
-app.post('/game/blackjack/quit',blackjack.quit);
+app.post('/game/blackjack/deal',requiresLogin,blackjack.dealGame);
+app.post('/game/blackjack/hit',requiresLogin,blackjack.hitGame);
+app.post('/game/blackjack/stand',requiresLogin,blackjack.standGame);
+app.post('/game/blackjack/joint',requiresLogin,blackjack.jointGame);
+app.post('/game/blackjack/back_game',requiresLogin,blackjack.backGame);
+app.post('/game/blackjack/quit',requiresLogin,blackjack.quit);
 
 server.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);

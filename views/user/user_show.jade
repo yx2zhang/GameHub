@@ -2,7 +2,6 @@ extends ../layout
 block scripts
 	script
 		var data = !{JSON.stringify(data)};
-		console.log(data);
 	script(src='../../javascripts/realtime.js')
 	script(src='../../javascripts/userFront.js')
 	script(src='../../javascripts/roomsBoard.js')
@@ -17,6 +16,7 @@ block content
 		nav
 			a(href='#', class='navHome navItem') Game Hub
 			a(href='#', class='navUser navItem')
+		a(href='/log_out', class='navItem',id='logOutUser') Log Out
 	div.bodyContainer
 		div.dashBoardContainer
 			div.dashBoard
@@ -25,10 +25,11 @@ block content
 						div.profilePic.left
 						div.userName.left
 					div.userStat
-						a(class='friendsInfo left statElement',href='#') Friends #{data.friends.length} 
-						a(class='gamesInfo left statElement',href='#')	games 0
+						a(class='friendsInfo left statElement',href='#') Friends #{data.user.friends.length} 
+						a(class='gamesInfo left statElement',href='#')	games 2
 						a(class='messagesInfo left statElement',href='#') Messages 
-						a(class='moneyInfo left statElement',href='#') Money 100
+						a(class='moneyInfo left statElement',href='#') Money #{data.user.money} 
+						
 				div.dashBoardList
 					include user_friends
 			div.roomsBoard

@@ -1,3 +1,7 @@
+#logOutUser {
+  float: right;
+  right: 35px;
+}
 .buttonBlue {
   position: relative;
   margin: 5px;
@@ -117,6 +121,9 @@
   overflow: auto;
   width: 100%;
 }
+.bodyContainer .dashBoard .profileMini .userInfo .profileText {
+  float: left;
+}
 .bodyContainer .dashBoard .profileMini .userInfo .profilePic {
   border-radius: 10px;
   float: left;
@@ -129,6 +136,9 @@
   padding: 24px 5px 0px 5px;
   color: #fff;
   font-size: 18;
+}
+.bodyContainer .dashBoard .profileMini .userInfo .userMoney {
+  display: block;
 }
 .bodyContainer .dashBoard .profileMini .userInfo .userName:hover {
   text-decoration: underline;
@@ -261,7 +271,7 @@
 .bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem .gameName {
   float: left;
   color: #e55d4d;
-  margin: 10px 0px 0px 15px;
+  margin: 10px 0px 0px 10px;
   font-size: 22px;
 }
 .bodyContainer .dashBoard .dashBoardList .gamesContainer .gameTypesList .gameItem:hover {

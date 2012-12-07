@@ -1,6 +1,8 @@
 var mongoose = require('mongoose')
-    Schema = mongoose.Schema
-    ,realtime = require('../realtime');
+    Schema = mongoose.Schema,
+    realtime = require('../realtime'),
+    passwordHash = require('password-hash');
+
 var messageSchema = new mongoose.Schema({
   content: String, 
   sender: String, 
@@ -36,7 +38,13 @@ var userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.authenticate = function(email,password,callback){
-	this.findOne({'email': email, 'password': password},callback);
+  this.findOne({'email': email},function(error,user){
+    var valid = false;
+    if(user){
+      valid = passwordHash.verify(password,user.password);
+    }
+    callback(valid,user);
+  });
 }
 
 userSchema.statics.new = function(){
@@ -52,7 +60,8 @@ userSchema.statics.new = function(){
 userSchema.methods.initialize = function(req){
   this.user_name = req.param('userName');
   this.email = req.param('email');
-  this.password = req.param('password');
+  this.password = passwordHash.generate(req.param('password'));
+
   this.money = 150;
   this.active_games = 0;
   this.messager.total = 0;
