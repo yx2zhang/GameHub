@@ -71,11 +71,11 @@ exports.showMessages = function(req,res){
 }
 
 exports.searchFriend = function(req,res){
-  User.find({'user_name' : new RegExp(req.body.search_str, 'i')}, function(err, users){
+  User.find({'user_name' : new RegExp(req.body.search_str, 'i')}, function(error, users){
     var resultJson = new Object;
     resultJson.users = users;
     res.render('./user/user_search_result.jade',{
-      data:resultJson,
+      search_data:resultJson,
     });
   });
 }

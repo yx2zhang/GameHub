@@ -12,8 +12,11 @@ $(document).ready(function(){
 			success: function(htmlResult){
 				$('.friendsList').html(htmlResult);
 			},
-			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+			error: function(jqXHR, textStatus, errorThrown) { 
+				alert(errorThrown);
+			}
 		});
+		return false;
 	});
 
 	$('.friendsList').on('click','.friendAction',function(){
