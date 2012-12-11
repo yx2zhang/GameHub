@@ -48,6 +48,10 @@
   padding: 35px;
   font-size: 20px;
 }
+.bodyContainer .userProfileContainer .profileBtWrap {
+  margin: auto;
+  width: 100px;
+}
 .bodyContainer .userProfileContainer .profileForm {
   overflow: auto;
   padding: 40px 0px 0px 0px;

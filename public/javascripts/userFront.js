@@ -93,6 +93,13 @@ $(document).ready(function(){
 		});
 	});
 
+	$('.bodyContainer').on('click','#welcomeCLoseBt',function(){
+		var cur_profile = $('.bodyContainer').find('.userProfileContainer');
+		if(cur_profile.length!=0){
+			cur_profile.remove();
+		}
+	});
+
 	initialize();
 });
 
