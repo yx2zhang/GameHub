@@ -75,10 +75,13 @@ app.post('/user/show_my_games',requiresLogin,user.showMyGames);
 app.post('/user/back_game',requiresLogin,user.backGame);
 app.post('/user/invite_friend',requiresLogin,user.inviteFriend);
 app.post('/user/accept_invite',requiresLogin,user.acceptInvite);
+
 app.post('/user/show_profile',requiresLogin,requiresLogin,user.showProfile);
 app.post('/user/upload_profile_image',requiresLogin,user.uploadProfileImage);
-
 app.post('/user/profile_change',requiresLogin,user.profileChange);
+
+app.post('/user/show_welcome',requiresLogin,requiresLogin,user.showWelcome);
+
 app.get('/log_out',requiresLogin,user.logout);
 
 //games
