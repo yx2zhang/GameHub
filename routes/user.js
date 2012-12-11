@@ -23,10 +23,13 @@ exports.login = function(req,res){
 };
 
 exports.logout = function(req,res){
-    console.log('log out');
-    req.session.user = null;
-    req.session.game = null;
-    res.redirect('/');
+  req.session.user = null;
+  req.session.game = null;
+  res.redirect('/');
+}
+
+exports.showWelcome = function(req,res){
+  res.render('./user/user_welcome.jade')
 }
 
 exports.createNewUser = function(req,res){

@@ -79,6 +79,20 @@ $(document).ready(function(){
 		});
 	});
 
+	$('.navUser,.navGameHub').click(function(){
+		$.ajax({
+			url: '/user/show_welcome',
+			type: 'POST',
+			success: function(welcomeHtml){
+				loadProfile(welcomeHtml);
+				// $.getScript('../javascripts/showWelcome.js',function(data, textStatus, jqxhr){
+					
+				// });
+			},
+			error: function(jqXHR, textStatus, errorThrown) { alert(errorThrown); }
+		});
+	});
+
 	initialize();
 });
 
@@ -155,7 +169,7 @@ function newGame(new_game){
 	var cur_game_container = $(".curGame");
 	$('.userProfileContainer').remove();
 	if(cur_game_container.length!=0){
-		cur_game_container.animate({left:'-750px'},'slow',function(){
+		cur_game_container.animate({left:'-750px'},400,function(){
 			var id = $(".curGame").attr('id').replace('game_content_','');
 			var name = $(".curGame").find('.gameTitle').text();
 			addPlayingGame(id,name);
@@ -170,7 +184,7 @@ function newGame(new_game){
 function loadProfile(profileHtml){
 	var cur_game_container = $(".curGame");
 	if(cur_game_container.length!=0){
-		cur_game_container.animate({left:'-750px'},'slow',function(){
+		cur_game_container.animate({left:'-750px'},400,function(){
 			var id = $(".curGame").attr('id').replace('game_content_','');
 			var name = $(".curGame").find('.gameTitle').text();
 			addPlayingGame(id,name);

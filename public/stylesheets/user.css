@@ -38,6 +38,16 @@
   margin: 50px 0px 10px 100px;
   background-color: #fff;
 }
+.bodyContainer .userProfileContainer .welcomeTitle {
+  text-align: center;
+  font-size: 25px;
+  padding: 15px;
+  color: #00b7ff;
+}
+.bodyContainer .userProfileContainer .welcomeContent {
+  padding: 35px;
+  font-size: 20px;
+}
 .bodyContainer .userProfileContainer .profileForm {
   overflow: auto;
   padding: 40px 0px 0px 0px;
