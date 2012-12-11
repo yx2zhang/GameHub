@@ -79,7 +79,7 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.navUser,.navGameHub').click(function(){
+	$('.navGameHub').click(function(){
 		$.ajax({
 			url: '/user/show_welcome',
 			type: 'POST',
