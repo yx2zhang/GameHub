@@ -120,7 +120,7 @@ bjPlayerSchema.methods.count = function(bid){
 }
 
 bjPlayerSchema.methods.dealerAction = function(deck){
-  var deck = resultJson.deck;
+  var deck = deck;
   var point = this.count();
   while(point<=17){
     this.addCard(deck.getCard());
@@ -220,7 +220,6 @@ bjPlayerSchema.methods.checkResult = function(resultJson){
 
 bjPlayerSchema.methods.updateGamesList = function(resultJson){
   var m_socket = realtime.clients[this.user_id];
-  console.log(realtime.clients.length);
   if(m_socket){
     m_socket.broadcast.emit('gameUpdate',{game:resultJson.game});
     m_socket.emit('gameUpdate',{game:resultJson.game});

@@ -20,12 +20,15 @@ exports.login = function(req,res){
       res.render('index',{ title: 'GameHub'});
     }
   });
-};
+}
 
 exports.logout = function(req,res){
   req.session.user = null;
   req.session.game = null;
   res.redirect('/');
+}
+
+exports.leftHub = function(user_id){
 }
 
 exports.showWelcome = function(req,res){

@@ -273,6 +273,7 @@ function addPlayer(role,res){
 }
 
 function bjInitialize(){
+	console.log(game_data.dealer.hand);
 	$('.curGame').attr('id', 'game_content_'+game_data.game_id);
 	addCards('dealer',game_data.dealer.hand,0);
 
