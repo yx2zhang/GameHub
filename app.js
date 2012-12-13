@@ -22,6 +22,7 @@ io.sockets.on('connection',function(socket){
 
   socket.on('disconnect', function () {
     var user_id = socket.user_id;
+    realtime.clients[data.user_id] = null;
     user.leftHub(user_id);
   });
 });
