@@ -106,8 +106,6 @@ function gameEnd(res){
 
 	$('.messageField').find('.bjGameMessage').text('please bid some money');
 
-	$('.messageField').animate({top:-300px;},400);
-
 	$('.moneyInfo').text('Money '+data.user.money);
 	$('.bjPlayerMoney').text(data.user.money);
 	$('.currentPlayer').addClass('livePlayer');
@@ -131,7 +129,12 @@ function curPlayerEnd(cur_player){
 	}else if(cur_player.status=='draw'){
 		$('.messageField').find('.bjGameMessage').text('Draw');
 	}
-	$('.currentPlayer').find('.blackJackGameResult').text(cur_player.status);
+
+	var result = $('.currentPlayer').find('.blackJackGameResult');
+	result.css("top","-300px");
+	result.text('You ' +cur_player.status);
+	$('.currentPlayer').find('.blackJackGameResult').animate({top:'0px'},'slow');
+
 	$('.bjPlayerBid').text(0);
 	$('.currentPlayer').removeClass('livePlayer');
 	freezePlayer();

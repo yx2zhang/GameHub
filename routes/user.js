@@ -137,8 +137,7 @@ exports.acceptInvite = function(req,res){
 }
 
 exports.uploadProfileImage = function(req,res){
-  console.log('here the image');
-  console.log(req);
+
 }
 
 function addFriends(req,res,receiver,sender){

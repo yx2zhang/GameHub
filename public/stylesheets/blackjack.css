@@ -74,9 +74,11 @@ a {
   font-size: 20px;
 }
 .blackJackContainer .blackJackTable .blackJackPlayer .blackJackGameResult {
-  width: 30%;
+  color: #ff0;
+  text-align: center;
   margin: auto;
   font-size: 20px;
+  position: relative;
 }
 .blackJackContainer .blackJackTable .blackJackDealerContainer {
   height: 40%;
