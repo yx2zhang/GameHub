@@ -42,5 +42,4 @@ $(document).ready(function(){
   socket.on('bj_quit',function (data){
     bj_removePlayer(data.data);
   });
-
 });

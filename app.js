@@ -17,6 +17,12 @@ var MemStore =  express.session.MemoryStore;
 io.sockets.on('connection',function(socket){
   socket.on('init',function(data){
       realtime.clients[data.user_id] = socket;
+      socket.user_id = data.user_id;
+  });
+
+  socket.on('disconnect', function () {
+    var user_id = socket.user_id;
+    user.leftHub(user_id);
   });
 });
 

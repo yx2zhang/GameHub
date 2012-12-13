@@ -120,7 +120,7 @@ bjPlayerSchema.methods.count = function(bid){
 }
 
 bjPlayerSchema.methods.dealerAction = function(deck){
-  var deck = resultJson.deck;
+  var deck = deck;
   var point = this.count();
   while(point<=17){
     this.addCard(deck.getCard());
