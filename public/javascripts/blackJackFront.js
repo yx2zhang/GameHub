@@ -105,6 +105,9 @@ function gameEnd(res){
 	}
 
 	$('.messageField').find('.bjGameMessage').text('please bid some money');
+
+	$('.messageField').animate({top:-300px;},400);
+
 	$('.moneyInfo').text('Money '+data.user.money);
 	$('.bjPlayerMoney').text(data.user.money);
 	$('.currentPlayer').addClass('livePlayer');
@@ -163,6 +166,7 @@ function dealCard(res){
 		$('#blackJackStand').removeAttr('disabled');
 		$('#blackJackDouble').removeAttr('disabled');
 		$('#blackJackSplit').removeAttr('disabled');
+		
 		addCards('dealer',data.dealer.hand,0);
 		updatePoint('dealer',data.dealer.point);
 

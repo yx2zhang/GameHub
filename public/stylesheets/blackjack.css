@@ -148,6 +148,7 @@ a {
   background-color: #4d9982;
 }
 .blackJackMenu .messageField {
+  position: relative;
   width: 170px;
   height: 100px;
   float: right;
