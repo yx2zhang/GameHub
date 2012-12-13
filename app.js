@@ -103,6 +103,6 @@ app.post('/game/blackjack/joint',requiresLogin,blackjack.jointGame);
 app.post('/game/blackjack/back_game',requiresLogin,blackjack.backGame);
 app.post('/game/blackjack/quit',requiresLogin,blackjack.quit);
 
-server.listen(3000, function(){
+server.listen(80, function(){
   console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
 });
