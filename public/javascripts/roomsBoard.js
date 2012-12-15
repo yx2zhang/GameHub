@@ -53,12 +53,12 @@ function updateGame(data){
 
 function showRoomsList(){
 	$('.roomsBoard').addClass('showBoard');
-    $(".roomsBoard").animate({right:'310px'});    
+    $(".roomsBoard").animate({left:'300px'});    
 }
 
 function hideRoomsList(){
 	$('.roomsBoard').removeClass('showBoard');
-    $(".roomsBoard").animate({right:'0px'});    
+    $(".roomsBoard").animate({left:'0px'});    
 }
 
 function setList(){

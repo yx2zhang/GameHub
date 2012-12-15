@@ -95,8 +95,9 @@
 		border-bottom: 1px solid #CCCACA
 	.dashBoardContainer
 		position: relative
-		float: right
+		float: left
 		width: 20%;
+		margin-left: 10px
 		min-width: 300px;
 	.dashBoard
 		float: right
@@ -245,7 +246,7 @@
 				overflow: auto
 			.gameListButtons
 				width: 200px
-				float: left
+				float: right
 				margin: 5px
 			.bjListButton
 				height: 30px
@@ -263,13 +264,14 @@
 			.bjListButton:hover
 				background-color:#4c9ee0
 			#roomsListHide
-				float:right
+				float:left
 				text-decoration: none
 				margin: 10px
 			#roomsListHide:hover
 				text-decoration: underline;
 			.quickStartBlackjack
-			.newBlackjack
+			#newBlackjack
+				float:right
 			.gameRoomItem
 				padding: 10px
 				.gameRoomName
@@ -299,13 +301,16 @@
 		width: 240px
 		min-height: 500px
 		padding-top: 30px
-		float: left
+		float: right
+		right: 10px
 		.playingGamesTag
 			font-size: 20px
 			margin: 10px
 			color:  #373a40
 		.playingGameItem:hover
 			background-color: #fcc244
+		.playingGameItem.selected
+			background-color: gainsboro
 		.playingGameItem
 			margin: 15px 0px 10px 10px
 			background-color: #ffe375

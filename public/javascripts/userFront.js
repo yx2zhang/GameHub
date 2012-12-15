@@ -54,6 +54,14 @@ $(document).ready(function(){
 	$('.playingGameList').on('click','.playingGameItem',function(){
 		var id = $(this).attr('id');
 		id = id.replace('playing_','');
+
+		var old_item = $('.playingGameList').find('.selected');
+		if(old_item.length>0){
+			old_item.removeClass('selected');	
+		}
+
+		$(this).addClass('selected');
+
 		$.ajax({
 			url: '/game/blackjack/back_game',
 			data:{game_id:id},
@@ -176,7 +184,7 @@ function newGame(new_game){
 	var cur_game_container = $(".curGame");
 	$('.userProfileContainer').remove();
 	if(cur_game_container.length!=0){
-		cur_game_container.animate({left:'-750px'},400,function(){
+		cur_game_container.animate({right:'-850px'},400,function(){
 			var id = $(".curGame").attr('id').replace('game_content_','');
 			var name = $(".curGame").find('.gameTitle').text();
 			addPlayingGame(id,name);
@@ -191,7 +199,7 @@ function newGame(new_game){
 function loadProfile(profileHtml){
 	var cur_game_container = $(".curGame");
 	if(cur_game_container.length!=0){
-		cur_game_container.animate({left:'-750px'},400,function(){
+		cur_game_container.animate({right:'-850px'},400,function(){
 			var id = $(".curGame").attr('id').replace('game_content_','');
 			var name = $(".curGame").find('.gameTitle').text();
 			addPlayingGame(id,name);
