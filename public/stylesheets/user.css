@@ -114,8 +114,9 @@
 }
 .bodyContainer .dashBoardContainer {
   position: relative;
-  float: right;
+  float: left;
   width: 20%;
+  margin-left: 10px;
   min-width: 300px;
 }
 .bodyContainer .dashBoard {
@@ -311,7 +312,7 @@
 }
 .bodyContainer .roomsBoard .gamesList .gameListButtons {
   width: 200px;
-  float: left;
+  float: right;
   margin: 5px;
 }
 .bodyContainer .roomsBoard .gamesList .bjListButton {
@@ -332,7 +333,7 @@
   background-color: #4c9ee0;
 }
 .bodyContainer .roomsBoard .gamesList #roomsListHide {
-  float: right;
+  float: left;
   text-decoration: none;
   margin: 10px;
 }
@@ -340,24 +341,20 @@
   text-decoration: underline;
 }
 .bodyContainer .roomsBoard .gamesList .quickStartBlackjack,
-.bodyContainer .roomsBoard .gamesList .newBlackjack,
+.bodyContainer .roomsBoard .gamesList #newBlackjack {
+  float: right;
+}
 .bodyContainer .roomsBoard .gamesList .gameRoomItem {
   padding: 10px;
 }
-.bodyContainer .roomsBoard .gamesList .quickStartBlackjack .gameRoomName,
-.bodyContainer .roomsBoard .gamesList .newBlackjack .gameRoomName,
 .bodyContainer .roomsBoard .gamesList .gameRoomItem .gameRoomName {
   color: #e55d4d;
   font-size: 15px;
 }
-.bodyContainer .roomsBoard .gamesList .quickStartBlackjack .gameJoint,
-.bodyContainer .roomsBoard .gamesList .newBlackjack .gameJoint,
 .bodyContainer .roomsBoard .gamesList .gameRoomItem .gameJoint {
   text-decoration: none;
   font-size: 15px;
 }
-.bodyContainer .roomsBoard .gamesList .quickStartBlackjack .gameJoint:hover,
-.bodyContainer .roomsBoard .gamesList .newBlackjack .gameJoint:hover,
 .bodyContainer .roomsBoard .gamesList .gameRoomItem .gameJoint:hover {
   text-decoration: underline;
 }
@@ -383,7 +380,8 @@
   width: 240px;
   min-height: 500px;
   padding-top: 30px;
-  float: left;
+  float: right;
+  right: 10px;
 }
 .bodyContainer .playingGameList .playingGamesTag {
   font-size: 20px;
@@ -392,6 +390,9 @@
 }
 .bodyContainer .playingGameList .playingGameItem:hover {
   background-color: #fcc244;
+}
+.bodyContainer .playingGameList .playingGameItem.selected {
+  background-color: #dcdcdc;
 }
 .bodyContainer .playingGameList .playingGameItem {
   margin: 15px 0px 10px 10px;
